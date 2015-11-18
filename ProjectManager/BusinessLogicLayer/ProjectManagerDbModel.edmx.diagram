@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="b553e3336177499f91b3973673b196d5" Name="Diagram1">
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Assignment" Width="1.5" PointX="8.25" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Comment" Width="1.5" PointX="8.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Project" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.ProjectUser" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Role" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.RoleName" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Task" Width="1.5" PointX="6" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.TaskState" Width="1.5" PointX="3.75" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.TaskStateChange" Width="1.5" PointX="11.25" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Worktime" Width="1.5" PointX="8.25" PointY="11" IsExpanded="true" />
+        <AssociationConnector Association="ProjectManagerDBModel.assignment_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.assignment_fk2" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.comment_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.comment_fk2" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.role_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.task_fk0" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.FK_task_state_change_user" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.FK_worktime_user" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.role_fk2" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.role_fk3" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.task_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.task_state_change_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.worktime_fk1" ManuallyRouted="false" />
+        <AssociationConnector Association="ProjectManagerDBModel.task_state_change_fk2" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
