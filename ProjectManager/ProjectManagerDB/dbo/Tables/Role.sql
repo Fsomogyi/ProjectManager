@@ -1,0 +1,29 @@
+﻿CREATE TABLE [dbo].[Role](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[user_id] [int] NOT NULL,
+	[project_id] [int] NOT NULL,
+	[type] [int] NOT NULL,
+ CONSTRAINT [PK_ROLE] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Role]  WITH CHECK ADD  CONSTRAINT [role_fk1] FOREIGN KEY([project_id])
+REFERENCES [dbo].[Project] ([id])
+ON UPDATE CASCADE
+GO
+
+ALTER TABLE [dbo].[Role] CHECK CONSTRAINT [role_fk1]
+GO
+ALTER TABLE [dbo].[Role]  WITH CHECK ADD  CONSTRAINT [role_fk2] FOREIGN KEY([user_id])
+REFERENCES [dbo].[ProjectUser] ([id])
+GO
+
+ALTER TABLE [dbo].[Role] CHECK CONSTRAINT [role_fk2]
+GO
+ALTER TABLE [dbo].[Role]  WITH CHECK ADD  CONSTRAINT [role_fk3] FOREIGN KEY([type])
+REFERENCES [dbo].[RoleName] ([id])
+GO
+
+ALTER TABLE [dbo].[Role] CHECK CONSTRAINT [role_fk3]

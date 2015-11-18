@@ -1,0 +1,10 @@
+﻿CREATE TABLE [dbo].[ProjectUser](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[username] [nvarchar](20) NOT NULL,
+	[password] [nvarchar](20) NOT NULL,
+	[email] [nvarchar](40) NOT NULL,
+ CONSTRAINT [PK_USER] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
