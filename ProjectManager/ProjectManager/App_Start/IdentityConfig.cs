@@ -55,7 +55,6 @@ namespace ProjectManager
             {
                 RequiredLength = 6,
                 RequireLowercase = true,
-                RequireUppercase = true,
             };
 
             // Configure user lockout defaults

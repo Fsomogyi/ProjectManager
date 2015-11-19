@@ -23,7 +23,7 @@ namespace ProjectManager.Controllers
 
                 foreach (var v in res)
                 {
-                    Debug.WriteLine("res: " + v.id);
+                    Debug.WriteLine("res: " + v.Id);
                 }
                 
                // projects = res.ToList();
