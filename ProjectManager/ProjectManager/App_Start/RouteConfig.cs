@@ -18,6 +18,12 @@ namespace ProjectManager
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "Projects",
+                url: "Projects/{action}",
+                defaults: new { action = "Index"}
+            );
         }
     }
 }

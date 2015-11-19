@@ -1,0 +1,18 @@
+﻿@model IEnumerable<BusinessLogicLayer.Project>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>My projects</h2>
+
+
+<div class="container">
+    @foreach (var item in Model)
+    {
+        <div class="project-element">
+            <p class="project-title">@Html.DisplayFor(modelItem => item.name)</p>
+            @Html.DisplayFor(modelItem => item.deadline)
+        </div>
+    }
+</div>
