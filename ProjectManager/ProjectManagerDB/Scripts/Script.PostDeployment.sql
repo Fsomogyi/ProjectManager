@@ -10,6 +10,7 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 :r .\InsertRoleName.sql
+:r .\InsertTaskState.sql
 :r .\InsertProjectUser.sql
 :r .\InsertProject.sql
 :r .\InsertRole.sql

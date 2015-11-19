@@ -76,11 +76,15 @@
     <None Include="Scripts\InsertProjectUser.sql" />
     <None Include="Scripts\InsertRole.sql" />
     <None Include="Scripts\InsertRoleName.sql" />
+    <None Include="Scripts\InsertTaskState.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ProjectManagerDB.publish.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="ProjectManagerDB.refactorlog" />
   </ItemGroup>
 </Project>
