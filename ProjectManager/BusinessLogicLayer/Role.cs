@@ -14,10 +14,10 @@ namespace BusinessLogicLayer
     
     public partial class Role
     {
-        public int id { get; set; }
-        public int user_id { get; set; }
-        public int project_id { get; set; }
-        public int type { get; set; }
+        public int Id { get; set; }
+        public int ProjectUserId { get; set; }
+        public int ProjectId { get; set; }
+        public int Type { get; set; }
     
         public virtual Project Project { get; set; }
         public virtual ProjectUser ProjectUser { get; set; }

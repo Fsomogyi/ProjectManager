@@ -336,4 +336,39 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="TaskState" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="a197a889-b12f-4d6e-9327-3ed87d25ec57" ChangeDateTime="11/19/2015 17:49:30">
+    <Property Name="ElementName" Value="[dbo].[Worktime].[UserId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Worktime]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ProjectUserId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="de4ec1cc-3ae6-4450-97d0-3cb3ed8564dd" ChangeDateTime="11/19/2015 17:49:39">
+    <Property Name="ElementName" Value="[dbo].[TaskStateChange].[UserId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[TaskStateChange]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ProjectUserId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9189d055-70ef-4242-83ea-03c7743ddce7" ChangeDateTime="11/19/2015 17:49:50">
+    <Property Name="ElementName" Value="[dbo].[Role].[UserId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Role]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ProjectUserId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="eadbdd2f-be12-47f3-995c-92ac71017051" ChangeDateTime="11/19/2015 17:49:59">
+    <Property Name="ElementName" Value="[dbo].[Comment].[UserId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Comment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ProjectUserId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c45100b3-2730-4320-ae07-e307f4bc6c25" ChangeDateTime="11/19/2015 17:50:02">
+    <Property Name="ElementName" Value="[dbo].[Assignment].[UserId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Assignment]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ProjectUserId" />
+  </Operation>
 </Operations>

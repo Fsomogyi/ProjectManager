@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Assignment](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[UserId] [int] NOT NULL,
+	[ProjectUserId] [int] NOT NULL,
 	[TaskId] [int] NOT NULL,
 	[Accepted] [bit] NOT NULL,
  CONSTRAINT [PK_ASSIGNMENT] PRIMARY KEY CLUSTERED 
@@ -16,7 +16,7 @@ GO
 
 ALTER TABLE [dbo].[Assignment] CHECK CONSTRAINT [assignment_fk1]
 GO
-ALTER TABLE [dbo].[Assignment]  WITH CHECK ADD  CONSTRAINT [assignment_fk2] FOREIGN KEY([UserId])
+ALTER TABLE [dbo].[Assignment]  WITH CHECK ADD  CONSTRAINT [assignment_fk2] FOREIGN KEY([ProjectUserId])
 REFERENCES [dbo].[ProjectUser] ([Id])
 GO
 

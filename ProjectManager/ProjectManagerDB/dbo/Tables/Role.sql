@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Role](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[UserId] [int] NOT NULL,
+	[ProjectUserId] [int] NOT NULL,
 	[ProjectId] [int] NOT NULL,
 	[Type] [int] NOT NULL,
  CONSTRAINT [PK_ROLE] PRIMARY KEY CLUSTERED 
@@ -16,7 +16,7 @@ GO
 
 ALTER TABLE [dbo].[Role] CHECK CONSTRAINT [role_fk1]
 GO
-ALTER TABLE [dbo].[Role]  WITH CHECK ADD  CONSTRAINT [role_fk2] FOREIGN KEY([UserId])
+ALTER TABLE [dbo].[Role]  WITH CHECK ADD  CONSTRAINT [role_fk2] FOREIGN KEY([ProjectUserId])
 REFERENCES [dbo].[ProjectUser] ([Id])
 GO
 

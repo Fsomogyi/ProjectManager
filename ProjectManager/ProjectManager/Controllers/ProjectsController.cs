@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using BusinessLogicLayer;
 using System.Diagnostics;
+using BusinessLogicLayer;
 
 namespace ProjectManager.Controllers
 {
@@ -16,17 +16,13 @@ namespace ProjectManager.Controllers
             int userId = 1;
 
             List<Project> projects = new List<Project>();
-            using (var db = new ProjectManagerDBEntities())
+            using (var db = new BusinessLogicLayerEntities())
             {
-                var res = from r in db.Role
-                          select r;
-
-                foreach (var v in res)
-                {
-                    Debug.WriteLine("res: " + v.id);
-                }
-                
-               // projects = res.ToList();
+                var res = from project in db.Project
+                          join role in db.Role on project.Id equals role.ProjectId
+                          where role.ProjectUserId == userId
+                          select project;
+                projects = res.ToList();
             }
                 
             return View(projects);

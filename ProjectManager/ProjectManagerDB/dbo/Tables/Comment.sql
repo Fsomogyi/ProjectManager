@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Comment](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[UserId] [int] NOT NULL,
+	[ProjectUserId] [int] NOT NULL,
 	[TaskId] [int] NOT NULL,
 	[Content] [nvarchar](4000) NOT NULL,
 	[Timestamp] [datetime] NOT NULL,
@@ -17,7 +17,7 @@ GO
 
 ALTER TABLE [dbo].[Comment] CHECK CONSTRAINT [comment_fk1]
 GO
-ALTER TABLE [dbo].[Comment]  WITH CHECK ADD  CONSTRAINT [comment_fk2] FOREIGN KEY([UserId])
+ALTER TABLE [dbo].[Comment]  WITH CHECK ADD  CONSTRAINT [comment_fk2] FOREIGN KEY([ProjectUserId])
 REFERENCES [dbo].[ProjectUser] ([Id])
 GO
 

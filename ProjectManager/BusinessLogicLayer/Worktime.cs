@@ -14,11 +14,11 @@ namespace BusinessLogicLayer
     
     public partial class Worktime
     {
-        public int id { get; set; }
-        public int user_id { get; set; }
-        public int task_id { get; set; }
-        public System.DateTime start_time { get; set; }
-        public System.DateTime end_time { get; set; }
+        public int Id { get; set; }
+        public int ProjectUserId { get; set; }
+        public int TaskId { get; set; }
+        public System.DateTime StartTime { get; set; }
+        public System.DateTime EndTime { get; set; }
     
         public virtual ProjectUser ProjectUser { get; set; }
         public virtual Task Task { get; set; }

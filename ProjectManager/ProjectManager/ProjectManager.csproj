@@ -251,8 +251,11 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\BusinessLogicLayer\BusinessLogicLayer.csproj">
-      <Project>{70c301ad-da5d-4f8f-99a8-2d3814b320cd}</Project>
+      <Project>{58a82514-403f-4fb1-aaff-c8a362257237}</Project>
       <Name>BusinessLogicLayer</Name>
     </ProjectReference>
   </ItemGroup>
