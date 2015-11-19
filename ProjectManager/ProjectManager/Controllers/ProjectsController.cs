@@ -20,7 +20,7 @@ namespace ProjectManager.Controllers
             {
                 var res = from project in db.Project
                           join role in db.Role on project.Id equals role.ProjectId
-                          where role.UserId == userId
+                          where role.ProjectUserId == userId
                           select project;
                 projects = res.ToList();
 
