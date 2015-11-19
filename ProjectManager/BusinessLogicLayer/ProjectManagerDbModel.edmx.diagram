@@ -4,13 +4,13 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="7b0944b34ee74b6c8906b64df6d31dad" Name="Diagram1">
+      <Diagram DiagramId="615a39b86f0844f780d25710001a8121" Name="Diagram1">
         <EntityTypeShape EntityType="ProjectManagerDBModel.Assignment" Width="1.5" PointX="8.25" PointY="8.125" IsExpanded="true" />
         <EntityTypeShape EntityType="ProjectManagerDBModel.Comment" Width="1.5" PointX="8.25" PointY="5" IsExpanded="true" />
         <EntityTypeShape EntityType="ProjectManagerDBModel.Project" Width="1.5" PointX="0.75" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.ProjectUser" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.ProjectUser" Width="1.5" PointX="0.75" PointY="4.875" IsExpanded="true" />
         <EntityTypeShape EntityType="ProjectManagerDBModel.Role" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.RoleName" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.RoleName" Width="1.5" PointX="0.75" PointY="12" IsExpanded="true" />
         <EntityTypeShape EntityType="ProjectManagerDBModel.Task" Width="1.5" PointX="6" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="ProjectManagerDBModel.TaskState" Width="1.5" PointX="3.75" PointY="5.25" IsExpanded="true" />
         <EntityTypeShape EntityType="ProjectManagerDBModel.TaskStateChange" Width="1.5" PointX="11.25" PointY="7.75" IsExpanded="true" />
@@ -29,7 +29,6 @@
         <AssociationConnector Association="ProjectManagerDBModel.task_state_change_fk1" ManuallyRouted="false" />
         <AssociationConnector Association="ProjectManagerDBModel.worktime_fk1" ManuallyRouted="false" />
         <AssociationConnector Association="ProjectManagerDBModel.task_state_change_fk2" ManuallyRouted="false" />
-
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

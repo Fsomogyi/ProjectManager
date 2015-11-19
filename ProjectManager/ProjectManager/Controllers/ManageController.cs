@@ -243,6 +243,30 @@ namespace ProjectManager.Controllers
         }
 
         //
+        // POST: /Manage/ChangeEmail
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeEmail(ChangeEmailViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            user.Email = model.Email;
+
+            await UserManager.UpdateAsync(user);
+
+            return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+
+            // TODO: error?
+            //AddErrors(result);
+            return View(model);
+        }
+
+        //
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
         {

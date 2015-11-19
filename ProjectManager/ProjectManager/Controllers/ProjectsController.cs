@@ -16,11 +16,11 @@ namespace ProjectManager.Controllers
             int userId = 1;
 
             List<Project> projects = new List<Project>();
-            using (var db = new BusinessLogicLayerEntities())
+            using (var db = new ProjectManagerDBEntities())
             {
                 var res = from project in db.Project
                           join role in db.Role on project.Id equals role.ProjectId
-                          where role.ProjectUserId == userId
+                          where role.UserId == userId
                           select project;
                 projects = res.ToList();
 

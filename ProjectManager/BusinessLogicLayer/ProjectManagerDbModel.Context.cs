@@ -13,10 +13,10 @@ namespace BusinessLogicLayer
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class BusinessLogicLayerEntities : DbContext
+    public partial class ProjectManagerDBEntities : DbContext
     {
-        public BusinessLogicLayerEntities()
-            : base("name=BusinessLogicLayerEntities")
+        public ProjectManagerDBEntities()
+            : base("name=ProjectManagerDBEntities")
         {
         }
     

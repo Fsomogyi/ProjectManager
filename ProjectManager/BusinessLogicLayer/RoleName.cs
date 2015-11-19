@@ -14,6 +14,7 @@ namespace BusinessLogicLayer
     
     public partial class RoleName
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public RoleName()
         {
             this.Role = new HashSet<Role>();
@@ -22,6 +23,7 @@ namespace BusinessLogicLayer
         public int Id { get; set; }
         public string Name { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Role> Role { get; set; }
     }
 }

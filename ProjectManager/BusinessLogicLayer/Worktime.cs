@@ -15,7 +15,7 @@ namespace BusinessLogicLayer
     public partial class Worktime
     {
         public int Id { get; set; }
-        public int ProjectUserId { get; set; }
+        public int UserId { get; set; }
         public int TaskId { get; set; }
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }

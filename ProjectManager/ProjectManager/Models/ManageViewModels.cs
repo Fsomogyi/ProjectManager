@@ -39,6 +39,13 @@ namespace ProjectManager.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class ChangeEmailViewModel
+    {
+        [Required]
+        [Display(Name = "New email")]
+        public string Email { get; set; }
+    }
+
     public class ChangePasswordViewModel
     {
         [Required]
