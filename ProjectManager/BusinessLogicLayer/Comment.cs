@@ -14,11 +14,11 @@ namespace BusinessLogicLayer
     
     public partial class Comment
     {
-        public int id { get; set; }
-        public int user_id { get; set; }
-        public int task_id { get; set; }
-        public string content { get; set; }
-        public System.DateTime timestamp { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int TaskId { get; set; }
+        public string Content { get; set; }
+        public System.DateTime Timestamp { get; set; }
     
         public virtual Task Task { get; set; }
         public virtual ProjectUser ProjectUser { get; set; }

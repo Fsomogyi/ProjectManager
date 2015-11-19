@@ -4,112 +4,110 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ProjectManagerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ProjectManagerDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Assignment">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="user_id" Type="int" Nullable="false" />
-          <Property Name="task_id" Type="int" Nullable="false" />
-          <Property Name="accepted" Type="bit" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="Accepted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Comment">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="user_id" Type="int" Nullable="false" />
-          <Property Name="task_id" Type="int" Nullable="false" />
-          <Property Name="content" Type="nvarchar" MaxLength="4000" Nullable="false" />
-          <Property Name="timestamp" Type="datetime" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="Content" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="Project">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="description" Type="nvarchar" MaxLength="4000" Nullable="false" />
-          <Property Name="deadline" Type="date" Nullable="false" />
-          <Property Name="done" Type="bit" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="Deadline" Type="date" Nullable="false" />
+          <Property Name="Done" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="ProjectUser">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="username" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="password" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="email" Type="nvarchar" MaxLength="40" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Role">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="user_id" Type="int" Nullable="false" />
-          <Property Name="project_id" Type="int" Nullable="false" />
-          <Property Name="type" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="RoleName">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="description" Type="nvarchar" MaxLength="4000" Nullable="false" />
-          <Property Name="priority" Type="int" Nullable="false" />
-          <Property Name="estimated_workhours" Type="int" Nullable="false" />
-          <Property Name="max_developers" Type="int" />
-          <Property Name="project_id" Type="int" Nullable="false" />
-          <Property Name="state" Type="int" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="4000" Nullable="false" />
+          <Property Name="Priority" Type="int" Nullable="false" />
+          <Property Name="EstimatedWorkHours" Type="int" Nullable="false" />
+          <Property Name="MaxDevelopers" Type="int" />
+          <Property Name="ProjectId" Type="int" Nullable="false" />
+          <Property Name="State" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="TaskState">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="20" Nullable="false" />
         </EntityType>
         <EntityType Name="TaskStateChange">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="user_id" Type="int" Nullable="false" />
-          <Property Name="task_id" Type="int" Nullable="false" />
-          <Property Name="timestamp" Type="datetime" Nullable="false" />
-          <Property Name="state" Type="int" Nullable="false" />
-          <Property Name="reason" Type="nvarchar" MaxLength="4000" />
-          <Property Name="accepted" Type="bit" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime" Nullable="false" />
+          <Property Name="TaskState" Type="int" Nullable="false" />
+          <Property Name="Reason" Type="nvarchar" MaxLength="4000" />
+          <Property Name="Accepted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Worktime">
           <Key>
-            <PropertyRef Name="id" />
+            <PropertyRef Name="Id" />
           </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="user_id" Type="int" Nullable="false" />
-          <Property Name="task_id" Type="int" Nullable="false" />
-          <Property Name="start_time" Type="datetime" Nullable="false" />
-          <Property Name="end_time" Type="datetime" Nullable="false" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TaskId" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
         </EntityType>
         <Association Name="assignment_fk1">
           <End Role="Task" Type="Self.Task" Multiplicity="1" />
           <End Role="Assignment" Type="Self.Assignment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Task">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Assignment">
-              <PropertyRef Name="task_id" />
+              <PropertyRef Name="TaskId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -118,10 +116,10 @@
           <End Role="Assignment" Type="Self.Assignment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProjectUser">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Assignment">
-              <PropertyRef Name="user_id" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -130,10 +128,10 @@
           <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Task">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Comment">
-              <PropertyRef Name="task_id" />
+              <PropertyRef Name="TaskId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -142,10 +140,10 @@
           <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProjectUser">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Comment">
-              <PropertyRef Name="user_id" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -154,10 +152,10 @@
           <End Role="TaskStateChange" Type="Self.TaskStateChange" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProjectUser">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="TaskStateChange">
-              <PropertyRef Name="user_id" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -166,10 +164,10 @@
           <End Role="Worktime" Type="Self.Worktime" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProjectUser">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Worktime">
-              <PropertyRef Name="user_id" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -178,10 +176,10 @@
           <End Role="Role" Type="Self.Role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Role">
-              <PropertyRef Name="project_id" />
+              <PropertyRef Name="ProjectId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -190,10 +188,10 @@
           <End Role="Role" Type="Self.Role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="ProjectUser">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Role">
-              <PropertyRef Name="user_id" />
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -202,10 +200,10 @@
           <End Role="Role" Type="Self.Role" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="RoleName">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Role">
-              <PropertyRef Name="type" />
+              <PropertyRef Name="Type" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -214,10 +212,10 @@
           <End Role="Task" Type="Self.Task" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Project">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Task">
-              <PropertyRef Name="project_id" />
+              <PropertyRef Name="ProjectId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -226,10 +224,10 @@
           <End Role="Task" Type="Self.Task" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TaskState">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Task">
-              <PropertyRef Name="state" />
+              <PropertyRef Name="State" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -238,10 +236,10 @@
           <End Role="TaskStateChange" Type="Self.TaskStateChange" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Task">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="TaskStateChange">
-              <PropertyRef Name="task_id" />
+              <PropertyRef Name="TaskId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -250,10 +248,10 @@
           <End Role="TaskStateChange" Type="Self.TaskStateChange" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TaskState">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="TaskStateChange">
-              <PropertyRef Name="state" />
+              <PropertyRef Name="TaskState" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -262,10 +260,10 @@
           <End Role="Worktime" Type="Self.Worktime" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Task">
-              <PropertyRef Name="id" />
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Worktime">
-              <PropertyRef Name="task_id" />
+              <PropertyRef Name="TaskId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -337,372 +335,369 @@
             <End Role="Worktime" EntitySet="Worktime" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ProjectManagerDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Assignment">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="user_id" Type="Int32" Nullable="false" />
-          <Property Name="task_id" Type="Int32" Nullable="false" />
-          <Property Name="accepted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Task" Relationship="Self.assignment_fk1" FromRole="Assignment" ToRole="Task" />
-          <NavigationProperty Name="ProjectUser" Relationship="Self.assignment_fk2" FromRole="Assignment" ToRole="ProjectUser" />
-        </EntityType>
-        <EntityType Name="Comment">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="user_id" Type="Int32" Nullable="false" />
-          <Property Name="task_id" Type="Int32" Nullable="false" />
-          <Property Name="content" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Task" Relationship="Self.comment_fk1" FromRole="Comment" ToRole="Task" />
-          <NavigationProperty Name="ProjectUser" Relationship="Self.comment_fk2" FromRole="Comment" ToRole="ProjectUser" />
-        </EntityType>
-        <EntityType Name="Project">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="description" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="deadline" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="done" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Role" Relationship="Self.role_fk1" FromRole="Project" ToRole="Role" />
-          <NavigationProperty Name="Task" Relationship="Self.task_fk0" FromRole="Project" ToRole="Task" />
-        </EntityType>
-        <EntityType Name="ProjectUser">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="username" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="password" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="email" Type="String" MaxLength="40" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Assignment" Relationship="Self.assignment_fk2" FromRole="ProjectUser" ToRole="Assignment" />
-          <NavigationProperty Name="Comment" Relationship="Self.comment_fk2" FromRole="ProjectUser" ToRole="Comment" />
-          <NavigationProperty Name="TaskStateChange" Relationship="Self.FK_task_state_change_user" FromRole="ProjectUser" ToRole="TaskStateChange" />
-          <NavigationProperty Name="Worktime" Relationship="Self.FK_worktime_user" FromRole="ProjectUser" ToRole="Worktime" />
-          <NavigationProperty Name="Role" Relationship="Self.role_fk2" FromRole="ProjectUser" ToRole="Role" />
-        </EntityType>
-        <EntityType Name="Role">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="user_id" Type="Int32" Nullable="false" />
-          <Property Name="project_id" Type="Int32" Nullable="false" />
-          <Property Name="type" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Project" Relationship="Self.role_fk1" FromRole="Role" ToRole="Project" />
-          <NavigationProperty Name="ProjectUser" Relationship="Self.role_fk2" FromRole="Role" ToRole="ProjectUser" />
-          <NavigationProperty Name="RoleName" Relationship="Self.role_fk3" FromRole="Role" ToRole="RoleName" />
-        </EntityType>
-        <EntityType Name="RoleName">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Role" Relationship="Self.role_fk3" FromRole="RoleName" ToRole="Role" />
-        </EntityType>
-        <EntityType Name="Task">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="description" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="priority" Type="Int32" Nullable="false" />
-          <Property Name="estimated_workhours" Type="Int32" Nullable="false" />
-          <Property Name="max_developers" Type="Int32" />
-          <Property Name="project_id" Type="Int32" Nullable="false" />
-          <Property Name="state" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Assignment" Relationship="Self.assignment_fk1" FromRole="Task" ToRole="Assignment" />
-          <NavigationProperty Name="Comment" Relationship="Self.comment_fk1" FromRole="Task" ToRole="Comment" />
-          <NavigationProperty Name="Project" Relationship="Self.task_fk0" FromRole="Task" ToRole="Project" />
-          <NavigationProperty Name="TaskState" Relationship="Self.task_fk1" FromRole="Task" ToRole="TaskState" />
-          <NavigationProperty Name="TaskStateChange" Relationship="Self.task_state_change_fk1" FromRole="Task" ToRole="TaskStateChange" />
-          <NavigationProperty Name="Worktime" Relationship="Self.worktime_fk1" FromRole="Task" ToRole="Worktime" />
-        </EntityType>
-        <EntityType Name="TaskState">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Task" Relationship="Self.task_fk1" FromRole="TaskState" ToRole="Task" />
-          <NavigationProperty Name="TaskStateChange" Relationship="Self.task_state_change_fk2" FromRole="TaskState" ToRole="TaskStateChange" />
-        </EntityType>
-        <EntityType Name="TaskStateChange">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="user_id" Type="Int32" Nullable="false" />
-          <Property Name="task_id" Type="Int32" Nullable="false" />
-          <Property Name="timestamp" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="state" Type="Int32" Nullable="false" />
-          <Property Name="reason" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
-          <Property Name="accepted" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="ProjectUser" Relationship="Self.FK_task_state_change_user" FromRole="TaskStateChange" ToRole="ProjectUser" />
-          <NavigationProperty Name="Task" Relationship="Self.task_state_change_fk1" FromRole="TaskStateChange" ToRole="Task" />
-          <NavigationProperty Name="TaskState" Relationship="Self.task_state_change_fk2" FromRole="TaskStateChange" ToRole="TaskState" />
-        </EntityType>
-        <EntityType Name="Worktime">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="user_id" Type="Int32" Nullable="false" />
-          <Property Name="task_id" Type="Int32" Nullable="false" />
-          <Property Name="start_time" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="end_time" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="ProjectUser" Relationship="Self.FK_worktime_user" FromRole="Worktime" ToRole="ProjectUser" />
-          <NavigationProperty Name="Task" Relationship="Self.worktime_fk1" FromRole="Worktime" ToRole="Task" />
-        </EntityType>
-        <Association Name="assignment_fk1">
-          <End Role="Task" Type="Self.Task" Multiplicity="1" />
-          <End Role="Assignment" Type="Self.Assignment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Task">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Assignment">
-              <PropertyRef Name="task_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="assignment_fk2">
-          <End Role="ProjectUser" Type="Self.ProjectUser" Multiplicity="1" />
-          <End Role="Assignment" Type="Self.Assignment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProjectUser">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Assignment">
-              <PropertyRef Name="user_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="comment_fk1">
-          <End Role="Task" Type="Self.Task" Multiplicity="1" />
-          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Task">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="task_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="comment_fk2">
-          <End Role="ProjectUser" Type="Self.ProjectUser" Multiplicity="1" />
-          <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProjectUser">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Comment">
-              <PropertyRef Name="user_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="role_fk1">
-          <End Role="Project" Type="Self.Project" Multiplicity="1" />
-          <End Role="Role" Type="Self.Role" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Role">
-              <PropertyRef Name="project_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="task_fk0">
-          <End Role="Project" Type="Self.Project" Multiplicity="1" />
-          <End Role="Task" Type="Self.Task" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Project">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Task">
-              <PropertyRef Name="project_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_task_state_change_user">
-          <End Role="ProjectUser" Type="Self.ProjectUser" Multiplicity="1" />
-          <End Role="TaskStateChange" Type="Self.TaskStateChange" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProjectUser">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="TaskStateChange">
-              <PropertyRef Name="user_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_worktime_user">
-          <End Role="ProjectUser" Type="Self.ProjectUser" Multiplicity="1" />
-          <End Role="Worktime" Type="Self.Worktime" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProjectUser">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Worktime">
-              <PropertyRef Name="user_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="role_fk2">
-          <End Role="ProjectUser" Type="Self.ProjectUser" Multiplicity="1" />
-          <End Role="Role" Type="Self.Role" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="ProjectUser">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Role">
-              <PropertyRef Name="user_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="role_fk3">
-          <End Role="RoleName" Type="Self.RoleName" Multiplicity="1" />
-          <End Role="Role" Type="Self.Role" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="RoleName">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Role">
-              <PropertyRef Name="type" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="task_fk1">
-          <End Role="TaskState" Type="Self.TaskState" Multiplicity="1" />
-          <End Role="Task" Type="Self.Task" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TaskState">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Task">
-              <PropertyRef Name="state" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="task_state_change_fk1">
-          <End Role="Task" Type="Self.Task" Multiplicity="1" />
-          <End Role="TaskStateChange" Type="Self.TaskStateChange" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Task">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="TaskStateChange">
-              <PropertyRef Name="task_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="worktime_fk1">
-          <End Role="Task" Type="Self.Task" Multiplicity="1" />
-          <End Role="Worktime" Type="Self.Worktime" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Task">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Worktime">
-              <PropertyRef Name="task_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="task_state_change_fk2">
-          <End Role="TaskState" Type="Self.TaskState" Multiplicity="1" />
-          <End Role="TaskStateChange" Type="Self.TaskStateChange" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="TaskState">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="TaskStateChange">
-              <PropertyRef Name="state" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="ProjectManagerDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Assignment" EntityType="Self.Assignment" />
-          <EntitySet Name="Comment" EntityType="Self.Comment" />
-          <EntitySet Name="Project" EntityType="Self.Project" />
-          <EntitySet Name="ProjectUser" EntityType="Self.ProjectUser" />
-          <EntitySet Name="Role" EntityType="Self.Role" />
-          <EntitySet Name="RoleName" EntityType="Self.RoleName" />
-          <EntitySet Name="Task" EntityType="Self.Task" />
-          <EntitySet Name="TaskState" EntityType="Self.TaskState" />
-          <EntitySet Name="TaskStateChange" EntityType="Self.TaskStateChange" />
-          <EntitySet Name="Worktime" EntityType="Self.Worktime" />
-          <AssociationSet Name="assignment_fk1" Association="Self.assignment_fk1">
+          <EntitySet Name="Assignment" EntityType="ProjectManagerDBModel.Assignment" />
+          <EntitySet Name="Comment" EntityType="ProjectManagerDBModel.Comment" />
+          <EntitySet Name="Project" EntityType="ProjectManagerDBModel.Project" />
+          <EntitySet Name="ProjectUser" EntityType="ProjectManagerDBModel.ProjectUser" />
+          <EntitySet Name="Role" EntityType="ProjectManagerDBModel.Role" />
+          <EntitySet Name="RoleName" EntityType="ProjectManagerDBModel.RoleName" />
+          <EntitySet Name="Task" EntityType="ProjectManagerDBModel.Task" />
+          <EntitySet Name="TaskState" EntityType="ProjectManagerDBModel.TaskState" />
+          <EntitySet Name="TaskStateChange" EntityType="ProjectManagerDBModel.TaskStateChange" />
+          <EntitySet Name="Worktime" EntityType="ProjectManagerDBModel.Worktime" />
+          <AssociationSet Name="assignment_fk1" Association="ProjectManagerDBModel.assignment_fk1">
             <End Role="Task" EntitySet="Task" />
             <End Role="Assignment" EntitySet="Assignment" />
           </AssociationSet>
-          <AssociationSet Name="assignment_fk2" Association="Self.assignment_fk2">
+          <AssociationSet Name="assignment_fk2" Association="ProjectManagerDBModel.assignment_fk2">
             <End Role="ProjectUser" EntitySet="ProjectUser" />
             <End Role="Assignment" EntitySet="Assignment" />
           </AssociationSet>
-          <AssociationSet Name="comment_fk1" Association="Self.comment_fk1">
+          <AssociationSet Name="comment_fk1" Association="ProjectManagerDBModel.comment_fk1">
             <End Role="Task" EntitySet="Task" />
             <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
-          <AssociationSet Name="comment_fk2" Association="Self.comment_fk2">
+          <AssociationSet Name="comment_fk2" Association="ProjectManagerDBModel.comment_fk2">
             <End Role="ProjectUser" EntitySet="ProjectUser" />
             <End Role="Comment" EntitySet="Comment" />
           </AssociationSet>
-          <AssociationSet Name="role_fk1" Association="Self.role_fk1">
+          <AssociationSet Name="role_fk1" Association="ProjectManagerDBModel.role_fk1">
             <End Role="Project" EntitySet="Project" />
             <End Role="Role" EntitySet="Role" />
           </AssociationSet>
-          <AssociationSet Name="task_fk0" Association="Self.task_fk0">
+          <AssociationSet Name="task_fk0" Association="ProjectManagerDBModel.task_fk0">
             <End Role="Project" EntitySet="Project" />
             <End Role="Task" EntitySet="Task" />
           </AssociationSet>
-          <AssociationSet Name="FK_task_state_change_user" Association="Self.FK_task_state_change_user">
+          <AssociationSet Name="FK_task_state_change_user" Association="ProjectManagerDBModel.FK_task_state_change_user">
             <End Role="ProjectUser" EntitySet="ProjectUser" />
             <End Role="TaskStateChange" EntitySet="TaskStateChange" />
           </AssociationSet>
-          <AssociationSet Name="FK_worktime_user" Association="Self.FK_worktime_user">
+          <AssociationSet Name="FK_worktime_user" Association="ProjectManagerDBModel.FK_worktime_user">
             <End Role="ProjectUser" EntitySet="ProjectUser" />
             <End Role="Worktime" EntitySet="Worktime" />
           </AssociationSet>
-          <AssociationSet Name="role_fk2" Association="Self.role_fk2">
+          <AssociationSet Name="role_fk2" Association="ProjectManagerDBModel.role_fk2">
             <End Role="ProjectUser" EntitySet="ProjectUser" />
             <End Role="Role" EntitySet="Role" />
           </AssociationSet>
-          <AssociationSet Name="role_fk3" Association="Self.role_fk3">
+          <AssociationSet Name="role_fk3" Association="ProjectManagerDBModel.role_fk3">
             <End Role="RoleName" EntitySet="RoleName" />
             <End Role="Role" EntitySet="Role" />
           </AssociationSet>
-          <AssociationSet Name="task_fk1" Association="Self.task_fk1">
+          <AssociationSet Name="task_fk1" Association="ProjectManagerDBModel.task_fk1">
             <End Role="TaskState" EntitySet="TaskState" />
             <End Role="Task" EntitySet="Task" />
           </AssociationSet>
-          <AssociationSet Name="task_state_change_fk1" Association="Self.task_state_change_fk1">
+          <AssociationSet Name="task_state_change_fk1" Association="ProjectManagerDBModel.task_state_change_fk1">
             <End Role="Task" EntitySet="Task" />
             <End Role="TaskStateChange" EntitySet="TaskStateChange" />
           </AssociationSet>
-          <AssociationSet Name="worktime_fk1" Association="Self.worktime_fk1">
+          <AssociationSet Name="worktime_fk1" Association="ProjectManagerDBModel.worktime_fk1">
             <End Role="Task" EntitySet="Task" />
             <End Role="Worktime" EntitySet="Worktime" />
           </AssociationSet>
-          <AssociationSet Name="task_state_change_fk2" Association="Self.task_state_change_fk2">
+          <AssociationSet Name="task_state_change_fk2" Association="ProjectManagerDBModel.task_state_change_fk2">
             <End Role="TaskState" EntitySet="TaskState" />
             <End Role="TaskStateChange" EntitySet="TaskStateChange" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
+        <EntityType Name="Assignment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="Accepted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Task" Relationship="ProjectManagerDBModel.assignment_fk1" FromRole="Assignment" ToRole="Task" />
+          <NavigationProperty Name="ProjectUser" Relationship="ProjectManagerDBModel.assignment_fk2" FromRole="Assignment" ToRole="ProjectUser" />
+        </EntityType>
+        <EntityType Name="Comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Task" Relationship="ProjectManagerDBModel.comment_fk1" FromRole="Comment" ToRole="Task" />
+          <NavigationProperty Name="ProjectUser" Relationship="ProjectManagerDBModel.comment_fk2" FromRole="Comment" ToRole="ProjectUser" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Deadline" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Done" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Role" Relationship="ProjectManagerDBModel.role_fk1" FromRole="Project" ToRole="Role" />
+          <NavigationProperty Name="Task" Relationship="ProjectManagerDBModel.task_fk0" FromRole="Project" ToRole="Task" />
+        </EntityType>
+        <EntityType Name="ProjectUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Assignment" Relationship="ProjectManagerDBModel.assignment_fk2" FromRole="ProjectUser" ToRole="Assignment" />
+          <NavigationProperty Name="Comment" Relationship="ProjectManagerDBModel.comment_fk2" FromRole="ProjectUser" ToRole="Comment" />
+          <NavigationProperty Name="TaskStateChange" Relationship="ProjectManagerDBModel.FK_task_state_change_user" FromRole="ProjectUser" ToRole="TaskStateChange" />
+          <NavigationProperty Name="Worktime" Relationship="ProjectManagerDBModel.FK_worktime_user" FromRole="ProjectUser" ToRole="Worktime" />
+          <NavigationProperty Name="Role" Relationship="ProjectManagerDBModel.role_fk2" FromRole="ProjectUser" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="Role">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Project" Relationship="ProjectManagerDBModel.role_fk1" FromRole="Role" ToRole="Project" />
+          <NavigationProperty Name="ProjectUser" Relationship="ProjectManagerDBModel.role_fk2" FromRole="Role" ToRole="ProjectUser" />
+          <NavigationProperty Name="RoleName" Relationship="ProjectManagerDBModel.role_fk3" FromRole="Role" ToRole="RoleName" />
+        </EntityType>
+        <EntityType Name="RoleName">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Role" Relationship="ProjectManagerDBModel.role_fk3" FromRole="RoleName" ToRole="Role" />
+        </EntityType>
+        <EntityType Name="Task">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Priority" Type="Int32" Nullable="false" />
+          <Property Name="EstimatedWorkHours" Type="Int32" Nullable="false" />
+          <Property Name="MaxDevelopers" Type="Int32" />
+          <Property Name="ProjectId" Type="Int32" Nullable="false" />
+          <Property Name="State" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Assignment" Relationship="ProjectManagerDBModel.assignment_fk1" FromRole="Task" ToRole="Assignment" />
+          <NavigationProperty Name="Comment" Relationship="ProjectManagerDBModel.comment_fk1" FromRole="Task" ToRole="Comment" />
+          <NavigationProperty Name="Project" Relationship="ProjectManagerDBModel.task_fk0" FromRole="Task" ToRole="Project" />
+          <NavigationProperty Name="TaskState" Relationship="ProjectManagerDBModel.task_fk1" FromRole="Task" ToRole="TaskState" />
+          <NavigationProperty Name="TaskStateChange" Relationship="ProjectManagerDBModel.task_state_change_fk1" FromRole="Task" ToRole="TaskStateChange" />
+          <NavigationProperty Name="Worktime" Relationship="ProjectManagerDBModel.worktime_fk1" FromRole="Task" ToRole="Worktime" />
+        </EntityType>
+        <EntityType Name="TaskState">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="20" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Task" Relationship="ProjectManagerDBModel.task_fk1" FromRole="TaskState" ToRole="Task" />
+          <NavigationProperty Name="TaskStateChange" Relationship="ProjectManagerDBModel.task_state_change_fk2" FromRole="TaskState" ToRole="TaskStateChange" />
+        </EntityType>
+        <EntityType Name="TaskStateChange">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="TaskState" Type="Int32" Nullable="false" />
+          <Property Name="Reason" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" />
+          <Property Name="Accepted" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="ProjectUser" Relationship="ProjectManagerDBModel.FK_task_state_change_user" FromRole="TaskStateChange" ToRole="ProjectUser" />
+          <NavigationProperty Name="Task" Relationship="ProjectManagerDBModel.task_state_change_fk1" FromRole="TaskStateChange" ToRole="Task" />
+          <NavigationProperty Name="TaskState1" Relationship="ProjectManagerDBModel.task_state_change_fk2" FromRole="TaskStateChange" ToRole="TaskState" />
+        </EntityType>
+        <EntityType Name="Worktime">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TaskId" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="ProjectUser" Relationship="ProjectManagerDBModel.FK_worktime_user" FromRole="Worktime" ToRole="ProjectUser" />
+          <NavigationProperty Name="Task" Relationship="ProjectManagerDBModel.worktime_fk1" FromRole="Worktime" ToRole="Task" />
+        </EntityType>
+        <Association Name="assignment_fk1">
+          <End Type="ProjectManagerDBModel.Task" Role="Task" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Assignment" Role="Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Assignment">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="assignment_fk2">
+          <End Type="ProjectManagerDBModel.ProjectUser" Role="ProjectUser" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Assignment" Role="Assignment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Assignment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="comment_fk1">
+          <End Type="ProjectManagerDBModel.Task" Role="Task" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="comment_fk2">
+          <End Type="ProjectManagerDBModel.ProjectUser" Role="ProjectUser" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Comment" Role="Comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Comment">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="role_fk1">
+          <End Type="ProjectManagerDBModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Role" Role="Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="task_fk0">
+          <End Type="ProjectManagerDBModel.Project" Role="Project" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Project">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_task_state_change_user">
+          <End Type="ProjectManagerDBModel.ProjectUser" Role="ProjectUser" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.TaskStateChange" Role="TaskStateChange" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TaskStateChange">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_worktime_user">
+          <End Type="ProjectManagerDBModel.ProjectUser" Role="ProjectUser" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Worktime" Role="Worktime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Worktime">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="role_fk2">
+          <End Type="ProjectManagerDBModel.ProjectUser" Role="ProjectUser" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Role" Role="Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProjectUser">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="role_fk3">
+          <End Type="ProjectManagerDBModel.RoleName" Role="RoleName" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Role" Role="Role" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoleName">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Role">
+              <PropertyRef Name="Type" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="task_fk1">
+          <End Type="ProjectManagerDBModel.TaskState" Role="TaskState" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Task" Role="Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskState">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Task">
+              <PropertyRef Name="State" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="task_state_change_fk1">
+          <End Type="ProjectManagerDBModel.Task" Role="Task" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.TaskStateChange" Role="TaskStateChange" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TaskStateChange">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="worktime_fk1">
+          <End Type="ProjectManagerDBModel.Task" Role="Task" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.Worktime" Role="Worktime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Task">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Worktime">
+              <PropertyRef Name="TaskId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="task_state_change_fk2">
+          <End Type="ProjectManagerDBModel.TaskState" Role="TaskState" Multiplicity="1" />
+          <End Type="ProjectManagerDBModel.TaskStateChange" Role="TaskStateChange" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskState">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TaskStateChange">
+              <PropertyRef Name="TaskState" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -711,106 +706,104 @@
           <EntitySetMapping Name="Assignment">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.Assignment">
               <MappingFragment StoreEntitySet="Assignment">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="task_id" ColumnName="task_id" />
-                <ScalarProperty Name="accepted" ColumnName="accepted" />
+                <ScalarProperty Name="Accepted" ColumnName="Accepted" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Comment">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.Comment">
               <MappingFragment StoreEntitySet="Comment">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="task_id" ColumnName="task_id" />
-                <ScalarProperty Name="content" ColumnName="content" />
-                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Project">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.Project">
               <MappingFragment StoreEntitySet="Project">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="deadline" ColumnName="deadline" />
-                <ScalarProperty Name="done" ColumnName="done" />
+                <ScalarProperty Name="Done" ColumnName="Done" />
+                <ScalarProperty Name="Deadline" ColumnName="Deadline" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ProjectUser">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.ProjectUser">
               <MappingFragment StoreEntitySet="ProjectUser">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="username" ColumnName="username" />
-                <ScalarProperty Name="password" ColumnName="password" />
-                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Role">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.Role">
               <MappingFragment StoreEntitySet="Role">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="project_id" ColumnName="project_id" />
-                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RoleName">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.RoleName">
               <MappingFragment StoreEntitySet="RoleName">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Task">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.Task">
               <MappingFragment StoreEntitySet="Task">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="description" ColumnName="description" />
-                <ScalarProperty Name="priority" ColumnName="priority" />
-                <ScalarProperty Name="estimated_workhours" ColumnName="estimated_workhours" />
-                <ScalarProperty Name="max_developers" ColumnName="max_developers" />
-                <ScalarProperty Name="project_id" ColumnName="project_id" />
-                <ScalarProperty Name="state" ColumnName="state" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+                <ScalarProperty Name="MaxDevelopers" ColumnName="MaxDevelopers" />
+                <ScalarProperty Name="EstimatedWorkHours" ColumnName="EstimatedWorkHours" />
+                <ScalarProperty Name="Priority" ColumnName="Priority" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TaskState">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.TaskState">
               <MappingFragment StoreEntitySet="TaskState">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="TaskStateChange">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.TaskStateChange">
               <MappingFragment StoreEntitySet="TaskStateChange">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="task_id" ColumnName="task_id" />
-                <ScalarProperty Name="timestamp" ColumnName="timestamp" />
-                <ScalarProperty Name="state" ColumnName="state" />
-                <ScalarProperty Name="reason" ColumnName="reason" />
-                <ScalarProperty Name="accepted" ColumnName="accepted" />
+                <ScalarProperty Name="Accepted" ColumnName="Accepted" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="TaskState" ColumnName="TaskState" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Worktime">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.Worktime">
               <MappingFragment StoreEntitySet="Worktime">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="task_id" ColumnName="task_id" />
-                <ScalarProperty Name="start_time" ColumnName="start_time" />
-                <ScalarProperty Name="end_time" ColumnName="end_time" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="TaskId" ColumnName="TaskId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

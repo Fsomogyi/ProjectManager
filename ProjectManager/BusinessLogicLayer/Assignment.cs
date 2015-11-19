@@ -14,10 +14,10 @@ namespace BusinessLogicLayer
     
     public partial class Assignment
     {
-        public int id { get; set; }
-        public int user_id { get; set; }
-        public int task_id { get; set; }
-        public bool accepted { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int TaskId { get; set; }
+        public bool Accepted { get; set; }
     
         public virtual Task Task { get; set; }
         public virtual ProjectUser ProjectUser { get; set; }

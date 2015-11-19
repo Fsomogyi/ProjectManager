@@ -14,16 +14,16 @@ namespace BusinessLogicLayer
     
     public partial class TaskStateChange
     {
-        public int id { get; set; }
-        public int user_id { get; set; }
-        public int task_id { get; set; }
-        public System.DateTime timestamp { get; set; }
-        public int state { get; set; }
-        public string reason { get; set; }
-        public bool accepted { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int TaskId { get; set; }
+        public System.DateTime Timestamp { get; set; }
+        public int TaskState { get; set; }
+        public string Reason { get; set; }
+        public bool Accepted { get; set; }
     
         public virtual ProjectUser ProjectUser { get; set; }
         public virtual Task Task { get; set; }
-        public virtual TaskState TaskState { get; set; }
+        public virtual TaskState TaskState1 { get; set; }
     }
 }

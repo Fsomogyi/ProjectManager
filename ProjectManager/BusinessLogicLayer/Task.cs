@@ -23,14 +23,14 @@ namespace BusinessLogicLayer
             this.Worktime = new HashSet<Worktime>();
         }
     
-        public int id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public int priority { get; set; }
-        public int estimated_workhours { get; set; }
-        public Nullable<int> max_developers { get; set; }
-        public int project_id { get; set; }
-        public int state { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Priority { get; set; }
+        public int EstimatedWorkHours { get; set; }
+        public Nullable<int> MaxDevelopers { get; set; }
+        public int ProjectId { get; set; }
+        public int State { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Assignment> Assignment { get; set; }

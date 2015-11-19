@@ -21,11 +21,11 @@ namespace BusinessLogicLayer
             this.Task = new HashSet<Task>();
         }
     
-        public int id { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public System.DateTime deadline { get; set; }
-        public bool done { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public System.DateTime Deadline { get; set; }
+        public bool Done { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Role> Role { get; set; }

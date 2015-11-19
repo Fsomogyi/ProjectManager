@@ -1,8 +1,6 @@
 ﻿CREATE TABLE [dbo].[ProjectUser](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
-	[Name] [nvarchar](20) NOT NULL,
-	[Password] [nvarchar](20) NOT NULL,
-	[Email] [nvarchar](40) NOT NULL,
+	[UserName] [nvarchar](20) NOT NULL,
  CONSTRAINT [PK_USER] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
