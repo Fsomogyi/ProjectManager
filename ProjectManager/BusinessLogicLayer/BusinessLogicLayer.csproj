@@ -91,6 +91,7 @@
     <Compile Include="TaskStateChange.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ProjectUserManager.cs" />
     <Compile Include="Worktime.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>

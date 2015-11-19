@@ -29,6 +29,7 @@
         <AssociationConnector Association="ProjectManagerDBModel.task_state_change_fk1" ManuallyRouted="false" />
         <AssociationConnector Association="ProjectManagerDBModel.worktime_fk1" ManuallyRouted="false" />
         <AssociationConnector Association="ProjectManagerDBModel.task_state_change_fk2" ManuallyRouted="false" />
+
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

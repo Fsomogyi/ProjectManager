@@ -23,6 +23,7 @@ namespace ProjectManager.Controllers
                           where role.ProjectUserId == userId
                           select project;
                 projects = res.ToList();
+
             }
                 
             return View(projects);
