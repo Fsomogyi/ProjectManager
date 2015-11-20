@@ -5,15 +5,19 @@ using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
 using BusinessLogicLayer;
+using Microsoft.AspNet.Identity;
+using ProjectManager.Models;
+using App.Extensions;
 
 namespace ProjectManager.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         // GET: Projects
         public ActionResult Index()
         {
-            int userId = 1;
+            int userId = int.Parse(User.Identity.GetProjectUserId()); 
 
             List<Project> projects = new List<Project>();
             using (var db = new ProjectManagerDBEntities())
