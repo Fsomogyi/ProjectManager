@@ -1,0 +1,14 @@
+﻿@model ProjectManager.Models.OverviewModel
+
+<p>@Model.Project.Description</p>
+<p>Developers: 
+    @foreach (var name in Model.DeveloperNames){
+        @name 
+        if (@Model.DeveloperNames.Last() != @name) {@(", ")} 
+    }</p>
+<p>Tasks:<br />
+    &nbsp;-Done: @Model.TasksDone<br />
+    &nbsp;-Active: @Model.TasksActive<br />
+    &nbsp;-Unasigned: @Model.TasksUnasigned<br />
+</p>
+<p>Total workhours: @Model.WorkHours</p>

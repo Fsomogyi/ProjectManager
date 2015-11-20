@@ -34,6 +34,49 @@ textarea {
     float: left;
 }
 
+.task-element {
+    width: 250px;
+    height: 110px;
+    padding: 5px;
+    margin: 10px;
+    border: thick;
+    border-color: #808080;
+    background-color: #e9e9e9;
+    float: left;
+}
+
+
+.tab-buttons {
+    background-color: #f5f5f5;
+    padding: 0px;
+}
+
+.tab-button {
+    margin: 0px 0px;
+    padding: 10px;
+    border: none;
+    background-color: #f5f5f5;
+}
+
+.tab-button.selected {
+    background-color: #d6d6d6;
+    font-weight: bold;
+}
+
+.tab-content-border {
+    background-color: #d6d6d6;
+    float: left;
+    width: 100%;
+    padding: 10px;
+}
+
+.tab-content {
+    padding: 10px;
+    background-color: #f5f5f5;
+    float: left;
+    width: 100%;
+}
+
 .project-title {
     font-size:large;
     font-weight: bold;

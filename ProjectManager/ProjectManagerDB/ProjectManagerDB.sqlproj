@@ -77,6 +77,9 @@
     <None Include="Scripts\InsertRole.sql" />
     <None Include="Scripts\InsertRoleName.sql" />
     <None Include="Scripts\InsertTaskState.sql" />
+    <None Include="Scripts\InsertTask.sql" />
+    <None Include="Scripts\InsertAssignment.sql" />
+    <None Include="Scripts\InsertWorktime.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />

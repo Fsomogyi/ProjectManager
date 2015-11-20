@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ProjectManager.Models.DeveloperListElement>
+
+@foreach (var item in Model)
+{
+    <div class="task-element">
+        <p class="project-title">@item.ProjectUser.UserName</p>
+        <p>
+            Work hours on project: @item.WorkHours <br />
+            Tasks done: @item.TasksDone <br />
+            Assigned tasks: @item.AssignedTasks
+        </p>
+    </div>
+}

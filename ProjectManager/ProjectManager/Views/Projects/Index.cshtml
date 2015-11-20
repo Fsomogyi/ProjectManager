@@ -11,8 +11,8 @@
     @foreach (var item in Model)
     {
         <div class="project-element">
-            <p class="project-title">@Html.DisplayFor(modelItem => item.Name)</p>
-            @Html.DisplayFor(modelItem => item.Deadline)
+            <p class="project-title">@Html.ActionLink(item.Name, "Details", "Projects", routeValues:  new { id = @item.Id }, htmlAttributes: null)</p>
+            @item.Deadline
         </div>
     }
 </div>

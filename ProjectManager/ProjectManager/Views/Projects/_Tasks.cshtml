@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ProjectManager.Models.TaskListElement>
+
+@foreach (var item in Model)
+{
+    <div class="task-element">
+        <p class="project-title">@item.Task.Name</p>
+        <p>Assigned to: 
+            @foreach (var name in item.DeveloperNames)
+            {
+                @name
+                if (item.DeveloperNames.Last() != @name)
+                {@(", ")}
+            }
+            <br />
+            State: @item.State <br />
+            Work hours: @item.WorkHours
+        </p>
+    </div>
+}
