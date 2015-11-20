@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ProjectManager.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using BusinessLogicLayer;
 
 namespace ProjectManager.Controllers
 {
@@ -42,7 +44,7 @@ namespace ProjectManager.Controllers
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ??  HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
@@ -56,6 +58,7 @@ namespace ProjectManager.Controllers
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == ManageMessageId.ChangeEmailSuccess ? "Your e-mail address has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
@@ -243,6 +246,16 @@ namespace ProjectManager.Controllers
         }
 
         //
+        // GET: /Manage/ChangeEmail
+        public ActionResult ChangeEmail()
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.CurrentEmail = user.Email;
+
+            return View();
+        }
+
+        //
         // POST: /Manage/ChangeEmail
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -253,17 +266,20 @@ namespace ProjectManager.Controllers
                 return View(model);
             }
 
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new ApplicationUserManager(store);
 
-            user.Email = model.Email;
+                var user = await manager.FindByIdAsync(User.Identity.GetUserId());
+                user.Email = model.Email;
 
-            await UserManager.UpdateAsync(user);
+                await manager.UpdateAsync(user);
 
-            return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+                context.SaveChanges();
+            }
 
-            // TODO: error?
-            //AddErrors(result);
-            return View(model);
+            return RedirectToAction("Index", new { Message = ManageMessageId.ChangeEmailSuccess });
         }
 
         //
@@ -399,6 +415,7 @@ namespace ProjectManager.Controllers
         {
             AddPhoneSuccess,
             ChangePasswordSuccess,
+            ChangeEmailSuccess,
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
