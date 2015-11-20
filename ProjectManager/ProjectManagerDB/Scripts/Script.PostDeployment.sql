@@ -17,4 +17,4 @@ Post-Deployment Script Template
 :r .\InsertRole.sql
 :r .\InsertTask.sql
 :r .\InsertAssignment.sql
-:r .\InsertWorktime
+:r .\InsertWorktime.sql
