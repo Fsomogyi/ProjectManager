@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using ProjectManager.Models;
+using Microsoft.AspNet.Identity.EntityFramework;
+using BusinessLogicLayer;
 
 namespace ProjectManager.Controllers
 {
@@ -42,7 +44,7 @@ namespace ProjectManager.Controllers
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+                return _userManager ??  HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
             private set
             {
@@ -247,6 +249,9 @@ namespace ProjectManager.Controllers
         // GET: /Manage/ChangeEmail
         public ActionResult ChangeEmail()
         {
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            ViewBag.CurrentEmail = user.Email;
+
             return View();
         }
 
@@ -261,11 +266,18 @@ namespace ProjectManager.Controllers
                 return View(model);
             }
 
-            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var store = new UserStore<ApplicationUser>(context);
+                var manager = new ApplicationUserManager(store);
 
-            user.Email = model.Email;
+                var user = await manager.FindByIdAsync(User.Identity.GetUserId());
+                user.Email = model.Email;
 
-            await UserManager.UpdateAsync(user);
+                await manager.UpdateAsync(user);
+
+                context.SaveChanges();
+            }
 
             return RedirectToAction("Index", new { Message = ManageMessageId.ChangeEmailSuccess });
         }
