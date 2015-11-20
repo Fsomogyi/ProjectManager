@@ -266,20 +266,24 @@ namespace ProjectManager.Controllers
                 return View(model);
             }
 
-            using (var context = new ProjectManagerDBEntities())
+            var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            var oldEmail = String.Copy(user.Email);
+
+            user.Email = model.Email;
+            var result = await UserManager.UpdateAsync(user);
+
+            if (result.Succeeded)
             {
-                var store = new UserStore<ApplicationUser>(context);
-                var manager = new ApplicationUserManager(store);
+                UserManager.SaveContextChanges();
 
-                var user = await manager.FindByIdAsync(User.Identity.GetUserId());
-                user.Email = model.Email;
-
-                await manager.UpdateAsync(user);
-
-                context.SaveChanges();
+                return RedirectToAction("Index",
+                    new { Message = ManageMessageId.ChangeEmailSuccess });
             }
 
-            return RedirectToAction("Index", new { Message = ManageMessageId.ChangeEmailSuccess });
+            AddErrors(result);
+            ViewBag.CurrentEmail = oldEmail;
+            return View(model);
         }
 
         //

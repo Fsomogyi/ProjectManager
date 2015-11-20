@@ -1,6 +1,6 @@
 ﻿@model ProjectManager.Models.ChangeEmailViewModel
 @{
-    ViewBag.Title = "Change E-mail";
+    ViewBag.Title = "Change E-mail Address";
 }
 
 <h2>@ViewBag.Title</h2>
@@ -11,7 +11,7 @@
     @Html.ValidationSummary("", new { @class = "text-danger" })
 
     <div class="form-group">
-        @Html.Label("Current e-mail", new { @class = "col-md-2 control-label" })
+        @Html.Label("Current e-mail address", new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @Html.TextBox("CurrentEmailTextBox", (string)@ViewBag.CurrentEmail, new { @class = "form-control", @readonly="readonly" })
         </div>

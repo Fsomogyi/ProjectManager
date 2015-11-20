@@ -42,7 +42,7 @@ namespace ProjectManager.Models
     public class ChangeEmailViewModel
     {
         [Required]
-        [Display(Name = "New email")]
+        [Display(Name = "New e-mail address")]
         public string Email { get; set; }
     }
 
