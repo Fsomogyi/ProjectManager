@@ -191,7 +191,6 @@ namespace ProjectManager.Controllers
                 project = res.First();
 
                 foreach (var dev in project.Role){
-                    Debug.WriteLine("User " + dev.ProjectUserId);
 
                     var workHours = from task in project.Task
                               join a in db.Assignment on task.Id equals a.TaskId
