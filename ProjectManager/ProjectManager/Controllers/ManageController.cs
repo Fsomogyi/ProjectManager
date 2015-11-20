@@ -56,6 +56,7 @@ namespace ProjectManager.Controllers
         {
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
+                : message == ManageMessageId.ChangeEmailSuccess ? "Your e-mail address has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
@@ -243,6 +244,13 @@ namespace ProjectManager.Controllers
         }
 
         //
+        // GET: /Manage/ChangeEmail
+        public ActionResult ChangeEmail()
+        {
+            return View();
+        }
+
+        //
         // POST: /Manage/ChangeEmail
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -259,11 +267,7 @@ namespace ProjectManager.Controllers
 
             await UserManager.UpdateAsync(user);
 
-            return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
-
-            // TODO: error?
-            //AddErrors(result);
-            return View(model);
+            return RedirectToAction("Index", new { Message = ManageMessageId.ChangeEmailSuccess });
         }
 
         //
@@ -399,6 +403,7 @@ namespace ProjectManager.Controllers
         {
             AddPhoneSuccess,
             ChangePasswordSuccess,
+            ChangeEmailSuccess,
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
