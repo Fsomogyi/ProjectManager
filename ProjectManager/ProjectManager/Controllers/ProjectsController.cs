@@ -202,6 +202,16 @@ namespace ProjectManager.Controllers
                 ViewData["isLeader"] = "NoLeader";
             }
 
+            var project = new ProjectUserManager().GetProject(projectId);
+            if (project.Done)
+            {
+                ViewData["isDone"] = "Done";
+            }
+            else
+            {
+                ViewData["isDone"] = "NotDone";
+            }
+
             var manager = new TaskManager();
 
             var tasks = manager.GetTasksForProject(projectId);
@@ -250,6 +260,16 @@ namespace ProjectManager.Controllers
                 ViewData["isLeader"] = "NoLeader";
             }
 
+            var project = managerProject.GetProject(projectId);
+            if (project.Done)
+            {
+                ViewData["isDone"] = "Done";
+            }
+            else
+            {
+                ViewData["isDone"] = "NotDone";
+            }
+
             var tasks = managerTask.GetTasksForProject(projectId);
             var users = managerProject.GetUsersForProject(projectId);
 
@@ -274,6 +294,30 @@ namespace ProjectManager.Controllers
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
             return PartialView("_Statistics", model);
+        }
+
+        // POST: Add developer
+        [HttpPost]
+        public ActionResult Finish(int Id)
+        {
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+
+            var project = new ProjectUserManager().GetProject(Id);
+
+            var manager = new TaskManager();
+            var tasks = new TaskManager().GetTasksForProject(Id);
+
+            if (tasks.Count == 0 ||
+                tasks.All(t => t.State == manager.GetDeletedStateId() || t.State == manager.GetDoneStateId()))
+            {
+                new ProjectUserManager().FinishProject(Id);
+            }
+            else
+            {
+                // TODO: hibakezelő popup vagy valami
+            }
+
+            return Redirect(Request.UrlReferrer.ToString());
         }
     }
 }

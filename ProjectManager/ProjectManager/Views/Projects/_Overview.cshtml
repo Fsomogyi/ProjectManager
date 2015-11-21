@@ -2,6 +2,24 @@
 
 <p>@Model.Project.Description</p>
 
+<p>Project state:
+    @if (Model.Project.Done)
+    {
+        <b>DONE</b>
+    }
+
+    else
+    {
+        <b>ACTIVE</b>
+        <br />
+        
+        using (Html.BeginForm("Finish", "Projects", new { Id = Model.Project.Id }))
+        {
+            <button type="submit">FINISH</button>
+        }
+    }
+</p>
+
 <p>Deadline: 
     @Model.Project.Deadline.ToString("yyyy.MM.dd")
 </p>

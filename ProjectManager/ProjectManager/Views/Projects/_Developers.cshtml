@@ -21,7 +21,7 @@
 </script>
 
 @{
-    if ((ViewData["isLeader"] as string).Equals("Leader"))
+    if ((ViewData["isLeader"] as string).Equals("Leader") && (ViewData["isDone"] as string).Equals("NotDone"))
     {
         <input type="button" id="addDeveloperDialog" value="Add / remove developer" /><br />
     }

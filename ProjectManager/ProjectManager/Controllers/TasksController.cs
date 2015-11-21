@@ -30,7 +30,7 @@ namespace ProjectManager.Controllers
             var users = manager.GetUsersForTask(Id);
             var workTimes = manager.GetAllWorkTimeForTask(Id);
             var comments = manager.GetComments(Id);
-            var canComment = task.State != manager.GetNewStateId();
+            var canComment = task.State == manager.GetActiveStateId();
 
             List<string> devs = new List<string>();
             foreach (var u in users)

@@ -19,6 +19,18 @@ namespace BusinessLogicLayer
             return 2;
         }
 
+        public void FinishProject(int projectId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var project = context.Project.First(p => p.Id == projectId);
+
+                project.Done = true;
+
+                context.SaveChanges();
+            }
+        }
+
         public int AddUserAndReturnId(string userName)
         {
             using (var context = new ProjectManagerDBEntities())
