@@ -1,0 +1,75 @@
+﻿@model ProjectManager.Models.ProjectDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<script type="text/javascript">
+
+
+    $(document).ready(function () {
+
+        $('#btnOverview').click(function () {
+            $('#details-container').html("");
+            updateSelection(0);
+            $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/0');
+        })
+
+        $('#btnTasks').click(function () {
+            updateSelection(1);
+            $('#details-container').html("");
+            $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/1');
+        })
+
+        $('#btnDevelopers').click(function () {
+            updateSelection(2);
+            $('#details-container').html("");
+            $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/2');
+        })
+
+        $('#btnStatistics').click(function () {
+            updateSelection(3);
+            $('#details-container').html("");
+            $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/3');
+        })
+
+        currentSelected = 0;
+        updateSelection(@Model.DetailsPage);
+        $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/@Model.DetailsPage');
+    });
+
+    function updateSelection(newSelected) {
+        switch (currentSelected) {
+            case 0: $('#btnOverview').removeClass("selected"); break;
+            case 1: $('#btnTasks').removeClass("selected"); break;
+            case 2: $('#btnDevelopers').removeClass("selected"); break;
+            case 3: $('#btnStatistics').removeClass("selected"); break;
+        }
+
+        switch (newSelected) {
+            case 0: $('#btnOverview').addClass("selected"); break;
+            case 1: $('#btnTasks').addClass("selected"); break;
+            case 2: $('#btnDevelopers').addClass("selected"); break;
+            case 3: $('#btnStatistics').addClass("selected"); break;
+        }
+
+        currentSelected = newSelected;
+    }
+</script>
+
+<h2>@Model.Project.Name</h2>
+
+<div class="container">
+
+            <input class="tab-button selected" id="btnOverview" type="button" value="Overview" />
+            <input class="tab-button" id="btnTasks" type="button" value="Tasks" />
+            <input class="tab-button" id="btnDevelopers" type="button" value="Developers" />
+            <input class="tab-button" id="btnStatistics" type="button" value="Statistics" />
+
+    <div class="tab-content-border" >
+        <div class="tab-content" id="details-container">
+
+        </div>
+    </div>
+
+</div>

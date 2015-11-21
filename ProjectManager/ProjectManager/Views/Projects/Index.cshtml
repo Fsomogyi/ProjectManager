@@ -4,15 +4,38 @@
     ViewBag.Title = "Index";
 }
 
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //Adjust height of overlay to fill screen when page loads
+        $("#fuzz").css("height", $(document).height());
+
+        //When the link that triggers the message is clicked fade in overlay/msgbox
+        $("#createProjectDialog").click(function (event) {
+            //$('#fuzz').html("");
+            $('#overlaywindow').load('/Projects/CreateDialog/');
+            $("#fuzz").fadeIn();
+            return false;
+        });
+
+        //When the message box is closed, fade out
+        $(".close").click(function () {
+            $("#fuzz").fadeOut();
+            return false;
+        });
+    });
+</script>
+
 <h2>My projects</h2>
 
+<input type="button" id="createProjectDialog" value="New project" />
 
 <div class="container">
     @foreach (var item in Model)
     {
         <div class="project-element">
-            <p class="project-title">@Html.DisplayFor(modelItem => item.Name)</p>
-            @Html.DisplayFor(modelItem => item.Deadline)
+            <p class="project-title">@Html.ActionLink(item.Name, "Details", "Projects", routeValues:  new { id = @item.Id }, htmlAttributes: null)</p>
+            @item.Deadline
         </div>
     }
 </div>

@@ -1,0 +1,21 @@
+﻿@model ProjectManager.Models.AddDeveloperDialogModel
+
+<h2>Add developer to project</h2>
+
+@using (Html.BeginForm("AddDeveloper", "Projects", FormMethod.Post))
+{
+
+    <fieldset>
+
+        <select name="userId">
+        @foreach (var item in Model.Developers)
+        {
+            <option value="@item.Id">@item.UserName</option>
+        }
+        </select>
+
+        <input type="hidden" name="projectId" value="@Model.ProjectId" />
+        <input type="submit" id="addDeveloper" value="Add developer" style="display: block; margin: 0 auto;" />
+    </fieldset>
+
+}

@@ -20,10 +20,11 @@ namespace ProjectManager
             );
 
             routes.MapRoute(
-                name: "Projects",
-                url: "Projects/{action}",
-                defaults: new { action = "Index"}
+                name: "ProjectDetails",
+                url: "{controller}/{action}/{id}/{pageId}",
+                defaults: new { pageId = 0 }
             );
+
         }
     }
 }

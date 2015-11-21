@@ -18,8 +18,7 @@
 
 /* Set width on the form input elements since they're 100% wide by default */
 input,
-select,
-textarea {
+select {
     max-width: 280px;
 }
 
@@ -34,7 +33,126 @@ textarea {
     float: left;
 }
 
+.task-element {
+    width: 250px;
+    height: 110px;
+    padding: 5px;
+    margin: 10px;
+    border: thick;
+    border-color: #808080;
+    background-color: #e9e9e9;
+    float: left;
+}
+
+
+.tab-buttons {
+    background-color: #f5f5f5;
+    padding: 0px;
+}
+
+.tab-button {
+    margin: 0px 0px;
+    padding: 10px;
+    border: none;
+    background-color: #f5f5f5;
+}
+
+.tab-button.selected {
+    background-color: #d6d6d6;
+    font-weight: bold;
+}
+
+.tab-content-border {
+    background-color: #d6d6d6;
+    float: left;
+    width: 100%;
+    padding: 10px;
+}
+
+.tab-content {
+    padding: 10px;
+    background-color: #f5f5f5;
+    float: left;
+    width: 100%;
+}
+
 .project-title {
     font-size:large;
     font-weight: bold;
+    padding: 0px;
+}
+
+#fuzz {
+     position:absolute;
+     top:0;
+     left:0;
+     width:100%;
+     z-index:100;
+     background: url('/Content/images/overlay.png');
+     display:none;
+     text-align:left;
+
+}
+ 
+/*Message box, positioned in dead center of browser*/
+.msgbox{
+     position:absolute;
+     width:750px;
+     z-index:200;
+     border:3px solid #222;
+     background: #FFF;
+     top: 0%;
+     left: 50%;
+     margin-top: 200px;
+     margin-left: -375px;
+     padding: 10px;
+}
+
+.msgbox img {
+    border:none;
+    margin:5px;
+
+}
+ 
+/*The "X" in the upper right corner of msgbox*/
+.close{
+    top:0px;
+    float:right ; 
+}
+.writeComment {
+     width:100%;
+     text-align:left;
+     padding: 10px;
+     float: right;
+     margin-bottom: 10px;
+}
+
+.commentTextArea {
+    width: 100%;
+    height: 80px;
+    margin-bottom: 5px;
+}
+
+.commentContainer{
+    padding: 5px;
+    background-color: #e9e9e9;
+    margin-bottom: 5px;
+}
+
+.commentHeader {
+    width: 100%;
+    border: none;
+}
+
+.commentUserName {
+    font-weight: bold;
+}
+
+.commentTimestamp {
+    text-align: right;
+    font-size: smaller;
+}
+
+input:focus {
+    outline:none;
 }
