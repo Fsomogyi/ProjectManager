@@ -9,6 +9,11 @@ namespace BusinessLogicLayer
 {
     public class ProjectUserManager
     {
+        public int GetDeveloperId()
+        {
+            return 1;
+        }
+
         public int GetLeaderId()
         {
             return 2;
@@ -30,6 +35,14 @@ namespace BusinessLogicLayer
             }
         }
 
+        public Project GetProject(int id)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                return context.Project.First(p => p.Id == id);
+            }
+        }
+
         public ProjectUser GetUser(int id)
         {
             using (var context = new ProjectManagerDBEntities())
@@ -43,6 +56,17 @@ namespace BusinessLogicLayer
             using (var context = new ProjectManagerDBEntities())
             {
                 return context.Project.Where(p => p.Role.Any(r => r.ProjectUserId == userId)).ToList();
+            }
+        }
+
+        public List<ProjectUser> GetUsersForProject(int projectId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var roles = context.Role.Where(
+                    r => r.ProjectId == projectId);
+
+                return context.ProjectUser.Where(u => roles.Any(r => r.ProjectUserId == u.Id)).ToList();
             }
         }
 
@@ -92,5 +116,54 @@ namespace BusinessLogicLayer
                 return result;
             }
         }
+
+        public bool IsLeader(int userId, int projectId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                int leaderId = GetLeaderId();
+
+                var leaderRoles = context.Role.Where(r => r.ProjectId == projectId &&
+                        r.ProjectUserId == userId && r.Type == leaderId);
+
+                return leaderRoles.Count() > 0;
+            }
+        }
+
+        public void AddDeveloperToProject(int userId, int projectId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var roles = context.Role.Where(
+                    r => r.ProjectId == projectId && r.ProjectUserId == userId && r.Type == GetDeveloperId());
+
+                if (roles.Count() == 0)
+                {
+                    context.Role.Add(new Role()
+                    {
+                        ProjectUserId = userId,
+                        ProjectId = projectId,
+                        Type = GetDeveloperId()
+                    });
+
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void RemoveDeveloperFromProject(int userId, int projectId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var role = context.Role.FirstOrDefault(
+                    r => r.ProjectId == projectId && r.ProjectUserId == userId && r.Type == GetDeveloperId());
+
+                if (role != null)
+                    context.Role.Remove(role);
+
+                context.SaveChanges();
+            }
+        }
+
     }
 }

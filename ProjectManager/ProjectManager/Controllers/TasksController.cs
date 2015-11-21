@@ -117,7 +117,7 @@ namespace ProjectManager.Controllers
                     Priority = model.Priority,
                     MaxDevelopers = model.MaxDevelopers,
                     ProjectId = projectId,
-                    State = new TaskStateManager().GetNewStateId()
+                    State = new TaskManager().GetNewStateId()
                 };
 
                 //task.Name = Request.Form["taskName"];
@@ -158,7 +158,7 @@ namespace ProjectManager.Controllers
                 Content = content
             });
 
-            var userName = new ProjectUserManager().GetUser(userId).UserName;
+            var userName = new ProjectUserManager().GetUser(userId).UserName.Trim();
 
             return PartialView("_Comment", new CommentViewModel(content, timeStamp, userName));
         }

@@ -85,19 +85,15 @@ namespace ProjectManager.Controllers
         // GET: Add developer dialog
         public ActionResult AddDeveloperDialog(int Id)
         {
-            AddDeveloperDialogModel model;
-
-
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
             var manager = new ProjectUserManager();
             List<ProjectUser> addableDevelopers = manager.GetAddableOrRemovableDevelopers(
                 Id, userId, addable: true);
             List<ProjectUser> removableDevelopers = manager.GetAddableOrRemovableDevelopers(
-                Id, userId, addable: false); ;
+                Id, userId, addable: false);
 
-            model = new AddDeveloperDialogModel(Id, addableDevelopers, removableDevelopers);
-            return PartialView("_AddDeveloperDialog", model);
+            return PartialView("_AddDeveloperDialog", new AddDeveloperDialogModel(Id, addableDevelopers, removableDevelopers));
         }
 
         // POST: Add developer
@@ -105,37 +101,17 @@ namespace ProjectManager.Controllers
         public ActionResult AddDeveloper()
         {
             int userId = int.Parse(User.Identity.GetProjectUserId());
-
             int projectId = int.Parse(Request.Form["projectId"]);
+
             if (Request.Form["addUserId"] != null)
             {
                 int developerId = int.Parse(Request.Form["addUserId"]);
-
                 TempData["DetailsPage"] = "2";
 
-                using (var db = new ProjectManagerDBEntities())
+                var manager = new ProjectUserManager();
+                if (manager.IsLeader(userId, projectId))
                 {
-                    int leaderId = 2;   // TODO: BLL-ben ellenőrizni
-
-                    var isleader = from r1 in db.Role
-                                   join p1 in db.Project on r1.ProjectId equals p1.Id
-                                   where r1.Type == leaderId && p1.Id == projectId && r1.ProjectUserId == userId
-                                   select r1;
-
-                    if (isleader.Count() > 0)
-                    {
-                        var res = from r in db.Role where r.ProjectUserId == developerId && r.ProjectId == projectId select r;
-                        if (res.Count() == 0)
-                        {
-                            Role role = new Role();
-                            role.ProjectUserId = developerId;
-                            role.Type = (from rn in db.RoleName where rn.Name.Trim().Equals("Developer") select rn).First().Id;
-                            role.ProjectId = projectId;
-
-                            db.Role.Add(role);
-                            db.SaveChanges();
-                        }
-                    }
+                    manager.AddDeveloperToProject(developerId, projectId);
                 }
             }
 
@@ -152,27 +128,12 @@ namespace ProjectManager.Controllers
             if (Request.Form["removeUserId"] != null)
             {
                 int developerId = int.Parse(Request.Form["removeUserId"]);
-
                 TempData["DetailsPage"] = "2";
 
-                using (var db = new ProjectManagerDBEntities())
+                var manager = new ProjectUserManager();
+                if (manager.IsLeader(userId, projectId))
                 {
-                    int leaderId = 2;   // TODO: BLL-ben ellenőrizni
-
-                    var isleader = from r1 in db.Role
-                                   join p1 in db.Project on r1.ProjectId equals p1.Id
-                                   where r1.Type == leaderId && p1.Id == projectId && r1.ProjectUserId == userId
-                                   select r1;
-
-                    if (isleader.Count() > 0)
-                    {
-                        var res = from r in db.Role where r.ProjectUserId == developerId && r.ProjectId == projectId select r;
-                        if (res.Count() == 1)
-                        {
-                            db.Role.Remove(res.First());
-                            db.SaveChanges();
-                        }
-                    }
+                    manager.RemoveDeveloperFromProject(developerId, projectId);
                 }
             }
 
@@ -184,56 +145,28 @@ namespace ProjectManager.Controllers
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
+            var manager = new TaskManager();
+            var tasks = manager.GetTasksForProject(projectId);
 
-            using (var db = new ProjectManagerDBEntities())
+            int tasksDone = tasks.Where(t => t.State == manager.GetDoneStateId()).Count();
+            int tasksActive = tasks.Where(t => t.State == manager.GetActiveStateId()).Count();
+            int tasksUnassigned = manager.GetUnassignedTasks(projectId).Count();
+            double workHours = manager.GetAllWorkTimeForProject(projectId)
+                .Sum(w => w.EndTime.Subtract(w.StartTime).TotalSeconds);
+
+            var users = new ProjectUserManager().GetUsersForProject(projectId);
+            List<string> devs = new List<string>();
+            foreach (var u in users)
             {
-                Project project;
-
-                var res = from p in db.Project
-                            join role in db.Role on p.Id equals role.ProjectId
-                            where role.ProjectUserId == userId && p.Id == projectId
-                            select p;
-                project = res.First();
-
-
-                int tasksDone = (from td in project.Task
-                                 where td.TaskState.Name.Contains("Done")
-                                 select td).Count();
-
-                int tasksActive = (from ta in project.Task
-                                   where ta.TaskState.Name.Contains("Active")
-                                   select ta).Count();
-
-                int tasksUnassigned = (from tu in project.Task
-                                       where tu.Assignment.Count == 0
-                                       select tu).Count();
-
-                var workHours = (from hours in db.Worktime
-                                 join task in db.Task on hours.TaskId equals task.Id
-                                 join proj in db.Project on task.ProjectId equals project.Id
-                                 where proj.Id == project.Id
-                                 select hours);
-
-                double sumHour = 0;
-                foreach (var time in workHours)
-                {
-                    sumHour += time.EndTime.Subtract(time.StartTime).TotalSeconds;
-                }
-
-                var developers = from role in project.Role
-                                 select new { role.ProjectUser.UserName };
-
-                List<string> devs = new List<string>();
-                foreach (var v in developers)
-                {
-                    devs.Add(v.UserName);
-                }
-
-                model = new OverviewModel(
-                    project, devs,
-                    tasksDone, tasksActive, tasksUnassigned,
-                    (int)(sumHour / 3600));
+                devs.Add(u.UserName);
             }
+
+            var project = new ProjectUserManager().GetProject(projectId);
+
+            model = new OverviewModel(
+                project, devs,
+                tasksDone, tasksActive, tasksUnassigned,
+                (int)(workHours / 3600));
 
 
             return PartialView("_Overview", model);
@@ -247,56 +180,39 @@ namespace ProjectManager.Controllers
 
             ViewData["projectId"] = projectId;
 
-            using (var db = new ProjectManagerDBEntities())
+            if (new ProjectUserManager().IsLeader(userId, projectId))
             {
-                Project project;
-
-                var res = from p in db.Project
-                            join role in db.Role on p.Id equals role.ProjectId
-                            where role.ProjectUserId == userId && p.Id == projectId
-                            select p;
-                project = res.First();
-
-                int leaderId = (from rn in db.RoleName where rn.Name.Trim().Equals("Project Leader") select rn).First().Id;
-
-                var isleader = from r1 in db.Role
-                           join p1 in db.Project on r1.ProjectId equals p1.Id
-                           where r1.Type == leaderId && p1.Id == project.Id && r1.ProjectUserId == userId
-                           select r1;
-                if (isleader.Count() > 0)
-                {
-                    ViewData["isLeader"] = "Leader";
-                }
-                else
-                {
-                    ViewData["isLeader"] = "NoLeader";
-                }
-
-
-                foreach (Task task in project.Task){
-                    var workHours = from hours in task.Worktime
-                        select hours;
-
-                    double sumHour = 0;
-                    foreach (var time in workHours)
-                    {
-                        sumHour += time.EndTime.Subtract(time.StartTime).TotalSeconds;
-                    }
-
-                    var developers = from a in task.Assignment
-                                     select new { a.ProjectUser.UserName };
-
-                    List<string> devs = new List<string>();
-                    foreach (var v in developers)
-                    {
-                        devs.Add(v.UserName);
-                    }
-
-                    TaskListElement element = new TaskListElement(task, task.TaskState.Name.Trim(), devs, (int)(sumHour/3600), task.Comment.Count > 0);
-                    model.Add(element);
-                }
+                ViewData["isLeader"] = "Leader";
+            }
+            else
+            {
+                ViewData["isLeader"] = "NoLeader";
             }
 
+            var manager = new TaskManager();
+
+            var tasks = manager.GetTasksForProject(projectId);
+
+            foreach (var t in tasks)
+            {
+                var name = manager.GetTaskStateName(t.Id);
+
+                var isCommented = manager.IsCommented(t.Id);
+
+                var workHours = manager.GetAllWorkTimeForTask(t.Id)
+                    .Sum(w => w.EndTime.Subtract(w.StartTime).TotalSeconds);
+
+                var developers = manager.GetUsersForTask(t.Id);
+
+                List<string> devs = new List<string>();
+                foreach (var v in developers)
+                {
+                    devs.Add(v.UserName);
+                }
+
+                TaskListElement element = new TaskListElement(t, name, devs, (int)(workHours / 3600), isCommented);
+                model.Add(element);
+            }
 
             return PartialView("_Tasks", model);
         }
@@ -309,61 +225,31 @@ namespace ProjectManager.Controllers
 
             ViewData["projectId"] = projectId;
 
-            using (var db = new ProjectManagerDBEntities())
+            var managerTask = new TaskManager();
+            var managerProject = new ProjectUserManager();
+
+            var tasks = managerTask.GetTasksForProject(projectId);
+            var users = managerProject.GetUsersForProject(projectId);
+
+            foreach (var u in users)
             {
-                Project project;
+                var workHours = managerTask.GetAllWorkTimeForUser(u.Id, projectId)
+                    .Sum(w => w.EndTime.Subtract(w.StartTime).TotalSeconds);
 
-                var res = from p in db.Project
-                          join role in db.Role on p.Id equals role.ProjectId
-                          where role.ProjectUserId == userId && p.Id == projectId
-                          select p;
-                project = res.First();
+                int tasksDone = tasks.Where(t => t.State == managerTask.GetDoneStateId()).Count();
+                int tasksAssigned = managerTask.GetAssignedTasks(u.Id, projectId).Count();
 
-                foreach (var dev in project.Role){
-
-                    var workHours = from task in project.Task
-                              join a in db.Assignment on task.Id equals a.TaskId
-                              join hours in db.Worktime on task.Id equals hours.TaskId
-                              where a.ProjectUserId == dev.ProjectUserId && hours.ProjectUserId == dev.ProjectUserId
-                              select hours;
-
-                    double sumHour = 0;
-                    foreach (var time in workHours)
-                    {
-                        sumHour += time.EndTime.Subtract(time.StartTime).TotalSeconds;
-                    }
-
-                    int tasksDone = (from task in project.Task
-                                          join assignment in db.Assignment on task.Id equals assignment.TaskId
-                                          where task.TaskState.Name.Contains("Done") && assignment.ProjectUserId == dev.ProjectUserId
-                                          select assignment).Count();
-
-
-
-                    int tasksAssigned = (from task in project.Task
-                                     join assignment in db.Assignment on task.Id equals assignment.TaskId
-                                         where !task.TaskState.Name.Contains("Done") && !task.TaskState.Name.Contains("Deleted") && assignment.ProjectUserId == dev.ProjectUserId
-                                     select assignment).Count();
-
-                    int leaderId = (from rn in db.RoleName where rn.Name.Trim().Equals("Project Leader") select rn).First().Id;
-                    var isleader = from r1 in db.Role
-                                   join p1 in db.Project on r1.ProjectId equals p1.Id
-                                   where r1.Type == leaderId && p1.Id == projectId && r1.ProjectUserId == userId
-                                   select r1;
-                    if (isleader.Count() > 0)
-                    {
-                        ViewData["isLeader"] = "Leader";
-                    }
-                    else
-                    {
-                        ViewData["isLeader"] = "NoLeader";
-                    }
-
-                    model.Add(new DeveloperListElement(dev.ProjectUser, (int)(sumHour / 3600), tasksDone, tasksAssigned));
+                if (managerProject.IsLeader(u.Id, projectId))
+                {
+                    ViewData["isLeader"] = "Leader";
+                }
+                else
+                {
+                    ViewData["isLeader"] = "NoLeader";
                 }
 
+                model.Add(new DeveloperListElement(u, (int)(workHours / 3600), tasksDone, tasksAssigned));
             }
-
 
             return PartialView("_Developers", model);
         }
@@ -373,19 +259,6 @@ namespace ProjectManager.Controllers
             StatisticsModel model = new StatisticsModel();
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
-
-
-            using (var db = new ProjectManagerDBEntities())
-            {
-                Project project;
-
-                var res = from p in db.Project
-                          join role in db.Role on p.Id equals role.ProjectId
-                          where role.ProjectUserId == userId && p.Id == projectId
-                          select p;
-                project = res.First();
-
-            }
 
             return PartialView("_Statistics", model);
         }
