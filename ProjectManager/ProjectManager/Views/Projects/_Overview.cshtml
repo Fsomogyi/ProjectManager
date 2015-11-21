@@ -1,14 +1,26 @@
 ﻿@model ProjectManager.Models.OverviewModel
 
 <p>@Model.Project.Description</p>
+
+<p>Deadline: 
+    @Model.Project.Deadline.ToString("yyyy.MM.dd")
+</p>
+
+<p>Project leader: 
+    @Model.ProjectLeaderName
+</p>
+
 <p>Developers: 
     @foreach (var name in Model.DeveloperNames){
         @name 
         if (@Model.DeveloperNames.Last() != @name) {@(", ")} 
-    }</p>
+    }
+</p>
+
 <p>Tasks:<br />
     &nbsp;-Done: @Model.TasksDone<br />
     &nbsp;-Active: @Model.TasksActive<br />
     &nbsp;-Unassigned: @Model.TasksUnassigned<br />
 </p>
+
 <p>Total workhours: @Model.WorkHours</p>

@@ -39,6 +39,14 @@ namespace BusinessLogicLayer
             }
         }
 
+        public List<Comment> GetComments(int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                return context.Comment.Where(c => c.TaskId == taskId).ToList();
+            }
+        }
+
         public bool IsCommented(int taskId)
         {
             using (var context = new ProjectManagerDBEntities())

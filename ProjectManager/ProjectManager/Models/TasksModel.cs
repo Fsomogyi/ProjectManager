@@ -33,18 +33,21 @@ namespace ProjectManager.Models
     public class TaskDetailsModel
     {
         public Task Task { get; private set; }
-        public string State { get; private set; }
+        public string StateName { get; private set; }
         public IEnumerable<String> DeveloperNames { get; private set; }
         public Dictionary<string, int> WorkHours { get; private set; }
         public IEnumerable<CommentViewModel> Comments { get; private set; }
+        public bool CanComment { get; set; }
 
-        public TaskDetailsModel(Task Task, string State, IEnumerable<String> DeveloperNames, Dictionary<string, int> WorkHours, IEnumerable<CommentViewModel> Comments)
+        public TaskDetailsModel(Task Task, string State, IEnumerable<String> DeveloperNames,
+            Dictionary<string, int> WorkHours, IEnumerable<CommentViewModel> Comments, bool CanComment)
         {
             this.Task = Task;
-            this.State = State;
+            this.StateName = State;
             this.DeveloperNames = DeveloperNames;
             this.WorkHours = WorkHours;
             this.Comments = Comments;
+            this.CanComment = CanComment;
         }
     }
 

@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<BusinessLogicLayer.Project>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Projects";
 }
 
 <script type="text/javascript">
 
     $(document).ready(function () {
         //Adjust height of overlay to fill screen when page loads
+        $("#fuzz").css("height", $(document).height());
         $("#fuzz").css("height", $(document).height());
 
         //When the link that triggers the message is clicked fade in overlay/msgbox

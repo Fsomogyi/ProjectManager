@@ -126,7 +126,19 @@ namespace BusinessLogicLayer
                 var leaderRoles = context.Role.Where(r => r.ProjectId == projectId &&
                         r.ProjectUserId == userId && r.Type == leaderId);
 
-                return leaderRoles.Count() > 0;
+                return leaderRoles.Count() == 1;
+            }
+        }
+
+        public ProjectUser GetProjectLeader(int projectId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                int leaderId = GetLeaderId();
+
+                var leaderRole = context.Role.First(r => r.ProjectId == projectId && r.Type == leaderId);
+
+                return context.ProjectUser.First(u => u.Id == leaderRole.ProjectUserId);
             }
         }
 
@@ -134,8 +146,9 @@ namespace BusinessLogicLayer
         {
             using (var context = new ProjectManagerDBEntities())
             {
+                int developerId = GetDeveloperId();
                 var roles = context.Role.Where(
-                    r => r.ProjectId == projectId && r.ProjectUserId == userId && r.Type == GetDeveloperId());
+                    r => r.ProjectId == projectId && r.ProjectUserId == userId && r.Type == developerId);
 
                 if (roles.Count() == 0)
                 {
@@ -143,7 +156,7 @@ namespace BusinessLogicLayer
                     {
                         ProjectUserId = userId,
                         ProjectId = projectId,
-                        Type = GetDeveloperId()
+                        Type = developerId
                     });
 
                     context.SaveChanges();
@@ -153,10 +166,12 @@ namespace BusinessLogicLayer
 
         public void RemoveDeveloperFromProject(int userId, int projectId)
         {
+            // TODO: mi van az assigned task-okkal?
             using (var context = new ProjectManagerDBEntities())
             {
+                int developerId = GetDeveloperId();
                 var role = context.Role.FirstOrDefault(
-                    r => r.ProjectId == projectId && r.ProjectUserId == userId && r.Type == GetDeveloperId());
+                    r => r.ProjectId == projectId && r.ProjectUserId == userId && r.Type == developerId);
 
                 if (role != null)
                     context.Role.Remove(role);
@@ -164,6 +179,5 @@ namespace BusinessLogicLayer
                 context.SaveChanges();
             }
         }
-
     }
 }

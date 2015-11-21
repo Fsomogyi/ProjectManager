@@ -71,11 +71,23 @@ namespace ProjectManager.Controllers
         {
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
+            var name = Request.Form["projectName"];
+            var description = Request.Form["projectDescription"];
+            var deadlineString = Request.Form["deadline"];
+            var deadline = DateTime.Parse(Request.Form["deadline"]);
+
+            if (name == string.Empty || deadline.CompareTo(DateTime.Now) <= 0)
+            {
+                // TODO: display errors
+
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
             new ProjectUserManager().CreateNewProject(userId, new ProjectData()
             {
-                Name = Request.Form["projectName"],
-                Description = Request.Form["projectDescription"],
-                Deadline = DateTime.Parse(Request.Form["deadline"]),
+                Name = name,
+                Description = description,
+                Deadline = deadline,
                 Done = false
             });
 
@@ -163,11 +175,12 @@ namespace ProjectManager.Controllers
 
             var project = new ProjectUserManager().GetProject(projectId);
 
+            var projectLeaderName = new ProjectUserManager().GetProjectLeader(projectId).UserName;
+
             model = new OverviewModel(
                 project, devs,
                 tasksDone, tasksActive, tasksUnassigned,
-                (int)(workHours / 3600));
-
+                (int)(workHours / 3600), projectLeaderName);
 
             return PartialView("_Overview", model);
         }
@@ -223,10 +236,19 @@ namespace ProjectManager.Controllers
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
-            ViewData["projectId"] = projectId;
-
             var managerTask = new TaskManager();
             var managerProject = new ProjectUserManager();
+
+            ViewData["projectId"] = projectId;
+
+            if (managerProject.IsLeader(userId, projectId))
+            {
+                ViewData["isLeader"] = "Leader";
+            }
+            else
+            {
+                ViewData["isLeader"] = "NoLeader";
+            }
 
             var tasks = managerTask.GetTasksForProject(projectId);
             var users = managerProject.GetUsersForProject(projectId);
@@ -238,15 +260,6 @@ namespace ProjectManager.Controllers
 
                 int tasksDone = tasks.Where(t => t.State == managerTask.GetDoneStateId()).Count();
                 int tasksAssigned = managerTask.GetAssignedTasks(u.Id, projectId).Count();
-
-                if (managerProject.IsLeader(u.Id, projectId))
-                {
-                    ViewData["isLeader"] = "Leader";
-                }
-                else
-                {
-                    ViewData["isLeader"] = "NoLeader";
-                }
 
                 model.Add(new DeveloperListElement(u, (int)(workHours / 3600), tasksDone, tasksAssigned));
             }

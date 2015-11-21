@@ -37,26 +37,32 @@
         {@(", ")}
     }
     <br /><br />
-    State: @Model.State<br /><br />
+    State: @Model.StateName<br /><br />
     Work hours:<br />
     @foreach (var entry in Model.WorkHours)
     {
         @(" -" + @entry.Key + ": " + entry.Value);<br/>
     }
-  
-    <h3>Comments</h3> <input type="button" id="writeComment" value="Write comment" style='margin-bottom: 5px;' />
 
-    <div>
-        <div id="writeCommentDiv" class="writeComment" style="display: inline-block;">
-            <textarea id="commentContent" class="commentTextArea"></textarea>
-            <input type="button" id="postComment" value="Post comment" style='float: right;' />
-        </div>
+    @if(Model.CanComment)
+    {
+    <h3>Comments</h3>
+        
+    <input type="button" id="writeComment" value="Write comment" style='margin-bottom: 5px;' />
 
-        <div id="currentComments" style="display: inline-block; width: 100%;">
-            @foreach (var comment in Model.Comments)
-            {
-                @Html.Partial("_Comment", comment);
-            }
+
+        <div>
+            <div id="writeCommentDiv" class="writeComment" style="display: inline-block;">
+                <textarea id="commentContent" class="commentTextArea"></textarea>
+                <input type="button" id="postComment" value="Post comment" style='float: right;' />
+            </div>
+
+            <div id="currentComments" style="display: inline-block; width: 100%;">
+                @foreach (var comment in Model.Comments)
+                {
+                    @Html.Partial("_Comment", comment);
+                }
+            </div>
         </div>
-    </div>
+    }
 </p>

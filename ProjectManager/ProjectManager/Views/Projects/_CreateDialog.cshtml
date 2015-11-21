@@ -3,15 +3,15 @@
 
 @using (Html.BeginForm("Create", "Projects",  FormMethod.Post))
 {
+    <h3>Name:</h3>  
+    <input style="width: 100%" type="text" name="projectName" /><br />
     
-    <fieldset>
-        <h3>Name of the new project:</h3>  
-        <input style="width: 100%" type="text" name="projectName" /><br />
-        <h3>Describe the project:</h3>
-        <textarea style="width: 100%" type="text" name="projectDescription" rows="9" /><br />
-        <h3>Set deadline:</h3>
-        Deadline: <input type="date" name="deadline" value="@DateTime.Now.AddMonths(1).ToString()"/><br /><br />
-        <input type="submit" id="createProject" value="Create project" style="display: block; margin: 0 auto;"/>
-    </fieldset>
+    <h3>Description:</h3>
+    <textarea style="width: 100%" name="projectDescription" rows="9" /><br />
+    
+    <h3>Deadline:</h3>
+    <input name="deadline" data-provide="datepicker" data-date-format="yyyy.mm.dd" value="@DateTime.Now.ToString("yyyy.MM.dd")" />
+            
+    <input type="submit" id="createProject" value="Create project" style="display: block; margin: 0 auto;"/>
 
 }

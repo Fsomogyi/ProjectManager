@@ -23,63 +23,45 @@ namespace ProjectManager.Controllers
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
-            using (var db = new ProjectManagerDBEntities())
+            var manager = new TaskManager();
+
+            var task = manager.GetTask(Id);
+            var stateName = manager.GetTaskStateName(Id);
+            var users = manager.GetUsersForTask(Id);
+            var workTimes = manager.GetAllWorkTimeForTask(Id);
+            var comments = manager.GetComments(Id);
+            var canComment = task.State != manager.GetNewStateId();
+
+            List<string> devs = new List<string>();
+            foreach (var u in users)
             {
-                var res = from t in db.Task
-                          where t.Id == Id
-                          select t;
-                Task task = res.First();
-
-                if ((from a in db.Assignment where a.ProjectUserId == userId && a.TaskId == task.Id select a).Count() < 1)
-                {
-                    model = new TaskDetailsModel(task, "", new List<string>(), new Dictionary<string, int>(), new List<CommentViewModel>());
-                    return PartialView("_Details", model);
-                }
-
-                string state = task.TaskState.Name.Trim();
-
-                var developers = from a in task.Assignment
-                                 select new { a.ProjectUser.UserName };
-
-                List<string> devs = new List<string>();
-                foreach (var v in developers)
-                {
-                    devs.Add(v.UserName);
-                }
-
-                var workHours = from a in db.Assignment
-                                join h in db.Worktime on task.Id equals h.TaskId
-                                join user in db.ProjectUser on a.ProjectUserId equals user.Id
-                                where h.TaskId == task.Id && a.TaskId == task.Id && a.ProjectUserId == h.ProjectUserId
-                                select new { username = user.UserName, hours = h };
-
-                Dictionary<string, int> hours = new Dictionary<string, int>();
-                foreach (var time in workHours)
-                {
-                    int elapsed = (int)(time.hours.EndTime.Subtract(time.hours.StartTime).TotalSeconds / 3600);
-                    if (!hours.ContainsKey(time.username))
-                    {
-                        hours.Add(time.username, elapsed);
-                    }
-                    else
-                    {
-                        int currentHours = hours[time.username];
-                        hours[time.username] = currentHours + elapsed;
-                    }
-                }
-
-                List<Comment> comments = (from comment in task.Comment
-                                          orderby comment.Timestamp descending
-                                          select comment).ToList();
-                List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
-                foreach (var comment in comments){
-                    commentViewModels.Add(
-                        new CommentViewModel(comment.Content, comment.Timestamp, comment.ProjectUser.UserName.Trim()));
-                }
-
-                model = new TaskDetailsModel(task, state, devs, hours, commentViewModels);
+                devs.Add(u.UserName);
             }
 
+            List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
+            foreach (var comment in comments)
+            {
+                var commentingUser = new ProjectUserManager().GetUser(comment.ProjectUserId);
+                commentViewModels.Add(
+                    new CommentViewModel(comment.Content, comment.Timestamp, commentingUser.UserName.Trim()));
+            }
+
+            Dictionary<string, int> userHours = new Dictionary<string, int>();
+            foreach (var d in devs)
+            {
+                userHours.Add(d, 0);
+            }
+
+            foreach (var workTime in workTimes)
+            {
+                var userName = users.First(u => u.Id == workTime.ProjectUserId).UserName;
+                int elapsed = (int)(workTime.EndTime.Subtract(workTime.StartTime).TotalSeconds / 3600);
+
+                int currentHours = userHours[userName];
+                userHours[userName] = currentHours + elapsed;
+            }
+
+            model = new TaskDetailsModel(task, stateName, devs, userHours, commentViewModels, canComment);
             return PartialView("_Details", model);
         }
 
@@ -98,7 +80,7 @@ namespace ProjectManager.Controllers
 
             if (!ModelState.IsValid)
             {
-                // TODO: hibakezelés, PostComment-nél jó, itt nem, megnézni miért!
+                // TODO: display errors
                 //return PartialView("_CreateDialog");
 
                 TempData["DetailsPage"] = "1";

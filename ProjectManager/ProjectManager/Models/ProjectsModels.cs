@@ -14,8 +14,9 @@ namespace ProjectManager.Models
         public int TasksActive { get; private set; }
         public int TasksUnassigned { get; private set; }
         public int WorkHours { get; private set; }
+        public string ProjectLeaderName { get; set; }
 
-        public OverviewModel(Project Project, IEnumerable<String> DeveloperNames, int TasksDone, int TasksActive, int TasksUnassigned, int WorkHours)
+        public OverviewModel(Project Project, IEnumerable<String> DeveloperNames, int TasksDone, int TasksActive, int TasksUnassigned, int WorkHours, string ProjectLeaderName)
         {
             this.Project = Project;
             this.DeveloperNames = DeveloperNames;
@@ -23,6 +24,7 @@ namespace ProjectManager.Models
             this.TasksActive = TasksActive;
             this.TasksUnassigned = TasksUnassigned;
             this.WorkHours = WorkHours;
+            this.ProjectLeaderName = ProjectLeaderName;
         }
     }
 
