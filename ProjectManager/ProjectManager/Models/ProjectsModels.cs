@@ -12,16 +12,16 @@ namespace ProjectManager.Models
         public IEnumerable<String> DeveloperNames { get; private set; }
         public int TasksDone { get; private set; }
         public int TasksActive { get; private set; }
-        public int TasksUnasigned { get; private set; }
+        public int TasksUnassigned { get; private set; }
         public int WorkHours { get; private set; }
 
-        public OverviewModel(Project Project, IEnumerable<String> DeveloperNames, int TasksDone, int TasksActive, int TasksUnasigned, int WorkHours)
+        public OverviewModel(Project Project, IEnumerable<String> DeveloperNames, int TasksDone, int TasksActive, int TasksUnassigned, int WorkHours)
         {
             this.Project = Project;
             this.DeveloperNames = DeveloperNames;
             this.TasksDone = TasksDone;
             this.TasksActive = TasksActive;
-            this.TasksUnasigned = TasksUnasigned;
+            this.TasksUnassigned = TasksUnassigned;
             this.WorkHours = WorkHours;
         }
     }
@@ -63,12 +63,15 @@ namespace ProjectManager.Models
     public class AddDeveloperDialogModel
     {
         public int ProjectId { get; private set; }
-        public List<ProjectUser> Developers { get; private set; }
+        public List<ProjectUser> AddableDevelopers { get; private set; }
+        public List<ProjectUser> RemovableDevelopers { get; private set; }
 
-        public AddDeveloperDialogModel(int ProjectId, List<ProjectUser> Developers)
+        public AddDeveloperDialogModel(int ProjectId, List<ProjectUser> AddableDevelopers,
+            List<ProjectUser> RemovableDevelopers)
         {
             this.ProjectId = ProjectId;
-            this.Developers = Developers;
+            this.AddableDevelopers = AddableDevelopers;
+            this.RemovableDevelopers = RemovableDevelopers;
         }
     }
 

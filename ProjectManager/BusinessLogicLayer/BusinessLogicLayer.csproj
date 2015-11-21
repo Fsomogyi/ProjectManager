@@ -54,6 +54,9 @@
     <Compile Include="Comment.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="CommentManager.cs" />
+    <Compile Include="DTO\CommentData.cs" />
+    <Compile Include="DTO\ProjectData.cs" />
     <Compile Include="Project.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
@@ -86,12 +89,14 @@
     <Compile Include="Task.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TaskManager.cs" />
     <Compile Include="TaskState.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TaskStateChange.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TaskStateManager.cs" />
     <Compile Include="Worktime.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>

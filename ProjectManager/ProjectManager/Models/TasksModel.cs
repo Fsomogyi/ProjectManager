@@ -1,11 +1,35 @@
 ﻿using BusinessLogicLayer;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
 namespace ProjectManager.Models
 {
+    public class CreateTaskModel
+    {
+        [Required]
+        [Display(Name = "Name")]
+        public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
+        [Required]
+        [Display(Name = "Estimated work hours")]
+        public int WorkHours { get; set; }
+
+        [Required]
+        [Range(1, 4)]
+        [Display(Name = "Priority")]
+        public int Priority { get; set; }
+
+        [Display(Name = "Maximum developers")]
+        public int MaxDevelopers { get; set; }
+    }
+
     public class TaskDetailsModel
     {
         public Task Task { get; private set; }

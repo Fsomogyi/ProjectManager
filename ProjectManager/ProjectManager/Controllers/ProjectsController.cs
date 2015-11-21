@@ -9,6 +9,7 @@ using Microsoft.AspNet.Identity;
 using ProjectManager.Models;
 using App.Extensions;
 using System.IO;
+using BusinessLogicLayer.DTO;
 
 namespace ProjectManager.Controllers
 {
@@ -18,21 +19,11 @@ namespace ProjectManager.Controllers
         // GET: Projects
         public ActionResult Index()
         {
-            int userId = int.Parse(User.Identity.GetProjectUserId()); 
+            int userId = int.Parse(User.Identity.GetProjectUserId());
 
-            List<Project> projects = new List<Project>();
-            using (var db = new ProjectManagerDBEntities())
-            {
-                var res = from project in db.Project
-                          join role in db.Role on project.Id equals role.ProjectId
-                          where role.ProjectUserId == userId
-                          select project;
-                projects = res.ToList();
+            var projects = new ProjectUserManager().GetProjectsForUser(userId);
 
-            }
-                
-            return View(projects);
-        
+            return View(projects);  
         }
 
         // GET: Project details
@@ -40,16 +31,7 @@ namespace ProjectManager.Controllers
         {
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
-            Project project;
-            using (var db = new ProjectManagerDBEntities())
-            {
-                var res = from p in db.Project
-                          join role in db.Role on p.Id equals role.ProjectId
-                          where role.ProjectUserId == userId && p.Id == Id
-                          select p;
-                project = res.First();
-
-            }
+            var project = new ProjectUserManager().GetProjectsForUser(userId).First(p => p.Id == Id);
 
             int pageId = 0;
             Object savedValue;
@@ -66,7 +48,6 @@ namespace ProjectManager.Controllers
         // GET: Project details
         public ActionResult DetailsPage(int Id, int pageId)
         {
- 
             switch (pageId)
             {
                 case 0: return ShowOverview(Id);
@@ -90,25 +71,13 @@ namespace ProjectManager.Controllers
         {
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
-            using (var db = new ProjectManagerDBEntities())
+            new ProjectUserManager().CreateNewProject(userId, new ProjectData()
             {
-                Project project = new Project();
-                project.Name = Request.Form["projectName"];
-                project.Description = Request.Form["projectDescription"];
-                project.Deadline = DateTime.Parse(Request.Form["deadline"]);
-                project.Done = false;
-
-                db.Project.Add(project);
-                db.SaveChanges();
-
-                Role role = new Role();
-                role.ProjectUserId = userId;
-                role.Type = (from rn in db.RoleName where rn.Name.Trim().Equals("Project Leader") select rn).First().Id;
-                role.Project = project;
-  
-                db.Role.Add(role);
-                db.SaveChanges();
-            }
+                Name = Request.Form["projectName"],
+                Description = Request.Form["projectDescription"],
+                Deadline = DateTime.Parse(Request.Form["deadline"]),
+                Done = false
+            });
 
             return Redirect("Index");
         }
@@ -117,45 +86,36 @@ namespace ProjectManager.Controllers
         public ActionResult AddDeveloperDialog(int Id)
         {
             AddDeveloperDialogModel model;
-            List<ProjectUser> devs = new List<ProjectUser>();
+
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
-            using (var db = new ProjectManagerDBEntities())
-            {
-                foreach (var user in (from u in db.ProjectUser select u))
-                {
-                    if (user.Id != userId)
-                    {
-                        var res = from r in db.Role where r.ProjectUserId == user.Id && r.ProjectId == Id select r;
-                        if (res.Count() == 0)
-                        {
-                            devs.Add(user);
-                        }
-                    }
-                }
-            }
+            var manager = new ProjectUserManager();
+            List<ProjectUser> addableDevelopers = manager.GetAddableOrRemovableDevelopers(
+                Id, userId, addable: true);
+            List<ProjectUser> removableDevelopers = manager.GetAddableOrRemovableDevelopers(
+                Id, userId, addable: false); ;
 
-            model = new AddDeveloperDialogModel(Id, devs);
+            model = new AddDeveloperDialogModel(Id, addableDevelopers, removableDevelopers);
             return PartialView("_AddDeveloperDialog", model);
         }
 
-        // POST: Create project
+        // POST: Add developer
         [HttpPost]
         public ActionResult AddDeveloper()
         {
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
             int projectId = int.Parse(Request.Form["projectId"]);
-            if (Request.Form["userId"] != null)
+            if (Request.Form["addUserId"] != null)
             {
-                int developerId = int.Parse(Request.Form["userId"]);
+                int developerId = int.Parse(Request.Form["addUserId"]);
 
                 TempData["DetailsPage"] = "2";
 
                 using (var db = new ProjectManagerDBEntities())
                 {
-                    int leaderId = (from rn in db.RoleName where rn.Name.Trim().Equals("Project Leader") select rn).First().Id;
+                    int leaderId = 2;   // TODO: BLL-ben ellenőrizni
 
                     var isleader = from r1 in db.Role
                                    join p1 in db.Project on r1.ProjectId equals p1.Id
@@ -176,7 +136,43 @@ namespace ProjectManager.Controllers
                             db.SaveChanges();
                         }
                     }
+                }
+            }
 
+            return Redirect("Details/" + projectId);
+        }
+
+        // POST: Remove developer
+        [HttpPost]
+        public ActionResult RemoveDeveloper()
+        {
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            int projectId = int.Parse(Request.Form["projectId"]);
+
+            if (Request.Form["removeUserId"] != null)
+            {
+                int developerId = int.Parse(Request.Form["removeUserId"]);
+
+                TempData["DetailsPage"] = "2";
+
+                using (var db = new ProjectManagerDBEntities())
+                {
+                    int leaderId = 2;   // TODO: BLL-ben ellenőrizni
+
+                    var isleader = from r1 in db.Role
+                                   join p1 in db.Project on r1.ProjectId equals p1.Id
+                                   where r1.Type == leaderId && p1.Id == projectId && r1.ProjectUserId == userId
+                                   select r1;
+
+                    if (isleader.Count() > 0)
+                    {
+                        var res = from r in db.Role where r.ProjectUserId == developerId && r.ProjectId == projectId select r;
+                        if (res.Count() == 1)
+                        {
+                            db.Role.Remove(res.First());
+                            db.SaveChanges();
+                        }
+                    }
                 }
             }
 

@@ -7,6 +7,8 @@ using App.Extensions;
 using BusinessLogicLayer;
 using ProjectManager.Models;
 using System.Diagnostics;
+using System.Web.UI;
+using BusinessLogicLayer.DTO;
 
 namespace ProjectManager.Controllers
 {
@@ -90,35 +92,41 @@ namespace ProjectManager.Controllers
 
         // POST: Create task
         [HttpPost]
-        public ActionResult Create()
+        public ActionResult Create(CreateTaskModel model)
         {
+            int projectId = int.Parse(Request.Form["projectId"] as string);
+
+            if (!ModelState.IsValid)
+            {
+                // TODO: hibakezelés, PostComment-nél jó, itt nem, megnézni miért!
+                //return PartialView("_CreateDialog");
+
+                TempData["DetailsPage"] = "1";
+                return Redirect(Request.UrlReferrer.ToString());
+            }
+
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
             using (var db = new ProjectManagerDBEntities())
             {
-                int projectId = int.Parse(Request.Form["projectId"] as string);
-                int leaderId = (from rn in db.RoleName where rn.Name.Trim().Equals("Project Leader") select rn).First().Id;
-
-                var isleader = from r1 in db.Role
-                               join p1 in db.Project on r1.ProjectId equals p1.Id
-                               where r1.Type == leaderId && p1.Id == projectId && r1.ProjectUserId == userId
-                               select r1;
-
-                if (isleader.Count() < 1)
+                Task task = new Task()
                 {
-                    return Redirect(Request.UrlReferrer.ToString());
-                }
+                    Name = model.Name,
+                    Description = model.Description,
+                    EstimatedWorkHours = model.WorkHours,
+                    Priority = model.Priority,
+                    MaxDevelopers = model.MaxDevelopers,
+                    ProjectId = projectId,
+                    State = new TaskStateManager().GetNewStateId()
+                };
 
-                int newStateId = (from ts in db.TaskState where ts.Name.Trim().Equals("New") select ts).First().Id; 
-
-                Task task = new Task();
-                task.Name = Request.Form["taskName"];
-                task.Description = Request.Form["taskDescription"];
-                task.EstimatedWorkHours = int.Parse(Request.Form["workhours"]);
-                task.Priority = int.Parse(Request.Form["priority"]);
-                task.MaxDevelopers = int.Parse(Request.Form["maxDevs"]); 
-                task.ProjectId = projectId;
-                task.State = newStateId;
+                //task.Name = Request.Form["taskName"];
+                //task.Description = Request.Form["taskDescription"];
+                //task.EstimatedWorkHours = int.Parse(Request.Form["workhours"]);
+                //task.Priority = int.Parse(Request.Form["priority"]);
+                //task.MaxDevelopers = int.Parse(Request.Form["maxDevs"]); 
+                //task.ProjectId = projectId;
+                //task.State = newStateId;
 
                 db.Task.Add(task);
                 db.SaveChanges();
@@ -133,36 +141,26 @@ namespace ProjectManager.Controllers
         [HttpPost]
         public ActionResult PostComment(int Id)
         {
-            CommentViewModel model;
-
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
-            using (var db = new ProjectManagerDBEntities())
+            var content = Request.Form["commentContent"];
+            if (content == string.Empty)
             {
-                //if ((from a in db.Assignment where a.ProjectUserId == userId && a.TaskId == Id select a).Count() < 1)
-                //{
-                //    return PartialView("_Comment", new CommentViewModel("", new DateTime(), ""));
-                //}
-
-                string userName = (from user in db.ProjectUser
-                                   where user.Id == userId
-                                   select user).First().UserName.Trim();
-
-                DateTime timeStamp = DateTime.Now;
-
-                Comment comment = new Comment();
-                comment.ProjectUserId = userId;
-                comment.TaskId = Id;
-                comment.Timestamp = timeStamp;
-                comment.Content = Request.Form["commentContent"];
-
-                db.Comment.Add(comment);
-                db.SaveChanges();
-
-                model = new CommentViewModel(Request.Form["commentContent"], timeStamp, userName);
+                return PartialView("_Comment", null);
             }
-            
-            return PartialView("_Comment", model);
+
+            DateTime timeStamp = DateTime.Now;
+            new CommentManager().AddComment(new CommentData()
+            {
+                ProjectUserId = userId,
+                TaskId = Id,
+                Timestamp = timeStamp,
+                Content = content
+            });
+
+            var userName = new ProjectUserManager().GetUser(userId).UserName;
+
+            return PartialView("_Comment", new CommentViewModel(content, timeStamp, userName));
         }
     }
 }
