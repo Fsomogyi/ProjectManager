@@ -60,6 +60,31 @@ namespace ProjectManager.Models
         }
     }
 
+    public class AddDeveloperDialogModel
+    {
+        public int ProjectId { get; private set; }
+        public List<ProjectUser> Developers { get; private set; }
+
+        public AddDeveloperDialogModel(int ProjectId, List<ProjectUser> Developers)
+        {
+            this.ProjectId = ProjectId;
+            this.Developers = Developers;
+        }
+    }
+
+    public class ProjectDetailsViewModel
+    {
+        public Project Project { get; private set; }
+        public int DetailsPage { get; private set; }
+
+        public ProjectDetailsViewModel(Project Project, int DetailsPage)
+        {
+            this.Project = Project;
+            this.DetailsPage = DetailsPage;
+        }
+
+    }
+
     public class StatisticsModel
     {
 

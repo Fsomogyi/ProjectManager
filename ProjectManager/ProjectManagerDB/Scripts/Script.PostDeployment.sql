@@ -9,7 +9,6 @@ Post-Deployment Script Template
                SELECT * FROM [$(TableName)]					
 --------------------------------------------------------------------------------------
 */
-
 :r .\InsertProject.sql
 :r .\InsertRoleName.sql
 :r .\InsertTaskState.sql

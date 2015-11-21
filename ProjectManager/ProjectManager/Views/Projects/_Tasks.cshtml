@@ -1,9 +1,51 @@
 ﻿@model IEnumerable<ProjectManager.Models.TaskListElement>
 
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //Adjust height of overlay to fill screen when page loads
+        $("#fuzz").css("height", $(document).height());
+
+        //When the link that triggers the message is clicked fade in overlay/msgbox
+        $(".alert").click(function (event) {
+            var taskIdRaw = event.target.id;
+            var taskId = taskIdRaw.substring(11);
+            //$('#fuzz').html("");
+            $('#overlaywindow').load('/Tasks/Details/' + taskId);
+            $("#fuzz").fadeIn();
+            return false;
+        });
+
+        $("#createTaskDialog").click(function (event) {
+            $('#overlaywindow').load('/Tasks/CreateDialog/' + @ViewData["projectId"]);
+            $("#fuzz").fadeIn();
+            return false;
+        });
+
+        //When the message box is closed, fade out
+        $(".close").click(function () {
+            $("#fuzz").fadeOut();
+            return false;
+        });
+
+
+    })
+</script>
+
+@{
+    if ((ViewData["isLeader"] as string).Equals("Leader"))
+    {
+        <input type="button" id="createTaskDialog" value="New task" /><br />
+    }
+}
+    
+
 @foreach (var item in Model)
 {
     <div class="task-element">
-        <p class="project-title">@item.Task.Name</p>
+        <p class="project-title"><a href="#" class="alert" id="TaskDetails@(item.Task.Id)">@item.Task.Name</a></p>
         <p>Assigned to: 
             @foreach (var name in item.DeveloperNames)
             {

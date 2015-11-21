@@ -1,0 +1,12 @@
+﻿@model ProjectManager.Models.CommentViewModel
+
+<div class="commentContainer">
+    <table class="commentHeader">
+        <tr>
+            <td class="commentUserName"><b>@Model.UserName</b></td>
+            <td class="commentTimestamp">@Model.TimeStamp</td>
+        </tr>
+    </table>
+       
+    @Model.CommentContent
+</div>

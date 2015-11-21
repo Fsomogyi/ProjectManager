@@ -1,39 +1,41 @@
-﻿@model BusinessLogicLayer.Project
+﻿@model ProjectManager.Models.ProjectDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
 }
 
 <script type="text/javascript">
-    currentSelected = 0;
+
 
     $(document).ready(function () {
 
         $('#btnOverview').click(function () {
             $('#details-container').html("");
             updateSelection(0);
-            $('#details-container').load('/Projects/DetailsPage/@Model.Id/0');
+            $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/0');
         })
 
         $('#btnTasks').click(function () {
             updateSelection(1);
             $('#details-container').html("");
-            $('#details-container').load('/Projects/DetailsPage/@Model.Id/1');
+            $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/1');
         })
 
         $('#btnDevelopers').click(function () {
             updateSelection(2);
             $('#details-container').html("");
-            $('#details-container').load('/Projects/DetailsPage/@Model.Id/2');
+            $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/2');
         })
 
         $('#btnStatistics').click(function () {
             updateSelection(3);
             $('#details-container').html("");
-            $('#details-container').load('/Projects/DetailsPage/@Model.Id/3');
+            $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/3');
         })
 
-        $('#details-container').load('/Projects/DetailsPage/@Model.Id/0');
+        currentSelected = 0;
+        updateSelection(@Model.DetailsPage);
+        $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/@Model.DetailsPage');
     });
 
     function updateSelection(newSelected) {
@@ -55,7 +57,7 @@
     }
 </script>
 
-<h2>@Model.Name</h2>
+<h2>@Model.Project.Name</h2>
 
 <div class="container">
 
