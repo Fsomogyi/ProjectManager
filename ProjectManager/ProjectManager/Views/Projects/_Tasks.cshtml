@@ -40,22 +40,52 @@
         <input type="button" id="createTaskDialog" value="New task" /><br />
     }
 }
-    
+   
+<div class="row" >
+    <h4 style="margin: 15px;"><b>Tasks</b></h4>
+</div>
+ 
+<div class="row">
+    @foreach (var item in Model.Where(m => m.Task.State != (int)ViewData["deletedId"]))
+    {
+        <div class="task-element">
+            <p class="project-title"><a href="#" class="alert" id="TaskDetails@(item.Task.Id)">@item.Task.Name</a></p>
+            <p>Assigned to: 
+                @foreach (var name in item.DeveloperNames)
+                {
+                    @name
+                    if (item.DeveloperNames.Last() != @name)
+                    {@(", ")}
+                }
+                <br />
+                State: @item.State <br />
+                Work hours: @item.WorkHours
+            </p>
+        </div>
+    }
+</div>
 
-@foreach (var item in Model)
-{
-    <div class="task-element">
-        <p class="project-title"><a href="#" class="alert" id="TaskDetails@(item.Task.Id)">@item.Task.Name</a></p>
-        <p>Assigned to: 
-            @foreach (var name in item.DeveloperNames)
-            {
-                @name
-                if (item.DeveloperNames.Last() != @name)
-                {@(", ")}
-            }
-            <br />
-            State: @item.State <br />
-            Work hours: @item.WorkHours
-        </p>
-    </div>
-}
+<div class="row" >
+    <hr style="border-bottom:8px solid #d6d6d6; padding:2px;"/>
+    <h4 style="margin: 15px;"><b>Deleted Tasks</b></h4>
+</div>
+
+<div class="row">
+    @foreach (var item in Model.Where(m => m.Task.State == (int)ViewData["deletedId"]))
+    {
+        <div class="task-element">
+            <p class="project-title"><a href="#" class="alert" id="TaskDetails@(item.Task.Id)">@item.Task.Name</a></p>
+            <p>Assigned to: 
+                @foreach (var name in item.DeveloperNames)
+                {
+                    @name
+                    if (item.DeveloperNames.Last() != @name)
+                    {@(", ")}
+                }
+                <br />
+                State: @item.State <br />
+                Work hours: @item.WorkHours
+            </p>
+        </div>
+    }
+</div>

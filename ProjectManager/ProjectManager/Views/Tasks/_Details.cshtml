@@ -28,6 +28,29 @@
 </script>
 
 <h2>@Model.Task.Name</h2>
+
+@if((ViewData["isLeader"] as string).Equals("Leader"))
+{
+    if (Model.Task.State != (int)ViewData["doneId"])
+    {
+        if (Model.Task.State == (int)ViewData["deletedId"])
+        {
+            using (Html.BeginForm("RestoreTask", "Tasks", new { taskId = Model.Task.Id }))
+            {
+                <button type="submit">Restore task</button>
+            }
+        }
+
+        else
+        {
+            using (Html.BeginForm("DeleteTask", "Tasks", new { taskId = Model.Task.Id }))
+            {
+                <button type="submit">Delete task</button>
+            }
+        }
+    }
+}
+
 <p>
     Assigned to:
     @foreach (var name in Model.DeveloperNames)
@@ -44,7 +67,7 @@
         @(" -" + @entry.Key + ": " + entry.Value);<br/>
     }
 
-    @if(Model.CanComment)
+    @if (Model.CanComment)
     {
     <h3>Comments</h3>
         

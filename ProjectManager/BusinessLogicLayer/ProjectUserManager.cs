@@ -178,7 +178,6 @@ namespace BusinessLogicLayer
 
         public void RemoveDeveloperFromProject(int userId, int projectId)
         {
-            // TODO: mi van az assigned task-okkal?
             using (var context = new ProjectManagerDBEntities())
             {
                 int developerId = GetDeveloperId();

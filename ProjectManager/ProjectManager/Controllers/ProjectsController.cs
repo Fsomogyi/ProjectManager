@@ -23,7 +23,7 @@ namespace ProjectManager.Controllers
 
             var projects = new ProjectUserManager().GetProjectsForUser(userId);
 
-            return View(projects);  
+            return View(projects);
         }
 
         // GET: Project details
@@ -157,6 +157,15 @@ namespace ProjectManager.Controllers
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
+            if (new ProjectUserManager().IsLeader(userId, projectId))
+            {
+                ViewData["isLeader"] = "Leader";
+            }
+            else
+            {
+                ViewData["isLeader"] = "NoLeader";
+            }
+
             var manager = new TaskManager();
             var tasks = manager.GetTasksForProject(projectId);
 
@@ -190,8 +199,12 @@ namespace ProjectManager.Controllers
             List<TaskListElement> model = new List<TaskListElement>();
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
+            var manager = new TaskManager();
+
+            int deletedId = manager.GetDeletedStateId();
 
             ViewData["projectId"] = projectId;
+            ViewData["deletedId"] = deletedId;
 
             if (new ProjectUserManager().IsLeader(userId, projectId))
             {
@@ -212,7 +225,7 @@ namespace ProjectManager.Controllers
                 ViewData["isDone"] = "NotDone";
             }
 
-            var manager = new TaskManager();
+
 
             var tasks = manager.GetTasksForProject(projectId);
 
@@ -296,7 +309,7 @@ namespace ProjectManager.Controllers
             return PartialView("_Statistics", model);
         }
 
-        // POST: Add developer
+        // POST: /Projects/Finish
         [HttpPost]
         public ActionResult Finish(int Id)
         {
@@ -314,7 +327,7 @@ namespace ProjectManager.Controllers
             }
             else
             {
-                // TODO: hibakezelő popup vagy valami
+                // TODO: error display
             }
 
             return Redirect(Request.UrlReferrer.ToString());

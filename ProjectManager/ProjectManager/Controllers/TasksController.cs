@@ -25,6 +25,22 @@ namespace ProjectManager.Controllers
 
             var manager = new TaskManager();
 
+            var project = manager.GetProjectForTask(Id);
+            if (new ProjectUserManager().IsLeader(userId, project.Id))
+            {
+                ViewData["isLeader"] = "Leader";
+            }
+            else
+            {
+                ViewData["isLeader"] = "NoLeader";
+            }
+
+            int deletedId = manager.GetDeletedStateId();
+            ViewData["deletedId"] = deletedId;
+
+            int doneId = manager.GetDoneStateId();
+            ViewData["doneId"] = doneId;
+
             var task = manager.GetTask(Id);
             var stateName = manager.GetTaskStateName(Id);
             var users = manager.GetUsersForTask(Id);
@@ -84,39 +100,25 @@ namespace ProjectManager.Controllers
                 //return PartialView("_CreateDialog");
 
                 TempData["DetailsPage"] = "1";
-                return Redirect(Request.UrlReferrer.ToString());
+                return Redirect("/Projects/Details/" + projectId);
             }
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
-            using (var db = new ProjectManagerDBEntities())
+            TaskData data = new TaskData()
             {
-                Task task = new Task()
-                {
-                    Name = model.Name,
-                    Description = model.Description,
-                    EstimatedWorkHours = model.WorkHours,
-                    Priority = model.Priority,
-                    MaxDevelopers = model.MaxDevelopers,
-                    ProjectId = projectId,
-                    State = new TaskManager().GetNewStateId()
-                };
+                Name = model.Name,
+                Description = model.Description,
+                EstimatedWorkHours = model.WorkHours,
+                Priority = model.Priority,
+                MaxDevelopers = model.MaxDevelopers,
+            };
 
-                //task.Name = Request.Form["taskName"];
-                //task.Description = Request.Form["taskDescription"];
-                //task.EstimatedWorkHours = int.Parse(Request.Form["workhours"]);
-                //task.Priority = int.Parse(Request.Form["priority"]);
-                //task.MaxDevelopers = int.Parse(Request.Form["maxDevs"]); 
-                //task.ProjectId = projectId;
-                //task.State = newStateId;
-
-                db.Task.Add(task);
-                db.SaveChanges();
-            }
+            new TaskManager().AddNewTask(projectId, data);
 
             TempData["DetailsPage"] = "1";
 
-            return Redirect(Request.UrlReferrer.ToString());
+            return Redirect("/Projects/Details/" + projectId);
         }
 
         // POST: /Tasks/PostComment
@@ -143,6 +145,36 @@ namespace ProjectManager.Controllers
             var userName = new ProjectUserManager().GetUser(userId).UserName.Trim();
 
             return PartialView("_Comment", new CommentViewModel(content, timeStamp, userName));
+        }
+
+        // POST: /Tasks/DeleteTask
+        [HttpPost]
+        public ActionResult DeleteTask(int taskId)
+        {
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+
+            var manager = new TaskManager();
+            manager.DeleteTask(taskId);
+
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: /Tasks/RestoreTask
+        [HttpPost]
+        public ActionResult RestoreTask(int taskId)
+        {
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+
+            var manager = new TaskManager();
+            manager.RestoreTask(taskId);
+
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
         }
     }
 }

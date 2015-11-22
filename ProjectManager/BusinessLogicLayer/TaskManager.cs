@@ -29,6 +29,37 @@ namespace BusinessLogicLayer
             return 4;
         }
 
+        public void AddNewTask(int projectId, TaskData data)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                int newId = GetNewStateId();
+
+                context.Task.Add(new Task()
+                    {
+                        Name = data.Name,
+                        Description = data.Description,
+                        Priority = data.Priority,
+                        MaxDevelopers = data.MaxDevelopers,
+                        EstimatedWorkHours = data.EstimatedWorkHours,
+                        ProjectId = projectId,
+                        State = newId
+                    });
+
+                context.SaveChanges();
+            }
+        }
+
+        public Project GetProjectForTask(int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var task = context.Task.First(t => t.Id == taskId);
+
+                return context.Project.First(p => p.Id == task.ProjectId);
+            }
+        }
+
         public string GetTaskStateName(int taskId)
         {
             using (var context = new ProjectManagerDBEntities())
@@ -153,6 +184,39 @@ namespace BusinessLogicLayer
                 }
 
                 return result;
+            }
+        }
+
+        public void DeleteTask(int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                int deletedId = GetDeletedStateId();
+
+                var task = context.Task.First(t => t.Id == taskId);
+                task.State = deletedId;
+
+                context.SaveChanges();
+            }
+        }
+
+        public void RestoreTask(int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                int newId = GetNewStateId();
+                int activeId = GetActiveStateId();
+
+                var task = context.Task.First(t => t.Id == taskId);
+
+                var workTimes = context.Worktime.Where(w => w.TaskId == taskId);
+
+                if (workTimes.Count() > 0)
+                    task.State = activeId;
+                else
+                    task.State = newId;
+
+                context.SaveChanges();
             }
         }
     }

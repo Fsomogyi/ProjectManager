@@ -13,9 +13,12 @@
         <b>ACTIVE</b>
         <br />
         
-        using (Html.BeginForm("Finish", "Projects", new { Id = Model.Project.Id }))
+        if((ViewData["isLeader"] as string).Equals("Leader"))
         {
-            <button type="submit">FINISH</button>
+            using (Html.BeginForm("Finish", "Projects", new { Id = Model.Project.Id }))
+            {
+                <button type="submit">FINISH</button>
+            }
         }
     }
 </p>
