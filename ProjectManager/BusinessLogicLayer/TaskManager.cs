@@ -211,7 +211,6 @@ namespace BusinessLogicLayer
 
                 var workTimes = context.Worktime.Where(w => w.TaskId == taskId);
 
-                // TODO: véglegesített jelentkezésnél legyen aktív, ne hozzáadott work time alapján
                 if (workTimes.Count() > 0)
                     task.State = activeId;
                 else
@@ -247,6 +246,87 @@ namespace BusinessLogicLayer
                 }
 
                 return false;
+            }
+        }
+
+        public bool FinalizeUserApplication(int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                int activeId = GetActiveStateId();
+
+                var task = context.Task.First(t => t.Id == taskId);
+
+                var unAcceptedAssignments = context.Assignment.Where(a => a.TaskId == taskId &&
+                    a.Accepted == false);
+
+                if (unAcceptedAssignments.Count() == 0)
+                {
+                    task.State = activeId;
+                    context.SaveChanges();
+                    return true;
+                }
+
+                return false;
+            }
+        }
+
+        public List<ProjectUser> GetAddableOrRemovableDevelopers(int taskId, int leaderId, bool addable)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                List<ProjectUser> result = new List<ProjectUser>();
+
+                var task = context.Task.First(t => t.Id == taskId);
+
+                foreach (var user in context.ProjectUser.Where(u => u.Id != leaderId))
+                {
+                    var assignments = task.Assignment.Where(a => a.ProjectUserId == user.Id);
+
+                    if ((assignments.Count() == 0) == addable)
+                    {
+                        result.Add(user);
+                    }
+                }
+
+                return result;
+            }
+        }
+
+        public void AddDeveloperToTask(int userId, int taskId, bool accepted)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                int developerId = new ProjectUserManager().GetDeveloperId();
+                var assignments = context.Assignment.Where(
+                    a => a.TaskId == taskId && a.ProjectUserId == userId);
+
+                if (assignments.Count() == 0)
+                {
+                    context.Assignment.Add(new Assignment()
+                    {
+                        ProjectUserId = userId,
+                        TaskId = taskId,
+                        Accepted = accepted
+                    });
+
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void RemoveDeveloperFromTask(int userId, int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                int developerId = new ProjectUserManager().GetDeveloperId();
+                var assignment = context.Assignment.FirstOrDefault(
+                    a => a.TaskId == taskId && a.ProjectUserId == userId);
+
+                if (assignment != null)
+                    context.Assignment.Remove(assignment);
+
+                context.SaveChanges();
             }
         }
     }

@@ -100,9 +100,9 @@ namespace ProjectManager.Controllers
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
             var manager = new ProjectUserManager();
-            List<ProjectUser> addableDevelopers = manager.GetAddableOrRemovableDevelopers(
+            var addableDevelopers = manager.GetAddableOrRemovableDevelopers(
                 Id, userId, addable: true);
-            List<ProjectUser> removableDevelopers = manager.GetAddableOrRemovableDevelopers(
+            var removableDevelopers = manager.GetAddableOrRemovableDevelopers(
                 Id, userId, addable: false);
 
             return PartialView("_AddDeveloperDialog", new AddDeveloperDialogModel(Id, addableDevelopers, removableDevelopers));

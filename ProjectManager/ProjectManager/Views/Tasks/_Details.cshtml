@@ -29,11 +29,13 @@
 
 <h2>@Model.Task.Name</h2>
 
-@if((bool)ViewData["isLeader"] && Model.Task.State != (int)ViewData["doneId"])
+@if ((bool)ViewData["isLeader"] && Model.Task.State != (int)ViewData["doneId"])
 {
+    <br />
+    
     if (Model.Task.State == (int)ViewData["deletedId"])
     {
-        using (Html.BeginForm("RestoreTask", "Tasks", new { taskId = Model.Task.Id }))
+        using (Html.BeginForm("RestoreTask", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
         {
             <button type="submit">Restore task</button>
         }
@@ -41,19 +43,69 @@
 
     else
     {
-        using (Html.BeginForm("DeleteTask", "Tasks", new { taskId = Model.Task.Id }))
+        using (Html.BeginForm("DeleteTask", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
         {
             <button type="submit">Delete task</button>
         }
     }
 }
 
-@if((bool)ViewData["isUserOnTask"] && Model.Task.State != (int)ViewData["doneId"]
-    && Model.Task.State != (int)ViewData["deletedId"])
+@if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"])
 {
-    using (Html.BeginForm("AddWorkTime", "Tasks", new { taskId = Model.Task.Id }))
+    using (Html.BeginForm("AddDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
     {
-        
+        <fieldset>
+            <legend>Add developer</legend>
+
+            <select name="addUserId">
+            @foreach (var item in Model.AddableDevelopers)
+            {
+                <option value="@item.Id">@item.UserName</option>
+            }
+            </select>
+
+            <input type="submit" id="addDeveloper" value="Add developer"  />
+
+        </fieldset>
+
+        <hr style="border-top:1px solid black;"/>
+    }
+
+    using (Html.BeginForm("RemoveDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
+    {
+
+        <fieldset>
+            <legend>Remove developer</legend>
+
+            <select name="removeUserId">
+            @foreach (var item in Model.RemovableDevelopers)
+            {
+                <option value="@item.Id">@item.UserName</option>
+            }
+            </select>
+
+            <input type="submit" id="removeDeveloper" value="Remove developer"  />
+
+        </fieldset>
+    }
+}
+<br />
+
+@if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"])
+{
+    using (Html.BeginForm("FinalizeUserApplication", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
+    {
+        <button type="submit">Finalize user application</button>
+    }
+    
+    <br />
+}
+
+@if ((bool)ViewData["isUserOnTask"] && Model.Task.State == (int)ViewData["activeId"])
+{
+    using (Html.BeginForm("AddWorkTime", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
+    {
+
         //data-provide="datepicker" data-date-format="yyyy.mm.dd" 
         <br /> <br /> 
         
@@ -94,7 +146,6 @@
     <h3>Comments</h3>
         
     <input type="button" id="writeComment" value="Write comment" style='margin-bottom: 5px;' />
-
 
         <div>
             <div id="writeCommentDiv" class="writeComment" style="display: inline-block;">

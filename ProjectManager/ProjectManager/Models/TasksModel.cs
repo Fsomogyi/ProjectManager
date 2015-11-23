@@ -38,9 +38,12 @@ namespace ProjectManager.Models
         public Dictionary<string, int> WorkHours { get; private set; }
         public IEnumerable<CommentViewModel> Comments { get; private set; }
         public bool CanComment { get; set; }
+        public List<ProjectUser> AddableDevelopers { get; private set; }
+        public List<ProjectUser> RemovableDevelopers { get; private set; }
 
         public TaskDetailsModel(Task Task, string State, IEnumerable<String> DeveloperNames,
-            Dictionary<string, int> WorkHours, IEnumerable<CommentViewModel> Comments, bool CanComment)
+            Dictionary<string, int> WorkHours, IEnumerable<CommentViewModel> Comments, bool CanComment,
+            List<ProjectUser> AddableDevelopers, List<ProjectUser> RemovableDevelopers)
         {
             this.Task = Task;
             this.StateName = State;
@@ -48,6 +51,8 @@ namespace ProjectManager.Models
             this.WorkHours = WorkHours;
             this.Comments = Comments;
             this.CanComment = CanComment;
+            this.AddableDevelopers = AddableDevelopers;
+            this.RemovableDevelopers = RemovableDevelopers;
         }
     }
 

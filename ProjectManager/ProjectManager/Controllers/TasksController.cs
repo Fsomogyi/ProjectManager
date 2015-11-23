@@ -30,6 +30,10 @@ namespace ProjectManager.Controllers
             var workTimes = manager.GetAllWorkTimeForTask(Id);
             var comments = manager.GetComments(Id);
             var canComment = task.State == manager.GetActiveStateId();
+            var addableDevelopers = manager.GetAddableOrRemovableDevelopers(
+                Id, userId, addable: true);
+            var removableDevelopers = manager.GetAddableOrRemovableDevelopers(
+                Id, userId, addable: false);
 
             var project = manager.GetProjectForTask(Id);
             ViewData["isLeader"] = new ProjectUserManager().IsLeader(userId, project.Id);
@@ -39,6 +43,12 @@ namespace ProjectManager.Controllers
 
             int doneId = manager.GetDoneStateId();
             ViewData["doneId"] = doneId;
+
+            int activeId = manager.GetActiveStateId();
+            ViewData["activeId"] = activeId;
+
+            int newId = manager.GetNewStateId();
+            ViewData["newId"] = newId;
 
             ViewData["isUserOnTask"] = users.Any(u => u.Id == userId);
 
@@ -71,7 +81,8 @@ namespace ProjectManager.Controllers
                 userHours[userName] = currentHours + elapsed;
             }
 
-            model = new TaskDetailsModel(task, stateName, devs, userHours, commentViewModels, canComment);
+            model = new TaskDetailsModel(task, stateName, devs, userHours, commentViewModels, canComment,
+                addableDevelopers, removableDevelopers);
             return PartialView("_Details", model);
         }
 
@@ -210,6 +221,62 @@ namespace ProjectManager.Controllers
             else
             {
                 // TODO: error display and stay on view (invalid start or end time)
+            }
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: /Tasks/FinalizeUserApplication
+        [HttpPost]
+        public ActionResult FinalizeUserApplication(int taskId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
+            if (!manager.FinalizeUserApplication(taskId))
+            {
+                // TODO: error display
+            }
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: Tasks/AddDeveloper
+        [HttpPost]
+        public ActionResult AddDeveloper(int taskId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
+            if (Request.Form["addUserId"] != null)
+            {
+                int developerId = int.Parse(Request.Form["addUserId"]);
+                manager.AddDeveloperToTask(developerId, taskId, accepted: true);
+            }
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: Tasks/RemoveDeveloper
+        [HttpPost]
+        public ActionResult RemoveDeveloper(int taskId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
+            if (Request.Form["removeUserId"] != null)
+            {
+                int developerId = int.Parse(Request.Form["removeUserId"]);
+                manager.RemoveDeveloperFromTask(developerId, taskId);
             }
 
             TempData["DetailsPage"] = "1";
