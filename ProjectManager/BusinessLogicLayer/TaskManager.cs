@@ -211,12 +211,42 @@ namespace BusinessLogicLayer
 
                 var workTimes = context.Worktime.Where(w => w.TaskId == taskId);
 
+                // TODO: véglegesített jelentkezésnél legyen aktív, ne hozzáadott work time alapján
                 if (workTimes.Count() > 0)
                     task.State = activeId;
                 else
                     task.State = newId;
 
                 context.SaveChanges();
+            }
+        }
+
+        public bool AddWorkTime(WorktimeData data)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var relatedWorkTimes = context.Worktime.Where(w => w.TaskId == data.TaskId &&
+                    w.ProjectUserId == data.ProjectUserId);
+                var overLappingWorkTimes = relatedWorkTimes.Where(w => 
+                    (data.StartTime >= w.StartTime && data.StartTime <= w.EndTime) ||
+                    (data.EndTime >= w.StartTime && data.EndTime <= w.EndTime));
+
+                if (overLappingWorkTimes.Count() == 0)
+                {
+
+                    context.Worktime.Add(new Worktime()
+                    {
+                        ProjectUserId = data.ProjectUserId,
+                        TaskId = data.TaskId,
+                        StartTime = data.StartTime,
+                        EndTime = data.EndTime
+                    });
+
+                    context.SaveChanges();
+                    return true;
+                }
+
+                return false;
             }
         }
     }

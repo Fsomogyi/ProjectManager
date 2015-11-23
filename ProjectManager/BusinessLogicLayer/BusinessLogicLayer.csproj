@@ -56,6 +56,7 @@
     </Compile>
     <Compile Include="CommentManager.cs" />
     <Compile Include="DTO\CommentData.cs" />
+    <Compile Include="DTO\WorktimeData.cs" />
     <Compile Include="DTO\ProjectData.cs" />
     <Compile Include="DTO\TaskData.cs" />
     <Compile Include="Project.cs">

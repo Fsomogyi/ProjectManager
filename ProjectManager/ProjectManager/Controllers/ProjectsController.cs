@@ -76,7 +76,7 @@ namespace ProjectManager.Controllers
             var deadlineString = Request.Form["deadline"];
             var deadline = DateTime.Parse(Request.Form["deadline"]);
 
-            if (name == string.Empty || deadline.CompareTo(DateTime.Now) <= 0)
+            if (name == string.Empty || deadline <= DateTime.Now)
             {
                 // TODO: display errors
 
@@ -157,34 +157,28 @@ namespace ProjectManager.Controllers
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
-            if (new ProjectUserManager().IsLeader(userId, projectId))
-            {
-                ViewData["isLeader"] = "Leader";
-            }
-            else
-            {
-                ViewData["isLeader"] = "NoLeader";
-            }
+            var managerTask = new TaskManager();
+            var managerProject = new ProjectUserManager();
+            var tasks = managerTask.GetTasksForProject(projectId);
 
-            var manager = new TaskManager();
-            var tasks = manager.GetTasksForProject(projectId);
+            ViewData["isLeader"] = managerProject.IsLeader(userId, projectId);
 
-            int tasksDone = tasks.Where(t => t.State == manager.GetDoneStateId()).Count();
-            int tasksActive = tasks.Where(t => t.State == manager.GetActiveStateId()).Count();
-            int tasksUnassigned = manager.GetUnassignedTasks(projectId).Count();
-            double workHours = manager.GetAllWorkTimeForProject(projectId)
+            int tasksDone = tasks.Where(t => t.State == managerTask.GetDoneStateId()).Count();
+            int tasksActive = tasks.Where(t => t.State == managerTask.GetActiveStateId()).Count();
+            int tasksUnassigned = managerTask.GetUnassignedTasks(projectId).Count();
+            double workHours = managerTask.GetAllWorkTimeForProject(projectId)
                 .Sum(w => w.EndTime.Subtract(w.StartTime).TotalSeconds);
 
-            var users = new ProjectUserManager().GetUsersForProject(projectId);
+            var users = managerProject.GetUsersForProject(projectId);
             List<string> devs = new List<string>();
             foreach (var u in users)
             {
                 devs.Add(u.UserName);
             }
 
-            var project = new ProjectUserManager().GetProject(projectId);
+            var project = managerProject.GetProject(projectId);
 
-            var projectLeaderName = new ProjectUserManager().GetProjectLeader(projectId).UserName;
+            var projectLeaderName = managerProject.GetProjectLeader(projectId).UserName;
 
             model = new OverviewModel(
                 project, devs,
@@ -205,27 +199,8 @@ namespace ProjectManager.Controllers
 
             ViewData["projectId"] = projectId;
             ViewData["deletedId"] = deletedId;
-
-            if (new ProjectUserManager().IsLeader(userId, projectId))
-            {
-                ViewData["isLeader"] = "Leader";
-            }
-            else
-            {
-                ViewData["isLeader"] = "NoLeader";
-            }
-
-            var project = new ProjectUserManager().GetProject(projectId);
-            if (project.Done)
-            {
-                ViewData["isDone"] = "Done";
-            }
-            else
-            {
-                ViewData["isDone"] = "NotDone";
-            }
-
-
+            ViewData["isLeader"] = new ProjectUserManager().IsLeader(userId, projectId);
+            ViewData["isDone"] = new ProjectUserManager().GetProject(projectId).Done;
 
             var tasks = manager.GetTasksForProject(projectId);
 
@@ -263,25 +238,8 @@ namespace ProjectManager.Controllers
             var managerProject = new ProjectUserManager();
 
             ViewData["projectId"] = projectId;
-
-            if (managerProject.IsLeader(userId, projectId))
-            {
-                ViewData["isLeader"] = "Leader";
-            }
-            else
-            {
-                ViewData["isLeader"] = "NoLeader";
-            }
-
-            var project = managerProject.GetProject(projectId);
-            if (project.Done)
-            {
-                ViewData["isDone"] = "Done";
-            }
-            else
-            {
-                ViewData["isDone"] = "NotDone";
-            }
+            ViewData["isLeader"] = managerProject.IsLeader(userId, projectId);
+            ViewData["isDone"] = managerProject.GetProject(projectId).Done;
 
             var tasks = managerTask.GetTasksForProject(projectId);
             var users = managerProject.GetUsersForProject(projectId);

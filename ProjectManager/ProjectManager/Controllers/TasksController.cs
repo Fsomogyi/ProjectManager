@@ -24,16 +24,15 @@ namespace ProjectManager.Controllers
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
             var manager = new TaskManager();
+            var task = manager.GetTask(Id);
+            var stateName = manager.GetTaskStateName(Id);
+            var users = manager.GetUsersForTask(Id);
+            var workTimes = manager.GetAllWorkTimeForTask(Id);
+            var comments = manager.GetComments(Id);
+            var canComment = task.State == manager.GetActiveStateId();
 
             var project = manager.GetProjectForTask(Id);
-            if (new ProjectUserManager().IsLeader(userId, project.Id))
-            {
-                ViewData["isLeader"] = "Leader";
-            }
-            else
-            {
-                ViewData["isLeader"] = "NoLeader";
-            }
+            ViewData["isLeader"] = new ProjectUserManager().IsLeader(userId, project.Id);
 
             int deletedId = manager.GetDeletedStateId();
             ViewData["deletedId"] = deletedId;
@@ -41,12 +40,7 @@ namespace ProjectManager.Controllers
             int doneId = manager.GetDoneStateId();
             ViewData["doneId"] = doneId;
 
-            var task = manager.GetTask(Id);
-            var stateName = manager.GetTaskStateName(Id);
-            var users = manager.GetUsersForTask(Id);
-            var workTimes = manager.GetAllWorkTimeForTask(Id);
-            var comments = manager.GetComments(Id);
-            var canComment = task.State == manager.GetActiveStateId();
+            ViewData["isUserOnTask"] = users.Any(u => u.Id == userId);
 
             List<string> devs = new List<string>();
             foreach (var u in users)
@@ -151,12 +145,12 @@ namespace ProjectManager.Controllers
         [HttpPost]
         public ActionResult DeleteTask(int taskId)
         {
-            int userId = int.Parse(User.Identity.GetProjectUserId());
-
             var manager = new TaskManager();
-            manager.DeleteTask(taskId);
 
+            int userId = int.Parse(User.Identity.GetProjectUserId());
             var projectId = manager.GetProjectForTask(taskId).Id;
+
+            manager.DeleteTask(taskId);
 
             TempData["DetailsPage"] = "1";
             return Redirect("/Projects/Details/" + projectId);
@@ -166,12 +160,57 @@ namespace ProjectManager.Controllers
         [HttpPost]
         public ActionResult RestoreTask(int taskId)
         {
-            int userId = int.Parse(User.Identity.GetProjectUserId());
-
             var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
             manager.RestoreTask(taskId);
 
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: /Tasks/AddWorkTime
+        [HttpPost]
+        public ActionResult AddWorkTime(int taskId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
             var projectId = manager.GetProjectForTask(taskId).Id;
+            DateTime startTime = DateTime.Now.AddHours(1);
+            DateTime endTime = DateTime.Now;
+
+            try
+            {
+                startTime = DateTime.Parse(Request.Form["startTime"]);
+                endTime = DateTime.Parse(Request.Form["endTime"]);
+            }
+            catch (Exception ex)
+            {
+                // TODO: exception handling
+            }
+
+            if (startTime < endTime && startTime.AddMinutes(-5) < DateTime.Now)
+            {
+                WorktimeData data = new WorktimeData()
+                {
+                    ProjectUserId = userId,
+                    TaskId = taskId,
+                    StartTime = startTime,
+                    EndTime = endTime
+                };
+
+                if (!manager.AddWorkTime(data))
+                {
+                    // TODO: error display and stay on view (overlapping work time)
+                }
+            }
+            else
+            {
+                // TODO: error display and stay on view (invalid start or end time)
+            }
 
             TempData["DetailsPage"] = "1";
             return Redirect("/Projects/Details/" + projectId);

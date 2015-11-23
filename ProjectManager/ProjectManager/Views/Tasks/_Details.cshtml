@@ -5,7 +5,7 @@
     $(document).ready(function () {
         $('#writeCommentDiv').hide();
         $('#writeComment').click(function () {
-            $('#writeCommentDiv').show();
+            $('#writeCommentDiv').toggle();
         })
 
 
@@ -29,25 +29,47 @@
 
 <h2>@Model.Task.Name</h2>
 
-@if((ViewData["isLeader"] as string).Equals("Leader"))
+@if((bool)ViewData["isLeader"] && Model.Task.State != (int)ViewData["doneId"])
 {
-    if (Model.Task.State != (int)ViewData["doneId"])
+    if (Model.Task.State == (int)ViewData["deletedId"])
     {
-        if (Model.Task.State == (int)ViewData["deletedId"])
+        using (Html.BeginForm("RestoreTask", "Tasks", new { taskId = Model.Task.Id }))
         {
-            using (Html.BeginForm("RestoreTask", "Tasks", new { taskId = Model.Task.Id }))
-            {
-                <button type="submit">Restore task</button>
-            }
+            <button type="submit">Restore task</button>
         }
+    }
 
-        else
+    else
+    {
+        using (Html.BeginForm("DeleteTask", "Tasks", new { taskId = Model.Task.Id }))
         {
-            using (Html.BeginForm("DeleteTask", "Tasks", new { taskId = Model.Task.Id }))
-            {
-                <button type="submit">Delete task</button>
-            }
+            <button type="submit">Delete task</button>
         }
+    }
+}
+
+@if((bool)ViewData["isUserOnTask"] && Model.Task.State != (int)ViewData["doneId"]
+    && Model.Task.State != (int)ViewData["deletedId"])
+{
+    using (Html.BeginForm("AddWorkTime", "Tasks", new { taskId = Model.Task.Id }))
+    {
+        
+        //data-provide="datepicker" data-date-format="yyyy.mm.dd" 
+        <br /> <br /> 
+        
+        <p>Start time:</p> <input name="startTime" type="text" 
+            value="@DateTime.Now.ToString("yyyy.MM.dd H:mm")" />
+    
+        <br /> <br /> 
+
+        <p>End time:</p> <input name="endTime" type="text"
+            value="@DateTime.Now.ToString("yyyy.MM.dd H:mm")" />
+        
+        <br /><br />
+        
+        <button type="submit">Add Work Time</button>
+    
+        <br /> <br /> 
     }
 }
 
