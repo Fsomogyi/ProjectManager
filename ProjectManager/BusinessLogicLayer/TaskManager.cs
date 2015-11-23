@@ -174,7 +174,8 @@ namespace BusinessLogicLayer
             {
                 List<ProjectUser> result = new List<ProjectUser>();
 
-                var userIds = context.Assignment.Where(a => a.TaskId == taskId).Select(a => a.ProjectUserId);
+                var userIds = context.Assignment.Where(a => a.TaskId == taskId &&
+                    a.Accepted == true).Select(a => a.ProjectUserId);
                 var users = context.ProjectUser;
 
                 foreach (var u in users)
@@ -187,7 +188,7 @@ namespace BusinessLogicLayer
             }
         }
 
-        public void DeleteTask(int taskId)
+        public void DeleteTask(int taskId, int userId, string reason)
         {
             using (var context = new ProjectManagerDBEntities())
             {
@@ -196,11 +197,21 @@ namespace BusinessLogicLayer
                 var task = context.Task.First(t => t.Id == taskId);
                 task.State = deletedId;
 
+                context.TaskStateChange.Add(new TaskStateChange()
+                    {
+                        ProjectUserId = userId,
+                        Timestamp = DateTime.Now,
+                        TaskId = taskId,
+                        TaskState = deletedId,
+                        Accepted = true,
+                        Reason = reason != string.Empty ? reason : null
+                    });
+
                 context.SaveChanges();
             }
         }
 
-        public void RestoreTask(int taskId)
+        public void RestoreTask(int taskId, int userId, string reason)
         {
             using (var context = new ProjectManagerDBEntities())
             {
@@ -215,6 +226,16 @@ namespace BusinessLogicLayer
                     task.State = activeId;
                 else
                     task.State = newId;
+
+                context.TaskStateChange.Add(new TaskStateChange()
+                {
+                    ProjectUserId = userId,
+                    Timestamp = DateTime.Now,
+                    TaskId = taskId,
+                    TaskState = task.State,
+                    Accepted = true,
+                    Reason = reason != string.Empty ? reason : null
+                });
 
                 context.SaveChanges();
             }
@@ -283,7 +304,12 @@ namespace BusinessLogicLayer
                 {
                     var assignments = task.Assignment.Where(a => a.ProjectUserId == user.Id);
 
-                    if ((assignments.Count() == 0) == addable)
+                    if (addable && assignments.Count() == 0)
+                    {
+                        result.Add(user);
+                    }
+
+                    else if (!addable && assignments.Count(a => a.Accepted == true) > 0)
                     {
                         result.Add(user);
                     }
@@ -325,6 +351,69 @@ namespace BusinessLogicLayer
 
                 if (assignment != null)
                     context.Assignment.Remove(assignment);
+
+                context.SaveChanges();
+            }
+        }
+
+        public List<ProjectUser> GetUnacceptedDevelopers(int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                List<ProjectUser> result = new List<ProjectUser>();
+
+                var userIds = context.Assignment.Where(a => a.TaskId == taskId &&
+                    a.Accepted == false).Select(a => a.ProjectUserId);
+                var users = context.ProjectUser;
+
+                foreach (var u in users)
+                {
+                    if (userIds.Contains(u.Id))
+                        result.Add(u);
+                }
+
+                return result;
+            }
+        }
+
+        public void AcceptAppliance(int taskId, int userId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var assignment = context.Assignment.FirstOrDefault(
+                    a => a.TaskId == taskId && a.ProjectUserId == userId && a.Accepted == false);
+
+                if (assignment != null)
+                {
+                    assignment.Accepted = true;
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void DeclineAppliance(int taskId, int userId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var assignment = context.Assignment.FirstOrDefault(
+                    a => a.TaskId == taskId && a.ProjectUserId == userId && a.Accepted == false);
+
+                if (assignment != null)
+                {
+                    context.Assignment.Remove(assignment);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void FinishTask(int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                int doneId = GetDoneStateId();
+
+                var task = context.Task.First(t => t.Id == taskId);
+                task.State = doneId;
 
                 context.SaveChanges();
             }

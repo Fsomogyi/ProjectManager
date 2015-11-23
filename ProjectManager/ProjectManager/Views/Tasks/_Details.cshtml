@@ -38,6 +38,9 @@
         using (Html.BeginForm("RestoreTask", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
         {
             <button type="submit">Restore task</button>
+            <h4>Reason:</h4>
+            <textarea style="width: 50%" name="restoreDescription" rows="4" />
+            <hr style="border-top:2px solid black;"/>
         }
     }
 
@@ -46,6 +49,9 @@
         using (Html.BeginForm("DeleteTask", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
         {
             <button type="submit">Delete task</button>
+            <h4>Reason:</h4>
+            <textarea style="width: 50%" name="deleteDescription" rows="4" />
+            <hr style="border-top:2px solid black;"/>
         }
     }
 }
@@ -88,17 +94,50 @@
 
         </fieldset>
     }
+    <hr style="border-top:2px solid black;"/>
 }
-<br />
+
+@if (!(bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"] &&
+    !(bool)ViewData["isUserApplyUnaccepted"] && !(bool)ViewData["isUserOnTask"])
+{
+    using (Html.BeginForm("ApplyDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
+    {
+        <button type="submit">Apply for task</button>
+    }
+    <hr style="border-top:2px solid black;"/>
+}
+
+
+@if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"])
+{
+    if (Model.UnacceptedDevelopers.Count > 0)
+    {
+        <h4>Unaccepted appliances</h4> <br />
+    }
+
+    foreach (var dev in Model.UnacceptedDevelopers)
+    {
+        <b>@dev.UserName</b>
+        using (Html.BeginForm("AcceptAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post))
+        {
+            <button type="submit">Accept</button>
+        }
+
+        using (Html.BeginForm("DeclineAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post))
+        {
+            <button type="submit">Decline</button>
+        }
+        <hr style="border-top:2px solid black;"/>
+    }
+}
 
 @if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"])
 {
     using (Html.BeginForm("FinalizeUserApplication", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
     {
         <button type="submit">Finalize user application</button>
+        <hr style="border-top:2px solid black;"/>
     }
-    
-    <br />
 }
 
 @if ((bool)ViewData["isUserOnTask"] && Model.Task.State == (int)ViewData["activeId"])
@@ -121,7 +160,7 @@
         
         <button type="submit">Add Work Time</button>
     
-        <br /> <br /> 
+        <hr style="border-top:2px solid black;"/>
     }
 }
 

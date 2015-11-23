@@ -35,7 +35,7 @@
 </script>
 
 @{
-    if ((bool)ViewData["isLeader"] && (bool)ViewData["isDone"])
+    if ((bool)ViewData["isLeader"] && !(bool)ViewData["isDone"])
     {
         <input type="button" id="createTaskDialog" value="New task" /><br />
     }

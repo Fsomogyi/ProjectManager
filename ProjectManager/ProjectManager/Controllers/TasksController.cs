@@ -34,6 +34,7 @@ namespace ProjectManager.Controllers
                 Id, userId, addable: true);
             var removableDevelopers = manager.GetAddableOrRemovableDevelopers(
                 Id, userId, addable: false);
+            var unacceptedDevelopers = manager.GetUnacceptedDevelopers(Id);
 
             var project = manager.GetProjectForTask(Id);
             ViewData["isLeader"] = new ProjectUserManager().IsLeader(userId, project.Id);
@@ -51,6 +52,7 @@ namespace ProjectManager.Controllers
             ViewData["newId"] = newId;
 
             ViewData["isUserOnTask"] = users.Any(u => u.Id == userId);
+            ViewData["isUserApplyUnaccepted"] = unacceptedDevelopers.Any(u => u.Id == userId);
 
             List<string> devs = new List<string>();
             foreach (var u in users)
@@ -82,7 +84,7 @@ namespace ProjectManager.Controllers
             }
 
             model = new TaskDetailsModel(task, stateName, devs, userHours, commentViewModels, canComment,
-                addableDevelopers, removableDevelopers);
+                addableDevelopers, removableDevelopers, unacceptedDevelopers);
             return PartialView("_Details", model);
         }
 
@@ -160,8 +162,9 @@ namespace ProjectManager.Controllers
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
             var projectId = manager.GetProjectForTask(taskId).Id;
+            var description = Request.Form["deleteDescription"];
 
-            manager.DeleteTask(taskId);
+            manager.DeleteTask(taskId, userId, description);
 
             TempData["DetailsPage"] = "1";
             return Redirect("/Projects/Details/" + projectId);
@@ -175,8 +178,9 @@ namespace ProjectManager.Controllers
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
             var projectId = manager.GetProjectForTask(taskId).Id;
+            var description = Request.Form["restoreDescription"];
 
-            manager.RestoreTask(taskId);
+            manager.RestoreTask(taskId, userId, description);
 
             TempData["DetailsPage"] = "1";
             return Redirect("/Projects/Details/" + projectId);
@@ -278,6 +282,51 @@ namespace ProjectManager.Controllers
                 int developerId = int.Parse(Request.Form["removeUserId"]);
                 manager.RemoveDeveloperFromTask(developerId, taskId);
             }
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: Tasks/ApplyDeveloper
+        [HttpPost]
+        public ActionResult ApplyDeveloper(int taskId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
+            manager.AddDeveloperToTask(userId, taskId, accepted: false);
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: Tasks/AcceptAppliance
+        [HttpPost]
+        public ActionResult AcceptAppliance(int taskId, int developerId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
+            manager.AcceptAppliance(taskId, developerId);
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: Tasks/DeclineAppliance
+        [HttpPost]
+        public ActionResult DeclineAppliance(int taskId, int developerId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
+            manager.DeclineAppliance(taskId, developerId);
 
             TempData["DetailsPage"] = "1";
             return Redirect("/Projects/Details/" + projectId);
