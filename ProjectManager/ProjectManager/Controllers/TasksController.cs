@@ -53,6 +53,7 @@ namespace ProjectManager.Controllers
 
             ViewData["isUserOnTask"] = users.Any(u => u.Id == userId);
             ViewData["isUserApplyUnaccepted"] = unacceptedDevelopers.Any(u => u.Id == userId);
+            ViewData["isMaxDevelopers"] = task.MaxDevelopers == null ? false : task.MaxDevelopers <= users.Count;
 
             List<string> devs = new List<string>();
             foreach (var u in users)

@@ -50,7 +50,15 @@
     {
         <div class="task-element">
             <p class="project-title"><a href="#" class="alert" id="TaskDetails@(item.Task.Id)">@item.Task.Name</a></p>
-            <p>Assigned to: 
+            <p>
+                @if(item.Task.MaxDevelopers != null)
+                {
+                    @("Max developers: ")
+                    @item.Task.MaxDevelopers
+                    <br />
+                }
+
+                Assigned to: 
                 @foreach (var name in item.DeveloperNames)
                 {
                     @name
@@ -75,7 +83,15 @@
     {
         <div class="task-element">
             <p class="project-title"><a href="#" class="alert" id="TaskDetails@(item.Task.Id)">@item.Task.Name</a></p>
-            <p>Assigned to: 
+            <p>
+                @if(item.Task.MaxDevelopers != null)
+                {
+                    @("Max developers: ")
+                    @item.Task.MaxDevelopers
+                    <br />
+                }
+
+                Assigned to: 
                 @foreach (var name in item.DeveloperNames)
                 {
                     @name

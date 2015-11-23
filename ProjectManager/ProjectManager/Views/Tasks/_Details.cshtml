@@ -58,23 +58,26 @@
 
 @if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"])
 {
-    using (Html.BeginForm("AddDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
+    if (!(bool)ViewData["isMaxDevelopers"])
     {
-        <fieldset>
-            <legend>Add developer</legend>
+        using (Html.BeginForm("AddDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
+        {
+            <fieldset>
+                <legend>Add developer</legend>
 
-            <select name="addUserId">
-            @foreach (var item in Model.AddableDevelopers)
-            {
-                <option value="@item.Id">@item.UserName</option>
-            }
-            </select>
+                <select name="addUserId">
+                @foreach (var item in Model.AddableDevelopers)
+                {
+                    <option value="@item.Id">@item.UserName</option>
+                }
+                </select>
 
-            <input type="submit" id="addDeveloper" value="Add developer"  />
+                <input type="submit" id="addDeveloper" value="Add developer"  />
 
-        </fieldset>
+            </fieldset>
 
-        <hr style="border-top:1px solid black;"/>
+            <hr style="border-top:1px solid black;"/>
+        }
     }
 
     using (Html.BeginForm("RemoveDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
@@ -118,9 +121,13 @@
     foreach (var dev in Model.UnacceptedDevelopers)
     {
         <b>@dev.UserName</b>
-        using (Html.BeginForm("AcceptAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post))
+        
+        if (!(bool)ViewData["isMaxDevelopers"])
         {
-            <button type="submit">Accept</button>
+            using (Html.BeginForm("AcceptAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post))
+            {
+                <button type="submit">Accept</button>
+            }
         }
 
         using (Html.BeginForm("DeclineAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post))
