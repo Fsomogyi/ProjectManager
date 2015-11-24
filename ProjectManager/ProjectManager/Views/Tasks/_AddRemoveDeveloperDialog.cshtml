@@ -1,6 +1,6 @@
 ﻿@model ProjectManager.Models.TaskDetailsModel
 
-@if (Model.AddableDevelopers.Count < 1) { 
+@if (Model.AddableDevelopers.Count < 1 && !Model.MaxDevelopers) { 
     using (Html.BeginForm("AddDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post)) {
         <fieldset>
             <legend>Add developer</legend>

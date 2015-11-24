@@ -42,6 +42,13 @@
         <div class="task-element @if (item.State.Contains("Active")) { <text>task-active</text>}  @if (item.State.Contains("Done")){ <text>task-done</text>}">
             <p class="project-title"><a href="#" class="showTaskDetailsButton" id="TaskDetails@(item.Task.Id)">@item.Task.Name</a></p>
             <p>
+                @if (item.Task.MaxDevelopers != null)
+                {
+                    <b>@("Max developers: ") </b>
+                    @item.Task.MaxDevelopers
+                    <br />
+                }
+                
                 <b>Assigned to:</b>
                 @foreach (var name in item.DeveloperNames)
                 {
@@ -69,6 +76,13 @@
             <div class="task-element">
                 <p class="project-title"><a href="#" class="showTaskDetailsButton" id="TaskDetails@(item.Task.Id)">@item.Task.Name</a></p>
                 <p>
+                    @if(item.Task.MaxDevelopers != null)
+                    {
+                            @("Max developers: ")
+                            @item.Task.MaxDevelopers
+                            <br />
+                    }
+
                     Assigned to:
                     @foreach (var name in item.DeveloperNames)
                     {
@@ -83,4 +97,3 @@
         }
     </div>
 }
-

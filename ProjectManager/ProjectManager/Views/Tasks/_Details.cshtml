@@ -56,6 +56,18 @@
             $("#subWindowBg").fadeIn();
             return false;
         });
+
+        $("#finishDialog").click(function () {
+            $("#subWindowContent").load('/Tasks/FinishDialog/' + @Model.Task.Id);
+            $("#subWindowBg").fadeIn();
+            return false;
+        });
+
+        $("#reopenDialog").click(function () {
+            $("#subWindowContent").load('/Tasks/ReopenDialog/' + @Model.Task.Id);
+            $("#subWindowBg").fadeIn();
+            return false;
+        });
     });
 </script>
 
@@ -85,6 +97,7 @@
     }
 }
 
+
 @if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"] && !Model.ProjectDone)
 {
     <input class="action-button-small" id="addOrRemoveDeveloper" type="button" value="Change developers"/>
@@ -101,6 +114,15 @@
     {
         <button class="action-button-small" type="submit">Start task</button>
     }
+}
+
+@if (Model.Task.State == (int)ViewData["activeId"] && (bool)ViewData["userHasWorktime"] && !Model.ProjectDone)
+{
+    <input class="action-button-small" id="finishDialog" type="button" value="Finish task" />
+}
+else if (Model.Task.State == (int)ViewData["doneId"] && (bool)ViewData["userHasWorktime"] && !Model.ProjectDone)
+{
+    <input class="action-button-small" id="reopenDialog" type="button" value="Reopen task" />
 }
 
 <hr style="border-top:2px solid black;" />
@@ -125,10 +147,14 @@
 
     foreach (var dev in Model.UnacceptedDevelopers)
     {
+
         <div style="width: 100px; margin: 5px; display: inline-block; height: 34px; ">@dev.UserName</div>
-        using (Html.BeginForm("AcceptAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post, new { @class = "inlineform" }))
+        if (!Model.MaxDevelopers)
         {
-            <button type="submit" class="action-button-smallest">Accept</button>
+            using (Html.BeginForm("AcceptAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post, new { @class = "inlineform" }))
+            {
+                <button type="submit" class="action-button-smallest">Accept</button>
+            }
         }
 
         using (Html.BeginForm("DeclineAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post, new { @class = "inlineform" }))
@@ -139,13 +165,49 @@
     }
 }
 
-<p class="fieldLabel">Assigned to:</p>
+@if (Model.UnacceptedTaskStateChanges.Count > 0)
+{
+    <h4>Unaccepted state changes</h4>
+    foreach (var tsc in Model.UnacceptedTaskStateChanges)
+    {
+        <p>
+            User: @tsc.UserName 
+        </p>
+        <p>
+            State: @tsc.StateName 
+        </p>
+            <p>
+            Reason: @tsc.Reason 
+        </p>
+            <p>
+            Date: @tsc.Timestamp.ToString("yyyy.MM.dd H:mm") 
+        </p>
+    
+        if((bool)ViewData["isLeader"])
+        {
+            using (Html.BeginForm("AcceptStateChange", "Tasks", new { taskId = Model.Task.Id, developerId = tsc.ProjectUserId }, FormMethod.Post))
+            {
+                <button type="submit">Accept</button>
+            }
+            using (Html.BeginForm("DeclineStateChange", "Tasks", new { taskId = Model.Task.Id, developerId = tsc.ProjectUserId }, FormMethod.Post))
+            {
+                <button type="submit">Decline</button>
+                <hr style="border-top:2px solid black;"/>
+            }
+        }
+    }
+    <hr style="border-top:2px solid black;"/>
+}
+
+
+    <p class="fieldLabel">Assigned to:</p>
     @foreach (var name in Model.DeveloperNames)
     {
         @name
         if (Model.DeveloperNames.Last() != @name)
         {@(", ")}
     }
+
     <p class ="fieldLabel">State:</p> @Model.StateName
 
     @if (Model.WorkHours.Count > 0)

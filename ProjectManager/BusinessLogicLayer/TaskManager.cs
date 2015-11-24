@@ -406,16 +406,111 @@ namespace BusinessLogicLayer
             }
         }
 
-        public void FinishTask(int taskId)
+        public List<TaskStateChangeData> GetUnacceptedTaskStateChanges(int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                List<TaskStateChangeData> result = new List<TaskStateChangeData>();
+
+                var changes = context.TaskStateChange.Where(ts => ts.TaskId == taskId &&
+                    ts.Accepted == false).ToList();
+
+                foreach (var change in changes)
+                {
+                    result.Add(new TaskStateChangeData()
+                        {
+                            ProjectUserId = change.ProjectUserId,
+                            Timestamp = change.Timestamp,
+                            UserName = change.ProjectUser.UserName,
+                            StateName = change.TaskState1.Name,
+                            Reason = change.Reason
+                        });
+                }
+
+                return result;
+            }
+        }
+
+        public void FinishTask(int taskId, int userId, string reason, bool accepted)
         {
             using (var context = new ProjectManagerDBEntities())
             {
                 int doneId = GetDoneStateId();
 
                 var task = context.Task.First(t => t.Id == taskId);
-                task.State = doneId;
+
+                if (accepted)
+                    task.State = doneId;
+
+                context.TaskStateChange.Add(new TaskStateChange()
+                {
+                    ProjectUserId = userId,
+                    Timestamp = DateTime.Now,
+                    TaskId = taskId,
+                    TaskState = doneId,
+                    Accepted = accepted,
+                    Reason = reason != string.Empty ? reason : null
+                });
 
                 context.SaveChanges();
+            }
+        }
+
+        public void UnfinishTask(int taskId, int userId, string reason, bool accepted)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                int activeId = GetActiveStateId();
+
+                var task = context.Task.First(t => t.Id == taskId);
+
+                if (accepted)
+                    task.State = activeId;
+
+                context.TaskStateChange.Add(new TaskStateChange()
+                {
+                    ProjectUserId = userId,
+                    Timestamp = DateTime.Now,
+                    TaskId = taskId,
+                    TaskState = activeId,
+                    Accepted = accepted,
+                    Reason = reason != string.Empty ? reason : null
+                });
+
+                context.SaveChanges();
+            }
+        }
+
+        public void AcceptStateChange(int taskId, int userId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var change = context.TaskStateChange.FirstOrDefault(
+                    a => a.TaskId == taskId && a.ProjectUserId == userId && a.Accepted == false);
+
+                var task = context.Task.First(t => t.Id == taskId);
+
+                if (change != null)
+                {
+                    change.Accepted = true;
+                    task.State = change.TaskState;
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        public void DeclineStateChange(int taskId, int userId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                var change = context.TaskStateChange.FirstOrDefault(
+                    a => a.TaskId == taskId && a.ProjectUserId == userId && a.Accepted == false);
+
+                if (change != null)
+                {
+                    context.TaskStateChange.Remove(change);
+                    context.SaveChanges();
+                }
             }
         }
     }

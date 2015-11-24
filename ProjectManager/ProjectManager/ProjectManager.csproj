@@ -335,6 +335,8 @@
     <Content Include="Views\Tasks\_DeleteDialog.cshtml" />
     <Content Include="Views\Tasks\_RestoreDialog.cshtml" />
     <Content Include="Views\Tasks\_AddWorkTimeDialog.cshtml" />
+    <Content Include="Views\Tasks\_FinishDialog.cshtml" />
+    <Content Include="Views\Tasks\_ReopenDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
