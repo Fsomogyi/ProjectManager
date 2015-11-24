@@ -39,7 +39,7 @@
         {
             <button type="submit">Restore task</button>
             <h4>Reason:</h4>
-            <textarea style="width: 50%" name="restoreDescription" rows="4" />
+            <textarea style="width: 50%" name="restoreReason" rows="4" />
             <hr style="border-top:2px solid black;"/>
         }
     }
@@ -50,7 +50,7 @@
         {
             <button type="submit">Delete task</button>
             <h4>Reason:</h4>
-            <textarea style="width: 50%" name="deleteDescription" rows="4" />
+            <textarea style="width: 50%" name="deleteReason" rows="4" />
             <hr style="border-top:2px solid black;"/>
         }
     }
@@ -143,6 +143,60 @@
     using (Html.BeginForm("FinalizeUserApplication", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
     {
         <button type="submit">Finalize user application</button>
+        <hr style="border-top:2px solid black;"/>
+    }
+}
+
+@if (Model.UnacceptedTaskStateChanges.Count > 0)
+{
+    <h4>Unaccepted state changes</h4>
+    foreach (var tsc in Model.UnacceptedTaskStateChanges)
+    {
+        <p>
+            User: @tsc.UserName 
+        </p>
+        <p>
+            State: @tsc.StateName 
+        </p>
+            <p>
+            Reason: @tsc.Reason 
+        </p>
+            <p>
+            Date: @tsc.Timestamp.ToString("yyyy.MM.dd H:mm") 
+        </p>
+    
+        if((bool)ViewData["isLeader"])
+        {
+            using (Html.BeginForm("AcceptStateChange", "Tasks", new { taskId = Model.Task.Id, developerId = tsc.ProjectUserId }, FormMethod.Post))
+            {
+                <button type="submit">Accept</button>
+            }
+            using (Html.BeginForm("DeclineStateChange", "Tasks", new { taskId = Model.Task.Id, developerId = tsc.ProjectUserId }, FormMethod.Post))
+            {
+                <button type="submit">Decline</button>
+                <hr style="border-top:2px solid black;"/>
+            }
+        }
+    }
+    <hr style="border-top:2px solid black;"/>
+}
+else if (Model.Task.State == (int)ViewData["activeId"] && (bool)ViewData["userHasWorktime"])
+{
+    using (Html.BeginForm("FinishTask", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
+    {
+        <button type="submit">Finish</button>
+        <h4>Reason:</h4>
+        <textarea style="width: 50%" name="finishReason" rows="4" />
+        <hr style="border-top:2px solid black;"/>
+    }
+}
+else if (Model.Task.State == (int)ViewData["doneId"] && (bool)ViewData["userHasWorktime"])
+{
+    using (Html.BeginForm("UnfinishTask", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
+    {
+        <button type="submit">Unfinish (TODO: better name)</button>
+        <h4>Reason:</h4>
+        <textarea style="width: 50%" name="unfinishReason" rows="4" />    
         <hr style="border-top:2px solid black;"/>
     }
 }

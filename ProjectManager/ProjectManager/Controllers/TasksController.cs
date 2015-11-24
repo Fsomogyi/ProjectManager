@@ -19,8 +19,6 @@ namespace ProjectManager.Controllers
         // GET: Task details
         public ActionResult Details(int Id)
         {
-            TaskDetailsModel model;
-
             int userId = int.Parse(User.Identity.GetProjectUserId());
 
             var manager = new TaskManager();
@@ -35,6 +33,7 @@ namespace ProjectManager.Controllers
             var removableDevelopers = manager.GetAddableOrRemovableDevelopers(
                 Id, userId, addable: false);
             var unacceptedDevelopers = manager.GetUnacceptedDevelopers(Id);
+            var unacceptedTaskStateChanges = manager.GetUnacceptedTaskStateChanges(Id);
 
             var project = manager.GetProjectForTask(Id);
             ViewData["isLeader"] = new ProjectUserManager().IsLeader(userId, project.Id);
@@ -54,6 +53,7 @@ namespace ProjectManager.Controllers
             ViewData["isUserOnTask"] = users.Any(u => u.Id == userId);
             ViewData["isUserApplyUnaccepted"] = unacceptedDevelopers.Any(u => u.Id == userId);
             ViewData["isMaxDevelopers"] = task.MaxDevelopers == null ? false : task.MaxDevelopers <= users.Count;
+            ViewData["userHasWorktime"] = workTimes.Any(w => w.ProjectUserId == userId);
 
             List<string> devs = new List<string>();
             foreach (var u in users)
@@ -84,8 +84,8 @@ namespace ProjectManager.Controllers
                 userHours[userName] = currentHours + elapsed;
             }
 
-            model = new TaskDetailsModel(task, stateName, devs, userHours, commentViewModels, canComment,
-                addableDevelopers, removableDevelopers, unacceptedDevelopers);
+            var model = new TaskDetailsModel(task, stateName, devs, userHours, commentViewModels, canComment,
+                addableDevelopers, removableDevelopers, unacceptedDevelopers, unacceptedTaskStateChanges);
             return PartialView("_Details", model);
         }
 
@@ -163,9 +163,9 @@ namespace ProjectManager.Controllers
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
             var projectId = manager.GetProjectForTask(taskId).Id;
-            var description = Request.Form["deleteDescription"];
+            var reason = Request.Form["deleteReason"];
 
-            manager.DeleteTask(taskId, userId, description);
+            manager.DeleteTask(taskId, userId, reason);
 
             TempData["DetailsPage"] = "1";
             return Redirect("/Projects/Details/" + projectId);
@@ -179,9 +179,9 @@ namespace ProjectManager.Controllers
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
             var projectId = manager.GetProjectForTask(taskId).Id;
-            var description = Request.Form["restoreDescription"];
+            var reason = Request.Form["restoreReason"];
 
-            manager.RestoreTask(taskId, userId, description);
+            manager.RestoreTask(taskId, userId, reason);
 
             TempData["DetailsPage"] = "1";
             return Redirect("/Projects/Details/" + projectId);
@@ -328,6 +328,70 @@ namespace ProjectManager.Controllers
             var projectId = manager.GetProjectForTask(taskId).Id;
 
             manager.DeclineAppliance(taskId, developerId);
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: Tasks/FinishTask
+        [HttpPost]
+        public ActionResult FinishTask(int taskId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+            var isLeader = new ProjectUserManager().IsLeader(userId, projectId);
+            var reason = Request.Form["finishReason"];
+
+            manager.FinishTask(taskId, userId, reason, isLeader);
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: Tasks/UnfinishTask
+        [HttpPost]
+        public ActionResult UnfinishTask(int taskId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+            var isLeader = new ProjectUserManager().IsLeader(userId, projectId);
+            var reason = Request.Form["unfinishReason"];
+
+            manager.UnfinishTask(taskId, userId, reason, isLeader);
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: Tasks/AcceptStateChange
+        [HttpPost]
+        public ActionResult AcceptStateChange(int taskId, int developerId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
+            manager.AcceptStateChange(taskId, developerId);
+
+            TempData["DetailsPage"] = "1";
+            return Redirect("/Projects/Details/" + projectId);
+        }
+
+        // POST: Tasks/DeclineStateChange
+        [HttpPost]
+        public ActionResult DeclineStateChange(int taskId, int developerId)
+        {
+            var manager = new TaskManager();
+
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectId = manager.GetProjectForTask(taskId).Id;
+
+            manager.DeclineStateChange(taskId, developerId);
 
             TempData["DetailsPage"] = "1";
             return Redirect("/Projects/Details/" + projectId);
