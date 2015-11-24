@@ -28,6 +28,30 @@ namespace ProjectManager.Models
         }
     }
 
+    public class ProjectListElement
+    {
+        public Project Project { get; private set; }
+        public int Developers { get; private set; }
+        public int Tasks { get; private set; }
+
+        public ProjectListElement(Project Project, int Developers, int Tasks)
+        {
+            this.Project = Project;
+            this.Developers = Developers;
+            this.Tasks = Tasks;
+        }
+    }
+
+    public class ProjectsViewModel
+    {
+        public IEnumerable<ProjectListElement> Projects { get; private set; }
+
+        public ProjectsViewModel(IEnumerable<ProjectListElement> Projects)
+        {
+            this.Projects = Projects;
+        }
+    }
+
     public class TaskListElement
     {
         public Task Task { get; private set; }

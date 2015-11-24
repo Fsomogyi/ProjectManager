@@ -2,46 +2,47 @@
 
 <p>@Model.Project.Description</p>
 
-<p>Project state:
+<p class="fieldLabel">
     @if (Model.Project.Done)
     {
-        <b>DONE</b>
+        <b class="doneStyle">Project done</b>
     }
 
     else
     {
-        <b>ACTIVE</b>
-        <br />
-        
-        if((bool)ViewData["isLeader"])
+        if ((bool)ViewData["isLeader"])
         {
             using (Html.BeginForm("Finish", "Projects", new { Id = Model.Project.Id }))
             {
-                <button type="submit">FINISH</button>
+                <button type="submit" class="action-button">Finish project</button>
             }
         }
     }
 </p>
 
-<p>Deadline: 
-    @Model.Project.Deadline.ToString("yyyy.MM.dd")
-</p>
+<p class="fieldLabel">Deadline:</p>
+@Model.Project.Deadline.ToString("yyyy.MM.dd")
 
-<p>Project leader: 
-    @Model.ProjectLeaderName
-</p>
 
-<p>Developers: 
-    @foreach (var name in Model.DeveloperNames){
-        @name 
-        if (@Model.DeveloperNames.Last() != @name) {@(", ")} 
-    }
-</p>
+<p class="fieldLabel">Project leader:</p>
+@Model.ProjectLeaderName
 
-<p>Tasks:<br />
-    &nbsp;-Done: @Model.TasksDone<br />
-    &nbsp;-Active: @Model.TasksActive<br />
-    &nbsp;-Unassigned: @Model.TasksUnassigned<br />
-</p>
 
-<p>Total workhours: @Model.WorkHours</p>
+<p class="fieldLabel">
+    Developers:
+</p>
+@foreach (var name in Model.DeveloperNames)
+{
+    @name
+    if (@Model.DeveloperNames.Last() != @name)
+    {@(", ")}
+}
+
+
+<p class="fieldLabel">Task summary:</p>
+    &nbsp;Done: @Model.TasksDone<br />
+    &nbsp;Active: @Model.TasksActive<br />
+    &nbsp;Unassigned: @Model.TasksUnassigned<br /><br />
+
+
+<p class="fieldLabel">Total workhours: @Model.WorkHours</p>

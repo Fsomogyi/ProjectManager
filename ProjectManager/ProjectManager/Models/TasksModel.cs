@@ -42,12 +42,14 @@ namespace ProjectManager.Models
         public List<ProjectUser> AddableDevelopers { get; private set; }
         public List<ProjectUser> RemovableDevelopers { get; private set; }
         public List<ProjectUser> UnacceptedDevelopers { get; private set; }
+        public bool ProjectDone { get; private set; }
         public List<TaskStateChangeData> UnacceptedTaskStateChanges { get; private set; }
+        public bool MaxDevelopers { get; private set; }
 
         public TaskDetailsModel(Task Task, string State, IEnumerable<String> DeveloperNames,
             Dictionary<string, int> WorkHours, IEnumerable<CommentViewModel> Comments, bool CanComment,
             List<ProjectUser> AddableDevelopers, List<ProjectUser> RemovableDevelopers, List<ProjectUser> UnacceptedDevelopers,
-            List<TaskStateChangeData> UnacceptedTaskStateChanges)
+            List<TaskStateChangeData> UnacceptedTaskStateChanges, bool ProjectDone, bool MaxDevelopers)
         {
             this.Task = Task;
             this.StateName = State;
@@ -59,6 +61,8 @@ namespace ProjectManager.Models
             this.RemovableDevelopers = RemovableDevelopers;
             this.UnacceptedDevelopers = UnacceptedDevelopers;
             this.UnacceptedTaskStateChanges = UnacceptedTaskStateChanges;
+            this.ProjectDone = ProjectDone;
+            this.MaxDevelopers = MaxDevelopers;
         }
     }
 

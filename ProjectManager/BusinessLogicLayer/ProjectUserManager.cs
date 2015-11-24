@@ -143,6 +143,15 @@ namespace BusinessLogicLayer
             }
         }
 
+        public bool IsDone(int projectId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                return context.Project.First(p => p.Id == projectId).Done;
+            }
+        }
+
+
         public ProjectUser GetProjectLeader(int projectId)
         {
             using (var context = new ProjectManagerDBEntities())

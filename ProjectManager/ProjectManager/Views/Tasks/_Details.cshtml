@@ -24,126 +24,144 @@
 
             $('#writeCommentDiv').hide();
         });
+
+        $("#subWindowBg").css("height", $(document).height());
+        $("#subWindowBg").css("width", $(document).width());
+
+        $("#subWindowClose").click(function () {
+            $("#subWindowBg").fadeOut();
+            return false;
+        });
+
+        $("#addOrRemoveDeveloper").click(function () {
+            $("#subWindowContent").load('/Tasks/AddOrRemoveDeveloperDialog/' + @Model.Task.Id);
+            $("#subWindowBg").fadeIn();
+            return false;
+        });
+
+        $("#deleteTaskDialog").click(function () {
+            $("#subWindowContent").load('/Tasks/DeleteTaskDialog/' + @Model.Task.Id);
+            $("#subWindowBg").fadeIn();
+            return false;
+        });
+
+        $("#restoreTaskDialog").click(function () {
+            $("#subWindowContent").load('/Tasks/RestoreTaskDialog/' + @Model.Task.Id);
+            $("#subWindowBg").fadeIn();
+            return false;
+        });
+
+        $("#addWorkTime").click(function () {
+            $("#subWindowContent").load('/Tasks/AddWorkTimeDialog/' + @Model.Task.Id);
+            $("#subWindowBg").fadeIn();
+            return false;
+        });
+
+        $("#finishDialog").click(function () {
+            $("#subWindowContent").load('/Tasks/FinishDialog/' + @Model.Task.Id);
+            $("#subWindowBg").fadeIn();
+            return false;
+        });
+
+        $("#reopenDialog").click(function () {
+            $("#subWindowContent").load('/Tasks/ReopenDialog/' + @Model.Task.Id);
+            $("#subWindowBg").fadeIn();
+            return false;
+        });
     });
 </script>
 
+
+
+<div class="fuzz sub-window" id="subWindowBg">
+    <div class="subWindowFrame">
+        <a id="subWindowClose" href="#" class="closeWindowButton"><img src="~/Content/images/close.png" /></a>
+        <div id="subWindowContent">
+        </div>
+    </div>
+</div>
+
 <h2>@Model.Task.Name</h2>
 
-@if ((bool)ViewData["isLeader"] && Model.Task.State != (int)ViewData["doneId"])
+@if ((bool)ViewData["isLeader"] && Model.Task.State != (int)ViewData["doneId"] && !Model.ProjectDone)
 {
-    <br />
     
     if (Model.Task.State == (int)ViewData["deletedId"])
     {
-        using (Html.BeginForm("RestoreTask", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
-        {
-            <button type="submit">Restore task</button>
-            <h4>Reason:</h4>
-            <textarea style="width: 50%" name="restoreReason" rows="4" />
-            <hr style="border-top:2px solid black;"/>
-        }
+        <input class="action-button-small" id="restoreTaskDialog" type="button" value="Restore task" />
     }
 
     else
     {
-        using (Html.BeginForm("DeleteTask", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
-        {
-            <button type="submit">Delete task</button>
-            <h4>Reason:</h4>
-            <textarea style="width: 50%" name="deleteReason" rows="4" />
-            <hr style="border-top:2px solid black;"/>
-        }
+        <input class="action-button-small" id="deleteTaskDialog" type="button" value="Delete task" />
     }
 }
 
-@if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"])
+
+@if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"] && !Model.ProjectDone)
 {
-    if (!(bool)ViewData["isMaxDevelopers"])
-    {
-        using (Html.BeginForm("AddDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
-        {
-            <fieldset>
-                <legend>Add developer</legend>
-
-                <select name="addUserId">
-                @foreach (var item in Model.AddableDevelopers)
-                {
-                    <option value="@item.Id">@item.UserName</option>
-                }
-                </select>
-
-                <input type="submit" id="addDeveloper" value="Add developer"  />
-
-            </fieldset>
-
-            <hr style="border-top:1px solid black;"/>
-        }
-    }
-
-    using (Html.BeginForm("RemoveDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
-    {
-
-        <fieldset>
-            <legend>Remove developer</legend>
-
-            <select name="removeUserId">
-            @foreach (var item in Model.RemovableDevelopers)
-            {
-                <option value="@item.Id">@item.UserName</option>
-            }
-            </select>
-
-            <input type="submit" id="removeDeveloper" value="Remove developer"  />
-
-        </fieldset>
-    }
-    <hr style="border-top:2px solid black;"/>
+    <input class="action-button-small" id="addOrRemoveDeveloper" type="button" value="Change developers"/>
 }
+
+@if ((bool)ViewData["isUserOnTask"] && Model.Task.State == (int)ViewData["activeId"] && !Model.ProjectDone)
+{
+    <input class="action-button-small" id="addWorkTime" type="button" value="Add worktime" />
+}
+
+@if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"] && !Model.ProjectDone)
+{
+    using (Html.BeginForm("FinalizeUserApplication", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post, new { @class = "inlineform" }))
+    {
+        <button class="action-button-small" type="submit">Start task</button>
+    }
+}
+
+@if (Model.Task.State == (int)ViewData["activeId"] && (bool)ViewData["userHasWorktime"] && !Model.ProjectDone)
+{
+    <input class="action-button-small" id="finishDialog" type="button" value="Finish task" />
+}
+else if (Model.Task.State == (int)ViewData["doneId"] && (bool)ViewData["userHasWorktime"] && !Model.ProjectDone)
+{
+    <input class="action-button-small" id="reopenDialog" type="button" value="Reopen task" />
+}
+
+<hr style="border-top:2px solid black;" />
 
 @if (!(bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"] &&
-    !(bool)ViewData["isUserApplyUnaccepted"] && !(bool)ViewData["isUserOnTask"])
+    !(bool)ViewData["isUserApplyUnaccepted"] && !(bool)ViewData["isUserOnTask"] && !Model.ProjectDone)
 {
     using (Html.BeginForm("ApplyDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
     {
-        <button type="submit">Apply for task</button>
+        <button class="action-button-small" type="submit">Apply for task</button>
     }
     <hr style="border-top:2px solid black;"/>
 }
 
 
-@if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"])
+@if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"] && !Model.ProjectDone)
 {
     if (Model.UnacceptedDevelopers.Count > 0)
     {
-        <h4>Unaccepted appliances</h4> <br />
+        <h4>Unaccepted appliances</h4>
     }
 
     foreach (var dev in Model.UnacceptedDevelopers)
     {
-        <b>@dev.UserName</b>
-        
-        if (!(bool)ViewData["isMaxDevelopers"])
+
+        <div style="width: 100px; margin: 5px; display: inline-block; height: 34px; ">@dev.UserName</div>
+        if (!Model.MaxDevelopers)
         {
-            using (Html.BeginForm("AcceptAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post))
+            using (Html.BeginForm("AcceptAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post, new { @class = "inlineform" }))
             {
-                <button type="submit">Accept</button>
+                <button type="submit" class="action-button-smallest">Accept</button>
             }
         }
 
-        using (Html.BeginForm("DeclineAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post))
+        using (Html.BeginForm("DeclineAppliance", "Tasks", new { taskId = Model.Task.Id, developerId = dev.Id }, FormMethod.Post, new { @class = "inlineform" }))
         {
-            <button type="submit">Decline</button>
+            <button type="submit" class="action-button-smallest">Decline</button>
         }
-        <hr style="border-top:2px solid black;"/>
-    }
-}
-
-@if ((bool)ViewData["isLeader"] && Model.Task.State == (int)ViewData["newId"])
-{
-    using (Html.BeginForm("FinalizeUserApplication", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
-    {
-        <button type="submit">Finalize user application</button>
-        <hr style="border-top:2px solid black;"/>
+        <br />
     }
 }
 
@@ -180,77 +198,38 @@
     }
     <hr style="border-top:2px solid black;"/>
 }
-else if (Model.Task.State == (int)ViewData["activeId"] && (bool)ViewData["userHasWorktime"])
-{
-    using (Html.BeginForm("FinishTask", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
-    {
-        <button type="submit">Finish</button>
-        <h4>Reason:</h4>
-        <textarea style="width: 50%" name="finishReason" rows="4" />
-        <hr style="border-top:2px solid black;"/>
-    }
-}
-else if (Model.Task.State == (int)ViewData["doneId"] && (bool)ViewData["userHasWorktime"])
-{
-    using (Html.BeginForm("UnfinishTask", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
-    {
-        <button type="submit">Unfinish (TODO: better name)</button>
-        <h4>Reason:</h4>
-        <textarea style="width: 50%" name="unfinishReason" rows="4" />    
-        <hr style="border-top:2px solid black;"/>
-    }
-}
 
-@if ((bool)ViewData["isUserOnTask"] && Model.Task.State == (int)ViewData["activeId"])
-{
-    using (Html.BeginForm("AddWorkTime", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
-    {
 
-        //data-provide="datepicker" data-date-format="yyyy.mm.dd" 
-        <br /> <br /> 
-        
-        <p>Start time:</p> <input name="startTime" type="text" 
-            value="@DateTime.Now.ToString("yyyy.MM.dd H:mm")" />
-    
-        <br /> <br /> 
-
-        <p>End time:</p> <input name="endTime" type="text"
-            value="@DateTime.Now.ToString("yyyy.MM.dd H:mm")" />
-        
-        <br /><br />
-        
-        <button type="submit">Add Work Time</button>
-    
-        <hr style="border-top:2px solid black;"/>
-    }
-}
-
-<p>
-    Assigned to:
+    <p class="fieldLabel">Assigned to:</p>
     @foreach (var name in Model.DeveloperNames)
     {
         @name
         if (Model.DeveloperNames.Last() != @name)
         {@(", ")}
     }
-    <br /><br />
-    State: @Model.StateName<br /><br />
-    Work hours:<br />
-    @foreach (var entry in Model.WorkHours)
+
+    <p class ="fieldLabel">State:</p> @Model.StateName
+
+    @if (Model.WorkHours.Count > 0)
     {
-        @(" -" + @entry.Key + ": " + entry.Value);<br/>
+        <p class="fieldLabel"> Work hours:</p>
+        foreach (var entry in Model.WorkHours)
+        {
+            @(" " + @entry.Key + ": " + entry.Value);<br />
+        }
+
     }
 
-    @if (Model.CanComment)
+    @if (Model.CanComment && !Model.ProjectDone)
     {
-    <h3>Comments</h3>
-        
-    <input type="button" id="writeComment" value="Write comment" style='margin-bottom: 5px;' />
+        <h3>Comments</h3>
+
+        <input type="button" class="action-button" id="writeComment" value="Write comment" style='margin-bottom: 5px;' />
 
         <div>
             <div id="writeCommentDiv" class="writeComment" style="display: inline-block;">
                 <textarea id="commentContent" class="commentTextArea"></textarea>
-                <input type="button" id="postComment" value="Post comment" style='float: right;' />
+                <input type="button" class="action-button-small" id="postComment" value="Post comment" style='float: right;' />
             </div>
 
             <div id="currentComments" style="display: inline-block; width: 100%;">
@@ -261,4 +240,3 @@ else if (Model.Task.State == (int)ViewData["doneId"] && (bool)ViewData["userHasW
             </div>
         </div>
     }
-</p>

@@ -20,22 +20,26 @@ namespace ProjectManager.Controllers
         public ActionResult Details(int Id)
         {
             int userId = int.Parse(User.Identity.GetProjectUserId());
+            return PartialView("_Details", CreateTaskDetailsModel(userId, Id));
+        }
 
+        private TaskDetailsModel CreateTaskDetailsModel(int userId, int taskId)
+        {
             var manager = new TaskManager();
-            var task = manager.GetTask(Id);
-            var stateName = manager.GetTaskStateName(Id);
-            var users = manager.GetUsersForTask(Id);
-            var workTimes = manager.GetAllWorkTimeForTask(Id);
-            var comments = manager.GetComments(Id);
+            var task = manager.GetTask(taskId);
+            var stateName = manager.GetTaskStateName(taskId);
+            var users = manager.GetUsersForTask(taskId);
+            var workTimes = manager.GetAllWorkTimeForTask(taskId);
+            var comments = manager.GetComments(taskId);
             var canComment = task.State == manager.GetActiveStateId();
             var addableDevelopers = manager.GetAddableOrRemovableDevelopers(
-                Id, userId, addable: true);
+                taskId, userId, addable: true);
             var removableDevelopers = manager.GetAddableOrRemovableDevelopers(
-                Id, userId, addable: false);
-            var unacceptedDevelopers = manager.GetUnacceptedDevelopers(Id);
-            var unacceptedTaskStateChanges = manager.GetUnacceptedTaskStateChanges(Id);
+                taskId, userId, addable: false);
+            var unacceptedDevelopers = manager.GetUnacceptedDevelopers(taskId);
+            var unacceptedTaskStateChanges = manager.GetUnacceptedTaskStateChanges(taskId);
 
-            var project = manager.GetProjectForTask(Id);
+            var project = manager.GetProjectForTask(taskId);
             ViewData["isLeader"] = new ProjectUserManager().IsLeader(userId, project.Id);
 
             int deletedId = manager.GetDeletedStateId();
@@ -52,7 +56,7 @@ namespace ProjectManager.Controllers
 
             ViewData["isUserOnTask"] = users.Any(u => u.Id == userId);
             ViewData["isUserApplyUnaccepted"] = unacceptedDevelopers.Any(u => u.Id == userId);
-            ViewData["isMaxDevelopers"] = task.MaxDevelopers == null ? false : task.MaxDevelopers <= users.Count;
+            Boolean maxDevelopers = task.MaxDevelopers == null ? false : task.MaxDevelopers <= users.Count;
             ViewData["userHasWorktime"] = workTimes.Any(w => w.ProjectUserId == userId);
 
             List<string> devs = new List<string>();
@@ -84,9 +88,12 @@ namespace ProjectManager.Controllers
                 userHours[userName] = currentHours + elapsed;
             }
 
-            var model = new TaskDetailsModel(task, stateName, devs, userHours, commentViewModels, canComment,
-                addableDevelopers, removableDevelopers, unacceptedDevelopers, unacceptedTaskStateChanges);
-            return PartialView("_Details", model);
+            bool projectDone = new ProjectUserManager().IsDone(task.ProjectId);
+
+            return new TaskDetailsModel(task, stateName, devs, userHours, commentViewModels, canComment,
+                addableDevelopers, removableDevelopers, unacceptedDevelopers, unacceptedTaskStateChanges,
+                projectDone, maxDevelopers);
+
         }
 
         // GET: Create dialog
@@ -94,6 +101,48 @@ namespace ProjectManager.Controllers
         {
             ViewData["projectId"] = Id;
             return PartialView("_CreateDialog");
+        }
+
+        // GET: Add & remove developer dialog
+        public ActionResult AddOrRemoveDeveloperDialog(int Id)
+        {
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            return PartialView("_AddRemoveDeveloperDialog", CreateTaskDetailsModel(userId, Id));
+        }
+
+        // GET: Delete task dialog
+        public ActionResult DeleteTaskDialog(int Id)
+        {
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            return PartialView("_DeleteDialog", new TaskManager().GetTask(Id));
+        }
+
+        // GET: Delete task dialog
+        public ActionResult RestoreTaskDialog(int Id)
+        {
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            return PartialView("_RestoreDialog", new TaskManager().GetTask(Id));
+        }
+
+        // GET: Delete task dialog
+        public ActionResult AddWorkTimeDialog(int Id)
+        {
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            return PartialView("_AddWorkTimeDialog", new TaskManager().GetTask(Id));
+        }
+
+        // GET: Finish task dialog
+        public ActionResult FinishDialog(int Id)
+        {
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            return PartialView("_FinishDialog", new TaskManager().GetTask(Id));
+        }
+
+        // GET: Reopoen task dialog
+        public ActionResult ReopenDialog(int Id)
+        {
+            int userId = int.Parse(User.Identity.GetProjectUserId());
+            return PartialView("_ReopenDialog", new TaskManager().GetTask(Id));
         }
 
         // POST: Create task
@@ -198,6 +247,8 @@ namespace ProjectManager.Controllers
             DateTime startTime = DateTime.Now.AddHours(1);
             DateTime endTime = DateTime.Now;
 
+            Debug.WriteLine("Start time: " + Request.Form["startTime"]);
+            Debug.WriteLine("End time: " + Request.Form["endTime"]);
             try
             {
                 startTime = DateTime.Parse(Request.Form["startTime"]);
@@ -205,7 +256,8 @@ namespace ProjectManager.Controllers
             }
             catch (Exception ex)
             {
-                // TODO: exception handling
+                Debug.WriteLine("1");
+                TempData["errorMessage"] = "Wrong date/time format";
             }
 
             if (startTime < endTime && startTime.AddMinutes(-5) < DateTime.Now)
@@ -221,14 +273,20 @@ namespace ProjectManager.Controllers
                 if (!manager.AddWorkTime(data))
                 {
                     // TODO: error display and stay on view (overlapping work time)
+                    Debug.WriteLine("2");
+                    TempData["errorMessage"] = "Overlapping work time";
                 }
             }
             else
             {
+                Debug.WriteLine("3");
+                TempData["errorMessage"] = "invalid start or end time";
                 // TODO: error display and stay on view (invalid start or end time)
             }
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -247,6 +305,8 @@ namespace ProjectManager.Controllers
             }
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -266,6 +326,8 @@ namespace ProjectManager.Controllers
             }
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -285,6 +347,8 @@ namespace ProjectManager.Controllers
             }
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -300,6 +364,8 @@ namespace ProjectManager.Controllers
             manager.AddDeveloperToTask(userId, taskId, accepted: false);
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -315,6 +381,8 @@ namespace ProjectManager.Controllers
             manager.AcceptAppliance(taskId, developerId);
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -330,6 +398,8 @@ namespace ProjectManager.Controllers
             manager.DeclineAppliance(taskId, developerId);
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -350,16 +420,16 @@ namespace ProjectManager.Controllers
             return Redirect("/Projects/Details/" + projectId);
         }
 
-        // POST: Tasks/UnfinishTask
+        // POST: Tasks/ReopenTask
         [HttpPost]
-        public ActionResult UnfinishTask(int taskId)
+        public ActionResult ReopenTask(int taskId)
         {
             var manager = new TaskManager();
 
             int userId = int.Parse(User.Identity.GetProjectUserId());
             var projectId = manager.GetProjectForTask(taskId).Id;
             var isLeader = new ProjectUserManager().IsLeader(userId, projectId);
-            var reason = Request.Form["unfinishReason"];
+            var reason = Request.Form["reopenReason"];
 
             manager.UnfinishTask(taskId, userId, reason, isLeader);
 

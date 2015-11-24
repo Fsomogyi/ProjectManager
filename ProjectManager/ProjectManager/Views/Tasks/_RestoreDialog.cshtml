@@ -1,0 +1,18 @@
+﻿@model BusinessLogicLayer.Task
+
+@using (Html.BeginForm("RestoreTask", "Tasks", new { taskId = Model.Id }, FormMethod.Post))
+{
+    <h3>Restore task</h3>
+    <h4>Reason:</h4>
+    <textarea style="width: 100%" name="restoreDescription" rows="4" />
+    <hr style="border-top:2px solid black;" />
+    <button type="submit" class="action-button" style="display: block; margin: 0 auto; margin-top: 25px">Restore task</button>
+}
+
+        @*using (Html.BeginForm("RestoreTask", "Tasks", new { taskId = Model.Id }, FormMethod.Post))
+        {
+<button type="submit">Restore task</button>
+<h4>Reason:</h4>
+<textarea style="width: 50%" name="restoreDescription" rows="4" />
+<hr style="border-top:2px solid black;" />
+        }*@

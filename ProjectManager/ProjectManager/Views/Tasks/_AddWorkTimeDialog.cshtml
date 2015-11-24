@@ -1,0 +1,30 @@
+﻿@model BusinessLogicLayer.Task
+
+<h3>Add worktime</h3>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        jQuery('.dateTimePicker').datetimepicker()({
+            mask: true // '9999/19/39 29:59' - digit is the maximum possible for a cell
+        });
+    })
+</script>
+
+@using (Html.BeginForm("AddWorkTime", "Tasks", new { taskId = Model.Id }, FormMethod.Post))
+{
+    //data-provide="datepicker" data-date-format="yyyy.mm.dd"
+
+    <h4>Start:</h4>
+    @*<input name="startTime" data-provide="datepicker" data-date-format="yyyy.mm.dd" value="@DateTime.Now.ToString("yyyy.MM.dd")" />*@
+    <input class="dateTimePicker" name="startTime" type="text">
+    <br /><br />
+
+    <h4>End:</h4> 
+    @*<input name="endTime" data-provide="datepicker" data-date-format="yyyy.mm.dd HH:mm" value="@DateTime.Now.ToString("yyyy.MM.dd")" />*@
+    <input class="dateTimePicker" name="endTime" type="text">
+    <br />
+
+    <button class="action-button" type="submit" style="display: block; margin: 0 auto; margin-top: 25px">Add Work Time</button>
+
+}

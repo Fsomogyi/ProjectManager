@@ -1,17 +1,23 @@
 ﻿
-<h2>Create new project</h2>
+<h3>Create new project</h3>
+
+@if(ViewData.ContainsKey("errorMessage")){
+    <div style="color: #ff0000; font-size: x-large">
+        Error: @ViewData["errorMessage"]
+    </div>
+}
 
 @using (Html.BeginForm("Create", "Projects",  FormMethod.Post))
 {
-    <h3>Name:</h3>  
+    <h4>Name:</h4>  
     <input style="width: 100%" type="text" name="projectName" /><br />
     
-    <h3>Description:</h3>
-    <textarea style="width: 100%" name="projectDescription" rows="9" /><br />
+    <h4>Description:</h4>
+    <textarea style="width: 100%" name="projectDescription" rows="6" /><br />
     
-    <h3>Deadline:</h3>
+    <h4>Deadline:</h4>
     <input name="deadline" data-provide="datepicker" data-date-format="yyyy.mm.dd" value="@DateTime.Now.ToString("yyyy.MM.dd")" />
             
-    <input type="submit" id="createProject" value="Create project" style="display: block; margin: 0 auto;"/>
+    <input type="submit" id="createProject" value="Create project" style="display: block; margin: 0 auto; margin-top: 25px" class="action-button"/>
 
 }
