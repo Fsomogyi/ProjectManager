@@ -171,6 +171,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -331,6 +332,7 @@
     <Content Include="Views\Projects\_CreateDialog.cshtml" />
     <Content Include="Views\Tasks\_CreateDialog.cshtml" />
     <Content Include="Views\Projects\_AddDeveloperDialog.cshtml" />
+    <Content Include="Views\Statistics\_CreateDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

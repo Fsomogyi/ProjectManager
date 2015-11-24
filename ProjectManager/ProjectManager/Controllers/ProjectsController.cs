@@ -260,9 +260,21 @@ namespace ProjectManager.Controllers
 
         private PartialViewResult ShowStatistics(int projectId)
         {
-            StatisticsModel model = new StatisticsModel();
+            List<StatisticsListElement> model = new List<StatisticsListElement>();
 
+            var manager = new StatisticsManager();
             int userId = int.Parse(User.Identity.GetProjectUserId());
+            ViewData["isLeader"] = new ProjectUserManager().IsLeader(userId, projectId);
+            ViewData["projectId"] = projectId;
+
+            var statistics = manager.GetAllStatistics(projectId);
+
+            foreach (var s in statistics)
+            {
+                var data = manager.GetDataForStatistics(s.Id);
+
+                model.Add(new StatisticsListElement(s, data));
+            }
 
             return PartialView("_Statistics", model);
         }

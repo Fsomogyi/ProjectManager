@@ -17,3 +17,5 @@ Post-Deployment Script Template
 :r .\InsertTask.sql
 :r .\InsertAssignment.sql
 :r .\InsertWorktime.sql
+:r .\InsertStatistics.sql
+:r .\InsertStatisticsData.sql

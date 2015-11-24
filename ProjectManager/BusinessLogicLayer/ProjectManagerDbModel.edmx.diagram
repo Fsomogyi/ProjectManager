@@ -4,27 +4,31 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="615a39b86f0844f780d25710001a8121" Name="Diagram1">
-        <EntityTypeShape EntityType="ProjectManagerDBModel.Assignment" Width="1.5" PointX="8.25" PointY="7.375" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.Comment" Width="1.5" PointX="8.25" PointY="10.25" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.Project" Width="1.5" PointX="0.75" PointY="4.25" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.ProjectUser" Width="1.5" PointX="6" PointY="3.25" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.Role" Width="1.5" PointX="8.25" PointY="0.75" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.RoleName" Width="1.5" PointX="6" PointY="11" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.Task" Width="1.5" PointX="3" PointY="6.625" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.TaskState" Width="1.5" PointX="0.75" PointY="7.5" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.TaskStateChange" Width="1.5" PointX="5.25" PointY="7" />
-        <EntityTypeShape EntityType="ProjectManagerDBModel.Worktime" Width="1.5" PointX="8.25" PointY="4.25" />
+      <Diagram DiagramId="615a39b86f0844f780d25710001a8121" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Assignment" Width="1.5" PointX="8.25" PointY="10.25" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Comment" Width="1.5" PointX="8.25" PointY="7.125" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Project" Width="1.5" PointX="0.75" PointY="10" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.ProjectUser" Width="1.5" PointX="0.75" PointY="14.375" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Role" Width="1.5" PointX="3" PointY="10.125" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.RoleName" Width="1.5" PointX="0.75" PointY="7" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Statistics" Width="1.5" PointX="3" PointY="17.375" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.StatisticsData" Width="1.5" PointX="5.25" PointY="17.75" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Task" Width="1.5" PointX="6" PointY="9.5" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.TaskState" Width="1.5" PointX="3.75" PointY="7.375" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.TaskStateChange" Width="1.5" PointX="11.25" PointY="9.875" />
+        <EntityTypeShape EntityType="ProjectManagerDBModel.Worktime" Width="1.5" PointX="8.25" PointY="13.125" />
         <AssociationConnector Association="ProjectManagerDBModel.assignment_fk1" />
         <AssociationConnector Association="ProjectManagerDBModel.assignment_fk2" />
         <AssociationConnector Association="ProjectManagerDBModel.comment_fk1" />
         <AssociationConnector Association="ProjectManagerDBModel.comment_fk2" />
         <AssociationConnector Association="ProjectManagerDBModel.role_fk1" />
+        <AssociationConnector Association="ProjectManagerDBModel.statistics_fk0" />
         <AssociationConnector Association="ProjectManagerDBModel.task_fk0" />
         <AssociationConnector Association="ProjectManagerDBModel.FK_task_state_change_user" />
         <AssociationConnector Association="ProjectManagerDBModel.FK_worktime_user" />
         <AssociationConnector Association="ProjectManagerDBModel.role_fk2" />
         <AssociationConnector Association="ProjectManagerDBModel.role_fk3" />
+        <AssociationConnector Association="ProjectManagerDBModel.statistics_data_fk0" />
         <AssociationConnector Association="ProjectManagerDBModel.task_fk1" />
         <AssociationConnector Association="ProjectManagerDBModel.task_state_change_fk1" />
         <AssociationConnector Association="ProjectManagerDBModel.worktime_fk1" />

@@ -91,7 +91,8 @@ namespace BusinessLogicLayer
                     Name = data.Name,
                     Description = data.Description,
                     Deadline = data.Deadline,
-                    Done = data.Done
+                    Done = data.Done,
+                    CreatedDate = DateTime.Now
                 };
 
                 context.Project.Add(project);

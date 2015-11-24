@@ -62,6 +62,18 @@ namespace ProjectManager.Models
         }
     }
 
+    public class StatisticsListElement
+    {
+        public Statistics Statistics { get; private set; }
+        public List<StatisticsData> StatisticsDataList { get; private set; }
+
+        public StatisticsListElement(Statistics Statistics, List<StatisticsData> StatisticsDataList)
+        {
+            this.Statistics = Statistics;
+            this.StatisticsDataList = StatisticsDataList;
+        }
+    }
+
     public class AddDeveloperDialogModel
     {
         public int ProjectId { get; private set; }
@@ -87,11 +99,6 @@ namespace ProjectManager.Models
             this.Project = Project;
             this.DetailsPage = DetailsPage;
         }
-
-    }
-
-    public class StatisticsModel
-    {
 
     }
 }

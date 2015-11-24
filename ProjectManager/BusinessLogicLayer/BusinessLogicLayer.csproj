@@ -55,14 +55,30 @@
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CommentManager.cs" />
+    <Compile Include="Project.cs">
+      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectUser.cs">
+      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Role.cs">
+      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RoleName.cs">
+      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Statistics.cs">
+      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticsData.cs">
+      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StatisticsManager.cs" />
     <Compile Include="DTO\CommentData.cs" />
     <Compile Include="DTO\TaskStateChangeData.cs" />
     <Compile Include="DTO\WorktimeData.cs" />
     <Compile Include="DTO\ProjectData.cs" />
     <Compile Include="DTO\TaskData.cs" />
-    <Compile Include="Project.cs">
-      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="ProjectManagerDbModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -78,17 +94,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ProjectManagerDbModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="ProjectUser.cs">
-      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProjectUserManager.cs" />
-    <Compile Include="Role.cs">
-      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="RoleName.cs">
-      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Task.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
