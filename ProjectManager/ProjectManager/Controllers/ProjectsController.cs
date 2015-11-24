@@ -20,10 +20,25 @@ namespace ProjectManager.Controllers
         public ActionResult Index()
         {
             int userId = int.Parse(User.Identity.GetProjectUserId());
+            var projectUserManager = new ProjectUserManager();
+            var taskManager = new TaskManager();
 
-            var projects = new ProjectUserManager().GetProjectsForUser(userId);
+            var projects = projectUserManager.GetProjectsForUser(userId);
+            var projectListElements = new List<ProjectListElement>();
 
-            return View(projects);
+            foreach (var p in projects)
+            {
+                int devs = projectUserManager.GetUsersForProject(p.Id).Count;
+                int tasks = taskManager.GetTasksForProject(p.Id).Count;
+                var element = new ProjectListElement(p, devs, tasks);
+                projectListElements.Add(element);
+            }
+
+            if (TempData.ContainsKey("errorMessage")){
+                ViewData["errorMessage"] = TempData["errorMessage"];
+            }
+
+            return View(new ProjectsViewModel(projectListElements));
         }
 
         // GET: Project details
@@ -40,7 +55,25 @@ namespace ProjectManager.Controllers
                 TempData.Remove("DetailsPage");
             }
 
+            if (TempData.ContainsKey("overlayId")){
+                ViewData["overlayId"] = TempData["overlayId"];
+                if (TempData["overlayId"].ToString().Contains("TaskDetails"))
+                {
+                    ViewData["TaskDetailsId"] = TempData["TaskDetailsId"];
+                }
+            }
+
             ProjectDetailsViewModel model = new ProjectDetailsViewModel(project, pageId);
+
+            if (TempData.ContainsKey("errorMessage"))
+            {
+                Debug.WriteLine("error");
+                ViewData["errorMessage"] = TempData["errorMessage"];
+            }
+            else
+            {
+                Debug.WriteLine("NoError");
+            }
 
             return View(model);
         }
@@ -78,9 +111,19 @@ namespace ProjectManager.Controllers
 
             if (name == string.Empty || deadline <= DateTime.Now)
             {
-                // TODO: display errors
+                string errors = "";
+                if (name == string.Empty)
+                {
+                    Debug.WriteLine("Empty name");
+                    errors += "Empty name; ";
+                }
+                if (deadline <= DateTime.Now)
+                {
+                    errors += "Wrong deadline; ";
+                }
+                TempData["errorMessage"] = errors;
 
-                return Redirect(Request.UrlReferrer.ToString());
+                return Redirect("Index");
             }
 
             new ProjectUserManager().CreateNewProject(userId, new ProjectData()
@@ -285,7 +328,8 @@ namespace ProjectManager.Controllers
             }
             else
             {
-                // TODO: error display
+                Debug.WriteLine("add error");
+                TempData["errorMessage"] = "Can't finish project, there are still tasks in progress!";
             }
 
             return Redirect(Request.UrlReferrer.ToString());

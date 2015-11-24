@@ -7,23 +7,18 @@
         $("#fuzz").css("height", $(document).height());
 
         $("#addDeveloperDialog").click(function (event) {
-            $('#overlaywindow').load('/Projects/AddDeveloperDialog/' + @ViewData["projectId"]);
-            $("#fuzz").fadeIn();
+            $('#windowMainContent').load('/Projects/AddDeveloperDialog/' + @ViewData["projectId"]);
+            $("#windowMainBg").fadeIn();
             return false;
         });
 
-        //When the message box is closed, fade out
-        $(".close").click(function () {
-            $("#fuzz").fadeOut();
-            return false;
-        });
     })
 </script>
 
 @{
     if ((bool)ViewData["isLeader"] && !(bool)ViewData["isDone"])
     {
-        <input type="button" id="addDeveloperDialog" value="Add / remove developer" /><br />
+        <input type="button" class="action-button" style="margin: 5px" id="addDeveloperDialog" value="Add / remove developer" /><br />
     }
 }
 

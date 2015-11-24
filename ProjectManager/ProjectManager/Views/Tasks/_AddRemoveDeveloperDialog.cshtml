@@ -1,0 +1,45 @@
+﻿@model ProjectManager.Models.TaskDetailsModel
+
+@if (Model.AddableDevelopers.Count < 1) { 
+    using (Html.BeginForm("AddDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post)) {
+        <fieldset>
+            <legend>Add developer</legend>
+
+            <select name="addUserId" class="select-user">
+                @foreach (var item in Model.AddableDevelopers)
+                {
+                    <option value="@item.Id">@item.UserName</option>
+                }
+            </select>
+
+            <input type="submit" class="action-button-small" id="addDeveloper" value="Add developer" />
+
+        </fieldset>
+    }
+}
+
+@if (Model.RemovableDevelopers.Count > 0)
+{
+    if (Model.AddableDevelopers.Count > 0) {
+        <hr style="border-top:1px solid black;" />
+    }
+
+    using (Html.BeginForm("RemoveDeveloper", "Tasks", new { taskId = Model.Task.Id }, FormMethod.Post))
+    {
+    <fieldset>
+        <legend>Remove developer</legend>
+
+        <select name="removeUserId" class="select-user">
+            @foreach (var item in Model.RemovableDevelopers)
+            {
+                <option value="@item.Id">@item.UserName</option>
+            }
+        </select>
+
+        <input type="submit" class="action-button-small" id="removeDeveloper" value="Remove developer" />
+
+    </fieldset>
+   }
+
+}
+

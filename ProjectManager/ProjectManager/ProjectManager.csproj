@@ -331,6 +331,10 @@
     <Content Include="Views\Projects\_CreateDialog.cshtml" />
     <Content Include="Views\Tasks\_CreateDialog.cshtml" />
     <Content Include="Views\Projects\_AddDeveloperDialog.cshtml" />
+    <Content Include="Views\Tasks\_AddRemoveDeveloperDialog.cshtml" />
+    <Content Include="Views\Tasks\_DeleteDialog.cshtml" />
+    <Content Include="Views\Tasks\_RestoreDialog.cshtml" />
+    <Content Include="Views\Tasks\_AddWorkTimeDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

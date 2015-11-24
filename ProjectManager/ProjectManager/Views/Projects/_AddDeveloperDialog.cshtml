@@ -1,40 +1,51 @@
 ﻿@model ProjectManager.Models.AddDeveloperDialogModel
 
-@using (Html.BeginForm("AddDeveloper", "Projects", FormMethod.Post))
+@if (Model.AddableDevelopers.Count > 0)
 {
+   using (Html.BeginForm("AddDeveloper", "Projects", FormMethod.Post))
+   {
     <fieldset>
         <legend>Add developer</legend>
 
-        <select name="addUserId">
-        @foreach (var item in Model.AddableDevelopers)
-        {
-            <option value="@item.Id">@item.UserName</option>
-        }
+        <select name="addUserId" class="select-user">
+            @foreach (var item in Model.AddableDevelopers)
+            {
+                <option value="@item.Id">@item.UserName</option>
+            }
         </select>
 
         <input type="hidden" name="projectId" value="@Model.ProjectId" />
-        <input type="submit" id="addDeveloper" value="Add developer"  />
+        <input class="action-button-small" type="submit" id="addDeveloper" value="Add developer" />
 
     </fieldset>
-
-    <hr style="border-top:1px solid black;"/>
+   }
 }
 
-@using (Html.BeginForm("RemoveDeveloper", "Projects", FormMethod.Post))
+
+
+@if (Model.RemovableDevelopers.Count > 0)
 {
-
-    <fieldset>
-        <legend>Remove developer</legend>
-
-        <select name="removeUserId">
-        @foreach (var item in Model.RemovableDevelopers)
+    using (Html.BeginForm("RemoveDeveloper", "Projects", FormMethod.Post))
+    {
+        
+        if (Model.AddableDevelopers.Count > 0)
         {
-            <option value="@item.Id">@item.UserName</option>
+            <hr style="border-top:1px solid black;" />
         }
-        </select>
 
-        <input type="hidden" name="projectId" value="@Model.ProjectId" />
-        <input type="submit" id="removeDeveloper" value="Remove developer"  />
+        <fieldset>
+            <legend>Remove developer</legend>
 
-    </fieldset>
+            <select name="removeUserId" class="select-user">
+                @foreach (var item in Model.RemovableDevelopers)
+                {
+                    <option value=@item.Id>@item.UserName</option>
+                }
+            </select>
+
+            <input type="hidden" name="projectId" value="@Model.ProjectId" />
+            <input class="action-button-small" type="submit" id="removeDeveloper" value="Remove developer" />
+
+        </fieldset>
+    }
 }
