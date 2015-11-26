@@ -55,6 +55,7 @@
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CommentManager.cs" />
+    <Compile Include="DTO\StatisticsData.cs" />
     <Compile Include="Project.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
@@ -68,9 +69,6 @@
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Statistics.cs">
-      <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="StatisticsData.cs">
       <DependentUpon>ProjectManagerDbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="StatisticsManager.cs" />

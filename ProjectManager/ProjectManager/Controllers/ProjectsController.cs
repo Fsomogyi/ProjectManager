@@ -67,12 +67,12 @@ namespace ProjectManager.Controllers
 
             if (TempData.ContainsKey("errorMessage"))
             {
-                Debug.WriteLine("error");
                 ViewData["errorMessage"] = TempData["errorMessage"];
             }
-            else
+
+            if (TempData.ContainsKey("UnsavedStatistics"))
             {
-                Debug.WriteLine("NoError");
+                ViewData["UnsavedStatistics"] = TempData["UnsavedStatistics"];
             }
 
             return View(model);
@@ -114,12 +114,11 @@ namespace ProjectManager.Controllers
                 string errors = "";
                 if (name == string.Empty)
                 {
-                    Debug.WriteLine("Empty name");
-                    errors += "Empty name; ";
+                    errors += "Empty name!\n";
                 }
                 if (deadline <= DateTime.Now)
                 {
-                    errors += "Wrong deadline; ";
+                    errors += "Wrong deadline!\n";
                 }
                 TempData["errorMessage"] = errors;
 
@@ -312,14 +311,7 @@ namespace ProjectManager.Controllers
 
             var statistics = manager.GetAllStatistics(projectId);
 
-            foreach (var s in statistics)
-            {
-                var data = manager.GetDataForStatistics(s.Id);
-
-                model.Add(new StatisticsListElement(s, data));
-            }
-
-            return PartialView("_Statistics", model);
+            return PartialView("_Statistics", statistics);
         }
 
         // POST: /Projects/Finish
@@ -340,7 +332,6 @@ namespace ProjectManager.Controllers
             }
             else
             {
-                Debug.WriteLine("add error");
                 TempData["errorMessage"] = "Can't finish project, there are still tasks in progress!";
             }
 

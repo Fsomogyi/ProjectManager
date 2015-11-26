@@ -153,9 +153,6 @@ namespace ProjectManager.Controllers
 
             if (!ModelState.IsValid)
             {
-                // TODO: display errors
-                //return PartialView("_CreateDialog");
-
                 TempData["DetailsPage"] = "1";
                 return Redirect("/Projects/Details/" + projectId);
             }
@@ -174,7 +171,6 @@ namespace ProjectManager.Controllers
             new TaskManager().AddNewTask(projectId, data);
 
             TempData["DetailsPage"] = "1";
-
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -246,9 +242,6 @@ namespace ProjectManager.Controllers
             var projectId = manager.GetProjectForTask(taskId).Id;
             DateTime startTime = DateTime.Now.AddHours(1);
             DateTime endTime = DateTime.Now;
-
-            Debug.WriteLine("Start time: " + Request.Form["startTime"]);
-            Debug.WriteLine("End time: " + Request.Form["endTime"]);
             try
             {
                 startTime = DateTime.Parse(Request.Form["startTime"]);
@@ -256,8 +249,7 @@ namespace ProjectManager.Controllers
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("1");
-                TempData["errorMessage"] = "Wrong date/time format";
+                TempData["errorMessage"] = "Wrong date/time format!";
             }
 
             if (startTime < endTime && startTime.AddMinutes(-5) < DateTime.Now)
@@ -272,16 +264,12 @@ namespace ProjectManager.Controllers
 
                 if (!manager.AddWorkTime(data))
                 {
-                    // TODO: error display and stay on view (overlapping work time)
-                    Debug.WriteLine("2");
-                    TempData["errorMessage"] = "Overlapping work time";
+                    TempData["errorMessage"] = "Overlapping work time!";
                 }
             }
             else
             {
-                Debug.WriteLine("3");
-                TempData["errorMessage"] = "invalid start or end time";
-                // TODO: error display and stay on view (invalid start or end time)
+                TempData["errorMessage"] = "Invalid start or end time!";
             }
 
             TempData["DetailsPage"] = "1";

@@ -34,7 +34,6 @@
 
             @if (ViewData["errorMessage"] !=  null && ViewData["errorMessage"] != "")
             {
-                System.Diagnostics.Debug.WriteLine("Error is");
                 <text>
                 $('#windowErrorContent').html("Error: @ViewData["errorMessage"]");
                 $("#windowErrorBg").fadeIn();

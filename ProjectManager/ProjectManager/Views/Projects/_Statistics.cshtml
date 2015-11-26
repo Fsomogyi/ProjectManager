@@ -1,5 +1,5 @@
 ﻿@using System.Web.Helpers;
-@model IEnumerable<ProjectManager.Models.StatisticsListElement>
+@model IEnumerable<BusinessLogicLayer.Statistics>
 
 <script type="text/javascript">
 
@@ -8,8 +8,8 @@
         $("#fuzz").css("height", $(document).height());
 
         $("#createStatisticsDialog").click(function (event) {
-            $('#overlaywindow').load('/Statistics/CreateDialog/' + @ViewData["projectId"]);
-            $("#fuzz").fadeIn();
+            $('#windowMainContent').load('/Statistics/CreateDialog/' + @ViewData["projectId"]);
+            $("#windowMainBg").fadeIn();
             return false;
         });
 
@@ -19,21 +19,65 @@
             return false;
         });
 
+        @if (TempData.ContainsKey("UnsavedStatistics"))
+        {            
+            <text>
+            $('#windowMainContent').load('/Statistics/SaveDialog/');
+            $("#windowMainBg").fadeIn();
+            </text>
+        }
     })
 </script>
 
-
 @if ((bool)ViewData["isLeader"])
 {
-    <input type="button" id="createStatisticsDialog" value="Create statistics" /><br />
+    <input type="button" class="action-button" style="margin: 5px" id="createStatisticsDialog" value="New statistics" />
+    <br />
 }
 
-@foreach (var element in Model)
-{
-    if (element.Statistics.Public || (bool)ViewData["isLeader"])
+<div class="row container">
+    @foreach (var element in Model)
     {
         TempData["model"] = element;
- 
-        <img src="@Url.Action("BuildChart", "Statistics")" />
+        if (element.Public || (bool)ViewData["isLeader"])
+        {
+            <div class="statistics-element">
+                <p class="project-title">@element.Name</p>
+
+                    <b>@("Created on: ") </b>
+                    @element.CreatedDate.ToString("yyyy.MM.dd H:mm")
+                    <br /><br />
+                
+                    <img src="@Url.Action("GetImage", "Statistics", new { Id = element.Id })"/>
+                    <br /><br />
+
+                    @if ((bool)ViewData["isLeader"])
+                    {
+                        <div style="vertical-align: middle;">
+                            <div style="display: table-cell;">
+                                @using (Html.BeginForm("TogglePublic", "Statistics", new { statisticsId = element.Id, projectId = ViewData["projectId"] }, FormMethod.Post))
+                                {
+                                    <button class="action-button-small" type="submit">
+                                        @if (element.Public)
+                                        {
+                                            <text>Set private</text>
+                                        }
+                                        else
+                                        {
+                                            <text>Set public</text>
+                                        }
+                                    </button>
+                                }
+                            </div>
+                            <div style="display: table-cell; padding-left: 20px; height: 100%; vertical-align: middle;">
+                                @using (Html.BeginForm("Delete", "Statistics", new { statisticsId = element.Id, projectId = ViewData["projectId"] }, FormMethod.Post))
+                                {
+                                    <button class="action-button-small" type="submit">Delete</button>
+                                }
+                            </div>
+                        </div>      
+                    }
+            </div>
+        }
     }
-}
+</div>

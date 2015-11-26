@@ -248,8 +248,8 @@ namespace BusinessLogicLayer
                 var relatedWorkTimes = context.Worktime.Where(w => w.TaskId == data.TaskId &&
                     w.ProjectUserId == data.ProjectUserId);
                 var overLappingWorkTimes = relatedWorkTimes.Where(w => 
-                    (data.StartTime >= w.StartTime && data.StartTime <= w.EndTime) ||
-                    (data.EndTime >= w.StartTime && data.EndTime <= w.EndTime));
+                    (data.StartTime > w.StartTime && data.StartTime < w.EndTime) ||
+                    (data.EndTime > w.StartTime && data.EndTime < w.EndTime));
 
                 if (overLappingWorkTimes.Count() == 0)
                 {
@@ -425,6 +425,32 @@ namespace BusinessLogicLayer
                             StateName = change.TaskState1.Name,
                             Reason = change.Reason
                         });
+                }
+
+                return result;
+            }
+        }
+
+        public List<TaskStateChangeData> GetDoneTaskStateChanges(int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                List<TaskStateChangeData> result = new List<TaskStateChangeData>();
+
+                int doneId = GetDoneStateId();
+                var changes = context.TaskStateChange.Where(ts => ts.TaskId == taskId &&
+                    ts.TaskState == doneId).ToList();
+
+                foreach (var change in changes)
+                {
+                    result.Add(new TaskStateChangeData()
+                    {
+                        ProjectUserId = change.ProjectUserId,
+                        Timestamp = change.Timestamp,
+                        UserName = change.ProjectUser.UserName,
+                        StateName = change.TaskState1.Name,
+                        Reason = change.Reason
+                    });
                 }
 
                 return result;

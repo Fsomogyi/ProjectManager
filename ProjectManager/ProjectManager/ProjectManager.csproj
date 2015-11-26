@@ -189,6 +189,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProjectsModels.cs" />
+    <Compile Include="Models\StatisticsModels.cs" />
     <Compile Include="Models\TasksModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -339,6 +340,7 @@
     <Content Include="Views\Tasks\_AddWorkTimeDialog.cshtml" />
     <Content Include="Views\Tasks\_FinishDialog.cshtml" />
     <Content Include="Views\Tasks\_ReopenDialog.cshtml" />
+    <Content Include="Views\Statistics\_SaveDialog.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

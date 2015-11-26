@@ -1,0 +1,15 @@
+﻿@model ProjectManager.Models.StatisticsModel
+
+<b>@Model.Name</b>
+<br />
+
+<b>@Model.CreatedDate.ToString("yyyy.MM.dd H:mm")</b>
+<br />
+
+<img src="@Url.Action("GetTempImage", "Statistics")"/>
+
+@using (Html.BeginForm("Save", "Statistics", FormMethod.Post))
+{
+    TempData["model"] = Model;
+    <button class="action-button-small" type="submit">Save statistics</button>
+}

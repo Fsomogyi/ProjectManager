@@ -70,6 +70,16 @@ namespace ProjectManager.Models
         }
     }
 
+    public class StatisticsListElement
+    {
+        public Statistics Statistics { get; private set; }
+
+        public StatisticsListElement(Statistics Statistics)
+        {
+            this.Statistics = Statistics;
+        }
+    }
+
     public class DeveloperListElement
     {
         public ProjectUser ProjectUser { get; private set; }
@@ -83,18 +93,6 @@ namespace ProjectManager.Models
             this.WorkHours = WorkHours;
             this.TasksDone = TasksDone;
             this.AssignedTasks = AssignedTasks;
-        }
-    }
-
-    public class StatisticsListElement
-    {
-        public Statistics Statistics { get; private set; }
-        public List<StatisticsData> StatisticsDataList { get; private set; }
-
-        public StatisticsListElement(Statistics Statistics, List<StatisticsData> StatisticsDataList)
-        {
-            this.Statistics = Statistics;
-            this.StatisticsDataList = StatisticsDataList;
         }
     }
 

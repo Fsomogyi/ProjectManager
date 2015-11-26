@@ -37,11 +37,15 @@
         updateSelection(@Model.DetailsPage);
         $('#details-container').load('/Projects/DetailsPage/@Model.Project.Id/@Model.DetailsPage');
 
+        @if (ViewData.ContainsKey("UnsavedStatistics"))
+        {
+            TempData["UnsavedStatistics"] = ViewData["UnsavedStatistics"];               
+        }
+
         @if (ViewData.ContainsKey("overlayId"))
         {
             if (ViewData["overlayId"].ToString().Contains("TaskDetails"))
             {
-                System.Diagnostics.Debug.WriteLine("overlayis is taskdetails");
                 int taskId = int.Parse(ViewData["TaskDetailsId"].ToString());
                 <text>
                 $('#windowMainContent').load('/Tasks/Details/' + @taskId);

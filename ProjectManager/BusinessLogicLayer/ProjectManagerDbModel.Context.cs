@@ -32,7 +32,6 @@ namespace BusinessLogicLayer
         public virtual DbSet<Role> Role { get; set; }
         public virtual DbSet<RoleName> RoleName { get; set; }
         public virtual DbSet<Statistics> Statistics { get; set; }
-        public virtual DbSet<StatisticsData> StatisticsData { get; set; }
         public virtual DbSet<Task> Task { get; set; }
         public virtual DbSet<TaskState> TaskState { get; set; }
         public virtual DbSet<TaskStateChange> TaskStateChange { get; set; }

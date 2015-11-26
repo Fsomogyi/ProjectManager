@@ -81,9 +81,6 @@
     <None Include="Scripts\InsertAssignment.sql" />
     <None Include="Scripts\InsertWorktime.sql" />
     <Build Include="dbo\Tables\Statistics.sql" />
-    <Build Include="dbo\Tables\StatisticsData.sql" />
-    <None Include="Scripts\InsertStatistics.sql" />
-    <None Include="Scripts\InsertStatisticsData.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Scripts\Script.PostDeployment.sql" />

@@ -51,6 +51,14 @@ select {
     float: left;
 }
 
+.statistics-element {
+    width: 325px;
+    padding: 10px;
+    margin: 5px;
+    border: solid 3px;
+    border-color: #808080;;
+    float: left;
+}
 
 .action-button {
     background-color: #2196f3;
@@ -245,15 +253,21 @@ select {
 }
 
 .task-active {
-    background-color: rgba(255, 251, 229, 0.50);
+    background-color: rgba(255, 200, 200, 0.50);
 }
 
 .task-done {
-    background-color: rgba(236, 255, 229, 0.50);
+    background-color: rgba(200, 255, 200, 0.50);
 }
 
 .select-user{
     width: 100px;
+    font-size: larger;
+    padding: 5px;
+}
+
+.select-statisticsType{
+    width: 200px;
     font-size: larger;
     padding: 5px;
 }

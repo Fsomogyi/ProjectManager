@@ -1,6 +1,12 @@
 ﻿
 <h3>Create new project</h3>
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        jQuery('.dateTimePicker').datetimepicker();
+    })
+</script>
+
 @if(ViewData.ContainsKey("errorMessage")){
     <div style="color: #ff0000; font-size: x-large">
         Error: @ViewData["errorMessage"]
@@ -16,7 +22,7 @@
     <textarea style="width: 100%" name="projectDescription" rows="6" /><br />
     
     <h4>Deadline:</h4>
-    <input name="deadline" data-provide="datepicker" data-date-format="yyyy.mm.dd" value="@DateTime.Now.ToString("yyyy.MM.dd")" />
+    <input class="dateTimePicker" name="deadline" type="text">
             
     <input type="submit" id="createProject" value="Create project" style="display: block; margin: 0 auto; margin-top: 25px" class="action-button"/>
 

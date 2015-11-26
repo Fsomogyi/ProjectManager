@@ -1,33 +1,61 @@
-﻿@model ProjectManager.Models.CreateTaskModel
+﻿<h3>Create statistics</h3>
 
-<h2>Add new task</h2>
+<script type="text/javascript">
 
-<div class="row">
-    @using (Html.BeginForm("Create", "Statistics", new { projectId = (int)ViewData["projectId"] }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    $(document).ready(function () {
+        jQuery('.dateTimePicker').datetimepicker();
 
-            <div class="form-group">
-                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-                </div>
-            </div>
+        $("#lastWeekButton").click(function (event) {
+            var dt = new Date();
+            var currentTime = dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate() + " " + dt.getHours() + ":" + dt.getMinutes();
+            dt.setDate(dt.getDate() - 7);
+            var oneWeekAgo = dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate() + " " + dt.getHours() + ":" + dt.getMinutes();
 
-            <div class="form-group">
-                @Html.LabelFor(m => m.Description, new { @class = "col-md-2 control-label" })
-                <div class="col-md-10">
-                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.Description, "", new { @class = "text-danger" })
-                </div>
-            </div>
+            var element = document.getElementById('startTimePicker');
+            element.value = oneWeekAgo;
 
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" id="createTask" value="Create statistics" style="display: block; margin: 0 auto;" />
-                </div>
-            </div>
-    }
-</div>
+            element = document.getElementById('endTimePicker');
+            element.value = currentTime;
+
+            return false;
+        });
+    })
+</script>
+
+@if(ViewData.ContainsKey("errorMessage")){
+    <div style="color: #ff0000; font-size: x-large">
+        Error: @ViewData["errorMessage"]
+    </div>
+}
+
+@using (Html.BeginForm("Create", "Statistics", new { projectId = ViewData["projectId"] }, FormMethod.Post))
+{
+    <h4>Name:</h4>  
+    <input style="width: 100%" type="text" name="statisticsName" /><br />
+    
+    <h4>Start time (optional):</h4>
+    <input class="dateTimePicker" id="startTimePicker" name="startTime" type="text">
+    <br /><br />
+
+    <h4>End time (optional):</h4> 
+    <input class="dateTimePicker" id="endTimePicker" name="endTime" type="text">
+    <br /><br />
+    
+    <input type="button" class="action-button-small" id="lastWeekButton" value="Last week" />
+    <br />
+    
+    <h4>Measured value:</h4>  
+    <select name="measuredValue" class=".select-statisticsType">
+        <option value="userWorktime">User worktime</option>
+        <option value="taskDoneWorktime">Finished task worktime</option>
+        <option value="tasksDoneNumber">Number of finished tasks</option>
+    </select>
+    
+    <h4>Aggregation type:</h4>  
+    <select name="aggregationType" class="select-user">
+        <option value="none">None</option>
+        <option value="average">Average</option>
+    </select>
+
+    <button id="displayStatistics" class="action-button" type="submit" style="display: block; margin: 0 auto; margin-top: 25px">Display statistics</button>
+}

@@ -116,11 +116,15 @@
     }
 }
 
-@if (Model.Task.State == (int)ViewData["activeId"] && (bool)ViewData["userHasWorktime"] && !Model.ProjectDone)
+@if (Model.Task.State == (int)ViewData["activeId"] && 
+    ((bool)ViewData["isLeader"] || (bool)ViewData["userHasWorktime"]) && 
+    !Model.ProjectDone)
 {
     <input class="action-button-small" id="finishDialog" type="button" value="Finish task" />
 }
-else if (Model.Task.State == (int)ViewData["doneId"] && (bool)ViewData["userHasWorktime"] && !Model.ProjectDone)
+else if (Model.Task.State == (int)ViewData["doneId"] &&
+    ((bool)ViewData["isLeader"] || (bool)ViewData["userHasWorktime"]) &&
+    !Model.ProjectDone)
 {
     <input class="action-button-small" id="reopenDialog" type="button" value="Reopen task" />
 }

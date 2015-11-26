@@ -413,4 +413,32 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ValueX" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="ea0368da-b3ab-4a65-97b3-687fa3fac1e1" ChangeDateTime="11/25/2015 15:23:58">
+    <Property Name="ElementName" Value="[dbo].[Statistics].[LegendX]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Statistics]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AxisX" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a472655c-d4a6-419c-a5c9-cf43849c21a1" ChangeDateTime="11/25/2015 15:24:01">
+    <Property Name="ElementName" Value="[dbo].[Statistics].[LegendY]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Statistics]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AxisY" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="21cfac94-c6c5-4257-be8b-c4d52d8e033b" ChangeDateTime="11/25/2015 15:24:37">
+    <Property Name="ElementName" Value="[dbo].[StatisticsData].[NameX]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[StatisticsData]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ValueX" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7ad607dc-7c24-40d0-953e-282729487011" ChangeDateTime="11/25/2015 15:24:41">
+    <Property Name="ElementName" Value="[dbo].[StatisticsData].[NameY]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[StatisticsData]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ValueY" />
+  </Operation>
 </Operations>

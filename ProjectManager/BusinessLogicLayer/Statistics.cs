@@ -14,24 +14,13 @@ namespace BusinessLogicLayer
     
     public partial class Statistics
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Statistics()
-        {
-            this.StatisticsData = new HashSet<StatisticsData>();
-        }
-    
         public int Id { get; set; }
         public string Name { get; set; }
-        public Nullable<System.DateTime> StartTime { get; set; }
-        public Nullable<System.DateTime> EndTime { get; set; }
         public int ProjectId { get; set; }
         public bool Public { get; set; }
-        public string LegendX { get; set; }
-        public string LegendY { get; set; }
         public System.DateTime CreatedDate { get; set; }
+        public byte[] Chart { get; set; }
     
         public virtual Project Project { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<StatisticsData> StatisticsData { get; set; }
     }
 }

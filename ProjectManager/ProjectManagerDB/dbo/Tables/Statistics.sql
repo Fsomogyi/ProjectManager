@@ -2,13 +2,10 @@
 (
 	[Id] [int] IDENTITY(1,1) NOT NULL,
     [Name] NVARCHAR(50) NOT NULL, 
-    [StartTime] DATETIME NULL, 
-    [EndTime] DATETIME NULL,
 	[ProjectId] INT NOT NULL, 
     [Public] BIT NOT NULL , 
-    [LegendX] NVARCHAR(20) NULL, 
-    [LegendY] NVARCHAR(20) NULL, 
     [CreatedDate] DATETIME NOT NULL, 
+    [Chart] IMAGE NOT NULL, 
     CONSTRAINT [PK_STATISTICS] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC

@@ -64,24 +64,10 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="StartTime" Type="datetime" />
-          <Property Name="EndTime" Type="datetime" />
           <Property Name="ProjectId" Type="int" Nullable="false" />
           <Property Name="Public" Type="bit" Nullable="false" />
-          <Property Name="LegendX" Type="nvarchar" MaxLength="20" />
-          <Property Name="LegendY" Type="nvarchar" MaxLength="20" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-        </EntityType>
-        <EntityType Name="StatisticsData">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ValueX" Type="int" Nullable="false" />
-          <Property Name="ValueY" Type="int" Nullable="false" />
-          <Property Name="NameX" Type="nvarchar" MaxLength="20" />
-          <Property Name="NameY" Type="nvarchar" MaxLength="20" />
-          <Property Name="StatisticsId" Type="int" Nullable="false" />
+          <Property Name="Chart" Type="image" Nullable="false" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
@@ -233,18 +219,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="statistics_data_fk0">
-          <End Role="Statistics" Type="Self.Statistics" Multiplicity="1" />
-          <End Role="StatisticsData" Type="Self.StatisticsData" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Statistics">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StatisticsData">
-              <PropertyRef Name="StatisticsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="statistics_fk0">
           <End Role="Project" Type="Self.Project" Multiplicity="1" />
           <End Role="Statistics" Type="Self.Statistics" Multiplicity="*" />
@@ -325,7 +299,6 @@
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RoleName" EntityType="Self.RoleName" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Statistics" EntityType="Self.Statistics" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="StatisticsData" EntityType="Self.StatisticsData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Task" EntityType="Self.Task" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaskState" EntityType="Self.TaskState" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaskStateChange" EntityType="Self.TaskStateChange" Schema="dbo" store:Type="Tables" />
@@ -366,10 +339,6 @@
             <End Role="RoleName" EntitySet="RoleName" />
             <End Role="Role" EntitySet="Role" />
           </AssociationSet>
-          <AssociationSet Name="statistics_data_fk0" Association="Self.statistics_data_fk0">
-            <End Role="Statistics" EntitySet="Statistics" />
-            <End Role="StatisticsData" EntitySet="StatisticsData" />
-          </AssociationSet>
           <AssociationSet Name="statistics_fk0" Association="Self.statistics_fk0">
             <End Role="Project" EntitySet="Project" />
             <End Role="Statistics" EntitySet="Statistics" />
@@ -407,7 +376,6 @@
           <EntitySet Name="Role" EntityType="ProjectManagerDBModel.Role" />
           <EntitySet Name="RoleName" EntityType="ProjectManagerDBModel.RoleName" />
           <EntitySet Name="Statistics" EntityType="ProjectManagerDBModel.Statistics" />
-          <EntitySet Name="StatisticsData" EntityType="ProjectManagerDBModel.StatisticsData" />
           <EntitySet Name="Task" EntityType="ProjectManagerDBModel.Task" />
           <EntitySet Name="TaskState" EntityType="ProjectManagerDBModel.TaskState" />
           <EntitySet Name="TaskStateChange" EntityType="ProjectManagerDBModel.TaskStateChange" />
@@ -455,10 +423,6 @@
           <AssociationSet Name="role_fk3" Association="ProjectManagerDBModel.role_fk3">
             <End Role="RoleName" EntitySet="RoleName" />
             <End Role="Role" EntitySet="Role" />
-          </AssociationSet>
-          <AssociationSet Name="statistics_data_fk0" Association="ProjectManagerDBModel.statistics_data_fk0">
-            <End Role="Statistics" EntitySet="Statistics" />
-            <End Role="StatisticsData" EntitySet="StatisticsData" />
           </AssociationSet>
           <AssociationSet Name="task_fk1" Association="ProjectManagerDBModel.task_fk1">
             <End Role="TaskState" EntitySet="TaskState" />
@@ -552,27 +516,11 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="StartTime" Type="DateTime" Precision="3" />
-          <Property Name="EndTime" Type="DateTime" Precision="3" />
           <Property Name="ProjectId" Type="Int32" Nullable="false" />
           <Property Name="Public" Type="Boolean" Nullable="false" />
-          <Property Name="LegendX" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="LegendY" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Chart" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Project" Relationship="ProjectManagerDBModel.statistics_fk0" FromRole="Statistics" ToRole="Project" />
-          <NavigationProperty Name="StatisticsData" Relationship="ProjectManagerDBModel.statistics_data_fk0" FromRole="Statistics" ToRole="StatisticsData" />
-        </EntityType>
-        <EntityType Name="StatisticsData">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ValueX" Type="Int32" Nullable="false" />
-          <Property Name="ValueY" Type="Int32" Nullable="false" />
-          <Property Name="NameX" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="NameY" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="StatisticsId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Statistics" Relationship="ProjectManagerDBModel.statistics_data_fk0" FromRole="StatisticsData" ToRole="Statistics" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
@@ -761,18 +709,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="statistics_data_fk0">
-          <End Type="ProjectManagerDBModel.Statistics" Role="Statistics" Multiplicity="1" />
-          <End Type="ProjectManagerDBModel.StatisticsData" Role="StatisticsData" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Statistics">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="StatisticsData">
-              <PropertyRef Name="StatisticsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="task_fk1">
           <End Type="ProjectManagerDBModel.TaskState" Role="TaskState" Multiplicity="1" />
           <End Type="ProjectManagerDBModel.Task" Role="Task" Multiplicity="*" />
@@ -889,26 +825,11 @@
           <EntitySetMapping Name="Statistics">
             <EntityTypeMapping TypeName="ProjectManagerDBModel.Statistics">
               <MappingFragment StoreEntitySet="Statistics">
+                <ScalarProperty Name="Chart" ColumnName="Chart" />
                 <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-                <ScalarProperty Name="LegendY" ColumnName="LegendY" />
-                <ScalarProperty Name="LegendX" ColumnName="LegendX" />
                 <ScalarProperty Name="Public" ColumnName="Public" />
                 <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="StatisticsData">
-            <EntityTypeMapping TypeName="ProjectManagerDBModel.StatisticsData">
-              <MappingFragment StoreEntitySet="StatisticsData">
-                <ScalarProperty Name="StatisticsId" ColumnName="StatisticsId" />
-                <ScalarProperty Name="NameY" ColumnName="NameY" />
-                <ScalarProperty Name="NameX" ColumnName="NameX" />
-                <ScalarProperty Name="ValueY" ColumnName="ValueY" />
-                <ScalarProperty Name="ValueX" ColumnName="ValueX" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
