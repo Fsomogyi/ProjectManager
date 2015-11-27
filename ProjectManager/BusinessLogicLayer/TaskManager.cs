@@ -433,6 +433,31 @@ namespace BusinessLogicLayer
             }
         }
 
+        public List<TaskStateChangeData> GetAcceptedTaskStateChanges(int taskId)
+        {
+            using (var context = new ProjectManagerDBEntities())
+            {
+                List<TaskStateChangeData> result = new List<TaskStateChangeData>();
+
+                var changes = context.TaskStateChange.Where(ts => ts.TaskId == taskId &&
+                    ts.Accepted == true).ToList();
+
+                foreach (var change in changes)
+                {
+                    result.Add(new TaskStateChangeData()
+                    {
+                        ProjectUserId = change.ProjectUserId,
+                        Timestamp = change.Timestamp,
+                        UserName = change.ProjectUser.UserName,
+                        StateName = change.TaskState1.Name,
+                        Reason = change.Reason
+                    });
+                }
+
+                return result;
+            }
+        }
+
         public List<TaskStateChangeData> GetDoneTaskStateChanges(int taskId)
         {
             using (var context = new ProjectManagerDBEntities())

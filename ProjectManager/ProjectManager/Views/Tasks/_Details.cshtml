@@ -169,37 +169,56 @@ else if (Model.Task.State == (int)ViewData["doneId"] &&
     }
 }
 
+@if (Model.AcceptedTaskStateChanges.Count > 0)
+{
+    <h4>Accepted state changes</h4>
+
+    foreach (var tsc in Model.AcceptedTaskStateChanges)
+    {
+        <table style="border-bottom: 1px solid #808080; width: 100%">
+            <tr>
+                <td><b>@tsc.UserName</b> at @tsc.Timestamp.ToString("yyyy.MM.dd H:mm") to <div style="display: inline; @if(tsc.StateName.Contains("Done")) {<text>color: #4CAF50</text>} else {<text>color: #D32F2F</text>}"><b>@tsc.StateName</b></div></td>
+            </tr>
+            <tr>
+                <td><b>Reason:</b> @tsc.Reason</td>
+            </tr>
+        </table>
+    }
+
+    <hr style="border-top:2px solid black;" />
+}
+
 @if (Model.UnacceptedTaskStateChanges.Count > 0)
 {
+    
+    
     <h4>Unaccepted state changes</h4>
+    
     foreach (var tsc in Model.UnacceptedTaskStateChanges)
     {
-        <p>
-            User: @tsc.UserName 
-        </p>
-        <p>
-            State: @tsc.StateName 
-        </p>
-            <p>
-            Reason: @tsc.Reason 
-        </p>
-            <p>
-            Date: @tsc.Timestamp.ToString("yyyy.MM.dd H:mm") 
-        </p>
-    
-        if((bool)ViewData["isLeader"])
-        {
-            using (Html.BeginForm("AcceptStateChange", "Tasks", new { taskId = Model.Task.Id, developerId = tsc.ProjectUserId }, FormMethod.Post))
-            {
-                <button type="submit">Accept</button>
-            }
-            using (Html.BeginForm("DeclineStateChange", "Tasks", new { taskId = Model.Task.Id, developerId = tsc.ProjectUserId }, FormMethod.Post))
-            {
-                <button type="submit">Decline</button>
-                <hr style="border-top:2px solid black;"/>
-            }
-        }
+        <table style="border-bottom: 1px solid #808080; width: 100%">
+            <tr>
+                <td><b>@tsc.UserName</b> at @tsc.Timestamp.ToString("yyyy.MM.dd H:mm") to @tsc.StateName</td>
+                @if ((bool)ViewData["isLeader"])
+                {
+                    <td rowspan="2" style="width: 100px">
+                        @using (Html.BeginForm("AcceptStateChange", "Tasks", new { taskId = Model.Task.Id, developerId = tsc.ProjectUserId }, FormMethod.Post, new { @class = "inlineform" }))
+                        {
+                            <button class="action-button-smallest" type="submit" style="width: 100px; margin-bottom:2px">Accept</button>
+                        }
+                        @using (Html.BeginForm("DeclineStateChange", "Tasks", new { taskId = Model.Task.Id, developerId = tsc.ProjectUserId }, FormMethod.Post, new { @class = "inlineform" }))
+                        {
+                            <button class="action-button-smallest" type="submit" style="width: 100px">Decline</button>
+                        }
+                    </td>
+                }
+            </tr>
+            <tr>
+                <td><b>Reason:</b> @tsc.Reason</td>
+            </tr>
+        </table>
     }
+
     <hr style="border-top:2px solid black;"/>
 }
 

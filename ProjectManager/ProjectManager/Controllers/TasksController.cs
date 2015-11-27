@@ -42,6 +42,7 @@ namespace ProjectManager.Controllers
                 taskId, project.Id, addable: false);
             var unacceptedDevelopers = manager.GetUnacceptedDevelopers(taskId);
             var unacceptedTaskStateChanges = manager.GetUnacceptedTaskStateChanges(taskId);
+            var acceptedTaskStateChanges = manager.GetAcceptedTaskStateChanges(taskId);
 
             int deletedId = manager.GetDeletedStateId();
             ViewData["deletedId"] = deletedId;
@@ -93,7 +94,7 @@ namespace ProjectManager.Controllers
 
             return new TaskDetailsModel(task, stateName, devs, userHours, commentViewModels, canComment,
                 addableDevelopers, removableDevelopers, unacceptedDevelopers, unacceptedTaskStateChanges,
-                projectDone, maxDevelopers);
+                acceptedTaskStateChanges, projectDone, maxDevelopers);
 
         }
 
@@ -407,6 +408,8 @@ namespace ProjectManager.Controllers
             manager.FinishTask(taskId, userId, reason, isLeader);
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -424,6 +427,8 @@ namespace ProjectManager.Controllers
             manager.UnfinishTask(taskId, userId, reason, isLeader);
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -439,6 +444,8 @@ namespace ProjectManager.Controllers
             manager.AcceptStateChange(taskId, developerId);
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
 
@@ -454,6 +461,8 @@ namespace ProjectManager.Controllers
             manager.DeclineStateChange(taskId, developerId);
 
             TempData["DetailsPage"] = "1";
+            TempData["overlayId"] = "TaskDetails";
+            TempData["TaskDetailsId"] = "" + taskId;
             return Redirect("/Projects/Details/" + projectId);
         }
     }
