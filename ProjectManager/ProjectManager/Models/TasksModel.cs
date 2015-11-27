@@ -28,7 +28,7 @@ namespace ProjectManager.Models
         public int Priority { get; set; }
 
         [Display(Name = "Maximum developers")]
-        public int MaxDevelopers { get; set; }
+        public int? MaxDevelopers { get; set; }
     }
 
     public class TaskDetailsModel

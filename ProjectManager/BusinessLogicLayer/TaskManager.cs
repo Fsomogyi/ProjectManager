@@ -292,7 +292,7 @@ namespace BusinessLogicLayer
             }
         }
 
-        public List<ProjectUser> GetAddableOrRemovableDevelopers(int taskId, int leaderId, bool addable)
+        public List<ProjectUser> GetAddableOrRemovableDevelopers(int taskId, int projectId, bool addable)
         {
             using (var context = new ProjectManagerDBEntities())
             {
@@ -300,7 +300,9 @@ namespace BusinessLogicLayer
 
                 var task = context.Task.First(t => t.Id == taskId);
 
-                foreach (var user in context.ProjectUser.Where(u => u.Id != leaderId))
+                foreach (var user in context.ProjectUser.Where(u => context.Role.Any(r => 
+                    r.ProjectId == projectId &&
+                    r.ProjectUserId == u.Id)))
                 {
                     var assignments = task.Assignment.Where(a => a.ProjectUserId == user.Id);
 

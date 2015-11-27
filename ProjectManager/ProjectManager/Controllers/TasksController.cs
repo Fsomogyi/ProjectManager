@@ -26,6 +26,10 @@ namespace ProjectManager.Controllers
         private TaskDetailsModel CreateTaskDetailsModel(int userId, int taskId)
         {
             var manager = new TaskManager();
+
+            var project = manager.GetProjectForTask(taskId);
+            ViewData["isLeader"] = new ProjectUserManager().IsLeader(userId, project.Id);
+
             var task = manager.GetTask(taskId);
             var stateName = manager.GetTaskStateName(taskId);
             var users = manager.GetUsersForTask(taskId);
@@ -33,14 +37,11 @@ namespace ProjectManager.Controllers
             var comments = manager.GetComments(taskId);
             var canComment = task.State == manager.GetActiveStateId();
             var addableDevelopers = manager.GetAddableOrRemovableDevelopers(
-                taskId, userId, addable: true);
+                taskId, project.Id, addable: true);
             var removableDevelopers = manager.GetAddableOrRemovableDevelopers(
-                taskId, userId, addable: false);
+                taskId, project.Id, addable: false);
             var unacceptedDevelopers = manager.GetUnacceptedDevelopers(taskId);
             var unacceptedTaskStateChanges = manager.GetUnacceptedTaskStateChanges(taskId);
-
-            var project = manager.GetProjectForTask(taskId);
-            ViewData["isLeader"] = new ProjectUserManager().IsLeader(userId, project.Id);
 
             int deletedId = manager.GetDeletedStateId();
             ViewData["deletedId"] = deletedId;
@@ -151,6 +152,7 @@ namespace ProjectManager.Controllers
         {
             int projectId = int.Parse(Request.Form["projectId"] as string);
 
+            ModelState.Remove("MaxDevelopers");
             if (!ModelState.IsValid)
             {
                 TempData["DetailsPage"] = "1";
@@ -165,7 +167,7 @@ namespace ProjectManager.Controllers
                 Description = model.Description,
                 EstimatedWorkHours = model.WorkHours,
                 Priority = model.Priority,
-                MaxDevelopers = model.MaxDevelopers,
+                MaxDevelopers = model.MaxDevelopers != 0 ? model.MaxDevelopers : null,
             };
 
             new TaskManager().AddNewTask(projectId, data);

@@ -156,7 +156,7 @@ namespace ProjectManager.Controllers
                 axisXTitle = string.Format("{0} {1}", "Average ", axisXTitle);
                 axisYTitle = string.Format("{0} {1}", "Average ", axisYTitle);
 
-                var average = (int)yValues.Average(v => (int)v);
+                var average = (int)Math.Round(yValues.Average(v => (int)v));
                 yValues.Clear();
                 yValues.Add(average);
 

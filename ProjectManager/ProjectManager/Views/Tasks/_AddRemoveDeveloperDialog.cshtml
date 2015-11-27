@@ -20,7 +20,8 @@
 
 @if (Model.RemovableDevelopers.Count > 0)
 {
-    if (Model.AddableDevelopers.Count > 0) {
+    if (Model.AddableDevelopers.Count > 0 && !Model.MaxDevelopers)
+    {
         <hr style="border-top:1px solid black;" />
     }
 
