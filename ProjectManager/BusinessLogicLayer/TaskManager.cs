@@ -222,9 +222,9 @@ namespace BusinessLogicLayer
 
                 var workTimes = context.Worktime.Where(w => w.TaskId == taskId);
 
-                if (workTimes.Count() > 0)
-                    task.State = activeId;
-                else
+                //if (workTimes.Count() > 0)
+                //    task.State = activeId;
+                //else
                     task.State = newId;
 
                 context.TaskStateChange.Add(new TaskStateChange()
