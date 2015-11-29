@@ -132,6 +132,17 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Scripts\InsertAssignment.sql" />
+    <Content Include="Scripts\InsertProject.sql" />
+    <Content Include="Scripts\InsertProjectUser.sql" />
+    <Content Include="Scripts\InsertRole.sql" />
+    <Content Include="Scripts\InsertRoleName.sql" />
+    <Content Include="Scripts\InsertTask.sql" />
+    <Content Include="Scripts\InsertTaskState.sql" />
+    <Content Include="Scripts\InsertWorktime.sql" />
+    <Content Include="Scripts\Script.PostDeployment.sql" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
